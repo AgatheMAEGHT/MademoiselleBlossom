@@ -1,6 +1,6 @@
 import React from 'react';
 
-import logo from '../../logo.svg';
+import logo from '../../Mademoiselle_blossom-transparent.png';
 
 import './header.css';
 
@@ -10,10 +10,11 @@ function Header() {
 
     return (
         <div id="header">
-            <div id="header-top"></div>
-            <div id="header-buttons">
+            <div id="header-top">
                 <img src={logo} id="header-logo" className='header-item' alt="logo" />
-                <p>Mademoiselle Blossom</p>
+                <h1 id="header-name">Mademoiselle Blossom</h1>
+            </div>
+            <div id="header-buttons">
                 <div className='header-item' id="catag">
                     <span>Catalogue</span>
                     <div className="header-dropdowm" id='catag-dropdown'>
@@ -30,6 +31,7 @@ function Header() {
                     </div>
                 </div>
                 {evnt && <p className='header-item'>{evntName}</p>}
+                <p className='header-item'>Contactez-moi</p>
             </div>
         </div>
     );
