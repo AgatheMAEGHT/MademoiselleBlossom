@@ -1,0 +1,25 @@
+services:
+  api:
+    build: back
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./back:/go/src/MademoiselleBlossom/api
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mademoiselleblossom
+      MONGO_INITDB_ROOT_PASSWORD: azertyuiop
+    env_file:
+      - ./back/.env
+    depends_on:
+      - mongo
+    command: reflex -r '\.go$' -s -- sh -c 'go build . && ./MademoiselleBlossom'
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mademoiselleblossom
+      MONGO_INITDB_ROOT_PASSWORD: azertyuiop
