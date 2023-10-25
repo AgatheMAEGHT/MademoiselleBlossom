@@ -8,14 +8,14 @@ function Footer() {
     return (
         <div id="footer">
             <img src={logo} id="footer-logo" alt="logo" />
-            <div>
-                <p>Livraisons</p>
-                <p>À propos de Mademoiselle Blossom</p>
-                <p>Contactez-moi</p>
+            <div className='footer-col'>
+                <p className='footer-url'>Livraisons</p>
+                <p className='footer-url'>À propos de Mademoiselle Blossom</p>
+                <p className='footer-url'>Contactez-moi</p>
             </div>
-            <div>
-                <p>Conditions Générales de Ventes</p>
-                <p>Mentions légales</p>
+            <div className='footer-col'>
+                <p className='footer-url'>Conditions Générales de Ventes</p>
+                <p className='footer-url'>Mentions légales</p>
             </div>
         </div>
     );

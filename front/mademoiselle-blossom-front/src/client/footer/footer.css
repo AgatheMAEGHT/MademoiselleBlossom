@@ -1,13 +1,27 @@
 #footer {
-    background-color: var(--color-2);
-    color: var(--color-1);
-    min-height: 10vh;
-
     display: flex;
     justify-content: space-evenly;
+
+    min-height: 10vh;
+    background-color: var(--color-2);
+    color: var(--color-1);
+    font-size: small;
 }
 
 #footer-logo {
-    height: 4vh;
+    height: 6vh;
     align-self: center;
+}
+
+.footer-col {
+    width: 30%;
+}
+
+.footer-url {
+    margin: 5px;
+    cursor: pointer;
+}
+
+.footer-url:hover {
+    font-weight: 500;
 }
