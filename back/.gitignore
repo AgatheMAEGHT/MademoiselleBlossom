@@ -1,0 +1,6 @@
+# go gitignore
+
+vendor/
+go.sum
+.env
+MademoiselleBlossom
