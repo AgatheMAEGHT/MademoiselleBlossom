@@ -4,7 +4,19 @@
     justify-content: center;
 }
 
-#header-top {
+#header-top-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-right: 10px;
+}
+
+.header-top-button {
+    margin: 5px;
+}
+
+#header-logo-area {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,7 +27,7 @@
     height: 15vh;
     width: 15vh;
     cursor: pointer;
-    padding-bottom: 0px;
+    padding: 0px;
 }
 
 #header-name {
