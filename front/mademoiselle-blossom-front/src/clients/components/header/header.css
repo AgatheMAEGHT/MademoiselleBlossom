@@ -1,0 +1,92 @@
+#header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#header-top-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-right: 10px;
+}
+
+.header-top-button {
+    margin: 5px;
+    cursor: pointer;
+}
+
+#header-logo-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#header-logo {
+    height: 15vh;
+    width: 15vh;
+    cursor: pointer;
+    padding: 0px;
+}
+
+#header-name {
+    margin-top: 0px;
+    font-size: 24px;
+}
+
+#header-buttons {
+    background-color: var(--color-2);
+    color: var(--color-1);
+    min-height: 5vh;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.header-item {
+    cursor: pointer;
+    text-decoration-color: initial;
+    padding: 10px 5px;
+}
+
+.header-dropdowm {
+    display: none;
+    position: absolute;
+    background-color: var(--color-2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    min-width: 100px;
+    z-index: 1;
+    overflow: hidden;
+
+    margin-top: 10px;
+    margin-left: -10px;
+    cursor: pointer;
+}
+
+/*Catalog*/
+#catag:hover #catag-dropdown {
+    display: block;
+}
+
+#inspi:hover #inspi-dropdown {
+    display: block;
+}
+
+.header-dropdown-item {
+    margin: 0px;
+    padding: 5px 10px;
+    padding-right: 30px;
+    text-decoration-color: initial;
+}
+
+.header-dropdown:first-child {
+    padding-top: 10px;
+}
+
+.header-dropdown-item:hover {
+    background-color: var(--color-2-darker);
+}

@@ -1,24 +1,21 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import Header from './client/header/header';
-import Footer from './client/footer/footer';
-import Homepage from './pages/homepage/homepage';
-
-import './App.css';
-import Admin from './pages/admin/admin';
+import AppAdmin from './admin/App-admin';
+import AppClient from './clients/App-client';
 
 function App() {
-  return (
-    <div id="app">
-      <Header />
-      <Routes >
-        <Route path='/emma-administratrice' element={<Admin />} />
-      </Routes>
-      <Homepage />
-      <Footer />
-    </div>
-  );
+    return (
+        <div>
+            <Routes >
+                {/* Admin */}
+                <Route path='/admin' element={<AppAdmin />} />
+
+                {/* Client */}
+                <Route path='/' element={<AppClient />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;

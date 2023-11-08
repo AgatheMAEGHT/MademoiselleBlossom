@@ -1,0 +1,32 @@
+#footer {
+    display: flex;
+    justify-content: space-evenly;
+
+    height: fit-content;
+    background-color: var(--color-2);
+    color: var(--color-1);
+    font-size: small;
+}
+
+#footer-logo {
+    max-width: 7vh;
+    align-self: center;
+    height: 30%;
+    border-radius: 20%;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.footer-col {
+    width: 30%;
+    height: fit-content;
+}
+
+.footer-url {
+    margin: 5px;
+    cursor: pointer;
+}
+
+.footer-url:hover {
+    font-weight: 500;
+}
