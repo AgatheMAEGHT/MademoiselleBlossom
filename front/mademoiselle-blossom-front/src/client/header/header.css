@@ -14,6 +14,7 @@
 
 .header-top-button {
     margin: 5px;
+    cursor: pointer;
 }
 
 #header-logo-area {
