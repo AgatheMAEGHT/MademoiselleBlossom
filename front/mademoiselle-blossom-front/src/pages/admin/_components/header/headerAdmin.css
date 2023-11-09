@@ -1,0 +1,37 @@
+#header-admin {
+    background-color: var(--color-admin);
+    color: var(--color-1);
+    min-height: 5vh;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-evenly;
+    justify-self: flex-start;
+    align-items: center;
+}
+
+.admin-header-dropdowm {
+    display: none;
+    position: absolute;
+    background-color: var(--color-admin);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    min-width: 100px;
+    z-index: 1;
+    overflow: hidden;
+
+    margin-top: 10px;
+    margin-left: -10px;
+    cursor: pointer;
+}
+
+.admin-header-dropdown-item {
+    margin: 0px;
+    padding: 5px 10px;
+    padding-right: 30px;
+    text-decoration-color: initial;
+}
+
+.admin-header-dropdown-item:hover {
+    background-color: var(--color-admin-darker);
+}

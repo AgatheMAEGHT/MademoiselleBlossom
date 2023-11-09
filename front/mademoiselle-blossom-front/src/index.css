@@ -12,7 +12,10 @@ body {
   --color-2: #2b9465;
   --color-2-darker: #7d6b3d;
   --color-2-darker: #20724e;
-  --color-3: #FF1358;
+  --color-3: #d40c48;
+
+  --color-admin: #d82387;
+  --color-admin-darker: #a11060;
 }
 
 code {

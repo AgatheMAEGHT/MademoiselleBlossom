@@ -32,8 +32,10 @@
 }
 
 #header-name {
-    margin-top: 0px;
-    font-size: 24px;
+    margin: 0px;
+    margin-bottom: 10px;
+    font-size: 35px;
+    font-family: 'Great Vibes', cursive;
 }
 
 #header-buttons {
@@ -44,6 +46,7 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    padding: 0 10%;
 }
 
 .header-item {
@@ -89,4 +92,24 @@
 
 .header-dropdown-item:hover {
     background-color: var(--color-2-darker);
+}
+
+#header-item-event {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header-item-bold {
+    background-color: var(--color-3);
+    width: fit-content;
+    border-radius: 3px;
+    padding: 2px;
+
+    position: absolute;
+    margin-top: 10px;
+    margin-right: -30px;
+    justify-self: flex-end;
+
+    font-weight: bold;
+    font-size: x-small;
 }

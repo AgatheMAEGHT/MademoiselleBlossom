@@ -1,0 +1,44 @@
+.admin-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-page-title {
+    width: fit-content;
+}
+
+/* Couleurs de la semaine */
+#admin-colors {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px
+}
+
+.admin-colors-level {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.admin-colors-display {
+    width: 30px;
+    height: 30px;
+    border: 1px solid;
+    border-radius: 3px;
+}
+
+.admin-colors-name {
+    min-width: 50px;
+    height: 17px;
+    resize: none;
+}
+
+.admin-colors-delete {
+    background-color: transparent;
+    border: 2px solid red;
+    border-radius: 5px;
+}

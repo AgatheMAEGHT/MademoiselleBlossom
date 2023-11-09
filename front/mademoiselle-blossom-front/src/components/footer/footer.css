@@ -1,6 +1,8 @@
 #footer {
     display: flex;
     justify-content: space-evenly;
+    margin-top: auto;;
+    margin-bottom: 0;
 
     height: fit-content;
     background-color: var(--color-2);
@@ -9,9 +11,9 @@
 }
 
 #footer-logo {
-    max-width: 7vh;
     align-self: center;
     height: 30%;
+    max-height: 5vh;
     border-radius: 20%;
     padding: 5px;
     cursor: pointer;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import logo from '../../../Mademoiselle_blossom-transparent.png';
+import logo from '../../Mademoiselle_blossom-transparent.png';
 
 import './header.css';
 
@@ -20,14 +20,14 @@ function Header() {
                 </div>
                 <div id="header-logo-area">
                     <img src={logo} id="header-logo" className='header-item' alt="logo" onClick={() => { navigate("/") }} />
-                    <h1 id="header-name">Mademoiselle Blossom</h1>
+                    <p id="header-name">Mademoiselle Blossom</p>
                 </div>
             </div>
             <div id="header-buttons">
                 <div className='header-item' id="catag">
                     <span>Catalogue</span>
                     <div className="header-dropdowm" id='catag-dropdown'>
-                        <p className='header-dropdown-item' onClick={() => { navigate("/fleur-sechees") }}>Fleurs séchées</p>
+                        <p className='header-dropdown-item' onClick={() => { navigate("/fleurs-sechees") }}>Fleurs séchées</p>
                         <p className='header-dropdown-item' onClick={() => { navigate("/fleurs-de-la-semaine") }}>Fleurs de la semaine</p>
                     </div>
                 </div>
@@ -40,7 +40,10 @@ function Header() {
                         <p className='header-dropdown-item' onClick={() => { navigate("/inspirations/naissance") }}>Naissance</p>
                     </div>
                 </div>
-                {evnt && <p className='header-item'>{evntName}</p>}
+                {evnt && <div id="header-item-event">
+                    <p className='header-item-bold'>Évènement</p>
+                    <p className='header-item'>{evntName}</p>
+                </div>}
                 <p className='header-item' onClick={() => { navigate("/contact") }}>Contactez-moi</p>
             </div>
         </div>
