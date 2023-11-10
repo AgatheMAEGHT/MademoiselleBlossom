@@ -13,16 +13,6 @@ function Header() {
 
     return (
         <div id="header">
-            <div id="header-top">
-                <div id="header-top-buttons">
-                    <p className='header-top-button'>Mon compte</p>
-                    <p className='header-top-button'>Panier</p>
-                </div>
-                <div id="header-logo-area">
-                    <img src={logo} id="header-logo" className='header-item' alt="logo" onClick={() => { navigate("/") }} />
-                    <p id="header-name">Mademoiselle Blossom</p>
-                </div>
-            </div>
             <div id="header-buttons">
                 <div className='header-item' id="catag">
                     <span>Catalogue</span>

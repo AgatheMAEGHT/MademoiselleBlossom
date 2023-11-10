@@ -13,17 +13,29 @@ import Homepage from './pages/homepage/homepage';
 
 import "./App.css"
 import "./pages/admin/_components/style.css"
+import HeaderAdmin from './pages/admin/_components/header/headerAdmin';
+import HeaderTop from './components/header/header-top';
 
 function App() {
+    let isAdmin: Boolean = true;
+
     return (
         <div id='app'>
-            <Header />
+            <HeaderTop />
+            {isAdmin ?
+                <HeaderAdmin />
+                :
+                <Header />
+            }
+
             <Routes >
                 {/* Admin */}
-                <Route path='/admin' element={<HomepageAdmin />} />
-                <Route path='/admin/fleurs-sechees' element={<CatalogAdmin />} />
-                <Route path='/admin/fleurs-de-la-semaine' element={<WeekAdmin />} />
-                <Route path='/admin/evenements' element={<EventsAdmin />} />
+                {isAdmin && <>
+                    <Route path='/admin' element={<HomepageAdmin />} />
+                    <Route path='/admin/fleurs-sechees' element={<CatalogAdmin />} />
+                    <Route path='/admin/fleurs-de-la-semaine' element={<WeekAdmin />} />
+                    <Route path='/admin/evenements' element={<EventsAdmin />} />
+                </>}
 
                 {/* Client */}
                 <Route path='/' element={<Homepage />} />
