@@ -33,12 +33,10 @@ func middleware(w http.ResponseWriter, r *http.Request, next HandlerFunc) {
 
 	user, err := verifyAccessToken(ctx, tok[1])
 	if err != nil {
-		log.Errorf("Failed to verify token: %v", err)
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("Invalid token"))
 		return
 	}
-	log.Infof("User %s is authenticated", user.Email)
 
 	next(w, r, user)
 }

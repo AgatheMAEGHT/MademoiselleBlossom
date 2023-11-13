@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -25,7 +26,7 @@ type authToken struct {
 var (
 	accessTokenTime  = time.Hour * 1
 	refreshTokenTime = time.Hour * 24 * 7
-	secret           = []byte("secret")
+	secret           = []byte(os.Getenv("SECRET_KEY"))
 )
 
 func generateAccessToken(user database.User) (string, error) {

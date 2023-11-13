@@ -5,7 +5,6 @@ import (
 	"MademoiselleBlossom/database"
 	"context"
 	"fmt"
-	"net/http"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -19,11 +18,6 @@ func conf() {
 		TimestampFormat: "2006-01-02 15:04:05",
 		FullTimestamp:   true,
 	}))
-}
-
-func root(http.ResponseWriter, *http.Request) {
-	fmt.Println("root")
-
 }
 
 func main() {
@@ -51,5 +45,5 @@ func main() {
 	}
 
 	// Start server
-	controller.StartServer(":8080")
+	controller.StartServer(fmt.Sprintf("%s:%s", os.Getenv("HOSTNAME"), os.Getenv("PORT")))
 }
