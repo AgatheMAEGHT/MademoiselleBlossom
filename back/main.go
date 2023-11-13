@@ -1,11 +1,14 @@
 package main
 
 import (
+	"MademoiselleBlossom/controller"
 	"MademoiselleBlossom/database"
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func conf() {
@@ -26,4 +29,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Create first user
+	user := database.User{
+		Email:     "quentinescudier@hotmail.fr",
+		Password:  "test",
+		FirstName: "Quentin",
+		LastName:  "Escudier",
+	}
+	_, err = user.Create(ctx)
+	if mongo.IsDuplicateKeyError(err) {
+		log.Info("User already exists")
+	} else if err != nil {
+		log.Fatal(err)
+	}
+
+	// Start server
+	controller.StartServer(fmt.Sprintf("%s:%s", os.Getenv("HOSTNAME"), os.Getenv("PORT")))
 }

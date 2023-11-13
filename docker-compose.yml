@@ -12,7 +12,7 @@ services:
       - ./back/.env
     depends_on:
       - mongo
-    command: reflex -r '\.go$' -s -- sh -c 'go build . && ./MademoiselleBlossom'
+    command: reflex -r '\.go$$' -s -- sh -c 'go build . && ./MademoiselleBlossom'
   mongo:
     image: mongo
     restart: always
