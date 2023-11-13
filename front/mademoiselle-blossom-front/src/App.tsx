@@ -1,32 +1,31 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import Header from './components/header/header';
-import Footer from './components/footer/footer';
-
-import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
-import CatalogAdmin from './pages/admin/catalog/catalog';
-import WeekAdmin from './pages/admin/week/week';
-import EventsAdmin from './pages/admin/events/eventsAdmin';
-
-import Homepage from './pages/homepage/homepage';
-
-import "./App.css"
-import "./pages/admin/_components/style.css"
-import HeaderAdmin from './pages/admin/_components/header/headerAdmin';
 import HeaderTop from './components/header/header-top';
 
+import Header from './components/header/header';
+import Footer from './components/footer/footer';
+import Homepage from './pages/homepage/homepage';
+
+import HeaderAdmin from './pages/admin/_components/header/headerAdmin';
+import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
+import CatalogAdmin from './pages/admin/catalog/catalog';
+import WeekAdmin from './pages/admin/catalog/week/week';
+import EventsAdmin from './pages/admin/events/eventsAdmin';
+
+import "./App.css"
+import "./pages/admin/_components/styleAdmin.css"
+import "./components/style.css";
+
 function App() {
-    let isAdmin: Boolean = true;
+    localStorage.setItem("admin", "admin")
+    let isAdmin: string | null = localStorage.getItem("admin");
 
     return (
         <div id='app'>
             <HeaderTop />
-            {isAdmin ?
-                <HeaderAdmin />
-                :
-                <Header />
-            }
+            <Header />
+            {isAdmin && <HeaderAdmin />}
 
             <Routes >
                 {/* Admin */}
@@ -35,6 +34,11 @@ function App() {
                     <Route path='/admin/fleurs-sechees' element={<CatalogAdmin />} />
                     <Route path='/admin/fleurs-de-la-semaine' element={<WeekAdmin />} />
                     <Route path='/admin/evenements' element={<EventsAdmin />} />
+                    <Route path='/admin/inspirations' element={<EventsAdmin />} />
+                    <Route path='/admin/inspirations/mariage' element={<EventsAdmin />} />
+                    <Route path='/admin/inspirations/deuil' element={<EventsAdmin />} />
+                    <Route path='/admin/inspirations/anniversaire' element={<EventsAdmin />} />
+                    <Route path='/admin/inspirations/naissance' element={<EventsAdmin />} />
                 </>}
 
                 {/* Client */}
@@ -43,7 +47,7 @@ function App() {
                 <Route path='/fleurs-sechees' element={<Homepage />} />
                 <Route path='/fleurs-de-la-semaine' element={<Homepage />} />
                 <Route path='/inspirations' element={<Homepage />} />
-                <Route path='/inspirations/mariages' element={<Homepage />} />
+                <Route path='/inspirations/mariage' element={<Homepage />} />
                 <Route path='/inspirations/deuil' element={<Homepage />} />
                 <Route path='/inspirations/anniversaire' element={<Homepage />} />
                 <Route path='/inspirations/naissance' element={<Homepage />} />

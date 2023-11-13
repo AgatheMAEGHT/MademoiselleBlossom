@@ -1,0 +1,15 @@
+.admin-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-page-title {
+    width: fit-content;
+}
+
+.admin-element-title {
+    margin: 0px;
+    text-align: center;
+}

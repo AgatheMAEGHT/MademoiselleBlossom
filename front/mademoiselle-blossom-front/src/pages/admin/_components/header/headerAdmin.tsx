@@ -8,14 +8,14 @@ function HeaderAdmin() {
 
     return (
         <div id="header-admin">
-            <div className='header-item' id="catag">
-                <span>Catalogue</span>
+            <div className='admin-header-item' id="catag">
+                <span onClick={() => { navigate("/admin/inspirations") }}>Catalogue</span>
                 <div className="admin-header-dropdowm" id='catag-dropdown'>
                     <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/fleurs-sechees") }}>Fleurs séchées</p>
                     <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/fleurs-de-la-semaine") }}>Fleurs de la semaine</p>
                 </div>
             </div>
-            <div className='header-item' id="inspi">
+            <div className='admin-header-item' id="inspi">
                 <span onClick={() => { navigate("/admin/inspirations") }}>Inspirations</span>
                 <div className="admin-header-dropdowm" id="inspi-dropdown">
                     <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/inspirations/mariage") }}>Mariage</p>
@@ -24,8 +24,25 @@ function HeaderAdmin() {
                     <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/inspirations/naissance") }}>Naissance</p>
                 </div>
             </div>
-            <p className='header-item' onClick={() => { navigate("/admin/evenements") }}>Évènements</p>
-            <p className='header-item' onClick={() => { navigate("/admin/informations") }}>Informations</p>
+            <div className='admin-header-item' id="inspi">
+                <span onClick={() => { navigate("/admin/evenements") }}>Évènements</span>
+                <div className="admin-header-dropdowm" id="inspi-dropdown">
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements") }}>Gérer les évènements</p>
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/noel") }}>Noël</p>
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/st-valentin") }}>Saint Valentin</p>
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/paques") }}>Pâques</p>
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/toussaint") }}>Toussaint</p>
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/meres") }}>Fête des mères</p>
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/peres") }}>Fête des pères</p>
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/grand-meres") }}>Fête des Grand-mères</p>
+                </div>
+            </div>
+            <div className='admin-header-item' id="inspi">
+                <span onClick={() => { navigate("/admin/informations") }}>Informations</span>
+                <div className="admin-header-dropdowm" id="inspi-dropdown">
+                    <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/inspirations/contact") }}>Contact</p>
+                </div>
+            </div>
         </div>
     );
 }

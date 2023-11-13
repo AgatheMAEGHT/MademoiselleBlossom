@@ -7,6 +7,7 @@ import './header.css';
 
 function HeaderTop() {
     let navigate = useNavigate();
+    let isAdmin: boolean = true;
 
     let evnt: boolean = true;
     let evntName: string = "Fête des grand-mères";
@@ -14,6 +15,7 @@ function HeaderTop() {
     return (
         <div id="header-top">
             <div id="header-top-buttons">
+                {isAdmin && <p className='header-top-button'>Page admin</p>}
                 <p className='header-top-button'>Mon compte</p>
                 <p className='header-top-button'>Panier</p>
             </div>

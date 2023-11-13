@@ -1,20 +1,32 @@
-.admin-page {
+#admin {
+    background-color: var(--color-1);
+    color: var(--color-0);
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
-.admin-page-title {
-    width: fit-content;
-}
-
-/* Couleurs de la semaine */
 #admin-colors {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px
+    gap: 5px;
+
+    width: 60%;
+    padding: 3vw;
+    border-radius: 2vw;
+    border: 2px solid var(--color-admin-darker);
+    box-shadow: 2px 2px 4px rgb(141, 141, 141);
+}
+
+#admin-colors-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    min-height: 60px;
+    padding: 15px 0px;
 }
 
 .admin-colors-level {
@@ -38,7 +50,7 @@
 }
 
 .admin-colors-delete {
-    background-color: transparent;
+    background-color: white;
     border: 2px solid red;
     border-radius: 5px;
 }

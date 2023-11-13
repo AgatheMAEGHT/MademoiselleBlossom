@@ -7,7 +7,6 @@ function CatalogAdmin() {
 
     return (
         <div>
-            <HeaderAdmin />
             <div className='admin-page'>
                 <h1 className='admin-page-title'>Admin - Catalogue de fleurs séchées</h1>
             </div>

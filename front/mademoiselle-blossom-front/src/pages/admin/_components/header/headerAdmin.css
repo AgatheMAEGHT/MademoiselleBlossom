@@ -10,6 +10,12 @@
     align-items: center;
 }
 
+.admin-header-item {
+    cursor: pointer;
+    text-decoration-color: initial;
+    padding: 10px;
+} 
+
 .admin-header-dropdowm {
     display: none;
     position: absolute;
@@ -20,7 +26,6 @@
     z-index: 1;
     overflow: hidden;
 
-    margin-top: 10px;
     margin-left: -10px;
     cursor: pointer;
 }
