@@ -114,7 +114,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte(`{"err": "Method not allowed"}`))
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
 		return
 	}
 
@@ -122,41 +122,41 @@ func login(w http.ResponseWriter, r *http.Request) {
 	err := utils.ParseBody(r.Body, &mapBody)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Error while parsing body"}`))
+		w.Write(utils.NewResErr("Error while parsing body").ToJson())
 		return
 	}
 
 	if mapBody["email"] == "" || mapBody["password"] == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"err": "Missing email or password"}`))
+		w.Write(utils.NewResErr("Missing email or password").ToJson())
 		return
 	}
 
 	user, err := database.FindOneUser(r.Context(), bson.M{"email": mapBody["email"]})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Wrong email or password"}`))
+		w.Write(utils.NewResErr("Wrong email or password").ToJson())
 		return
 	}
 
 	err = user.ComparePassword(mapBody["password"])
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"err": "Wrong email or password"}`))
+		w.Write(utils.NewResErr("Wrong email or password").ToJson())
 		return
 	}
 
 	accessToken, err := generateAccessToken(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Failed to login"}`))
+		w.Write(utils.NewResErr("Failed to login").ToJson())
 		return
 	}
 
 	refreshToken, err := generateRefreshToken(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Failed to login"}`))
+		w.Write(utils.NewResErr("Failed to login").ToJson())
 		return
 	}
 
@@ -170,7 +170,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	b, err := json.MarshalIndent(returnToken, "", "  ")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Failed to login"}`))
+		w.Write(utils.NewResErr("Failed to login").ToJson())
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -187,7 +187,7 @@ func refresh(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte(`{"err": "Method not allowed"}`))
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
 		return
 	}
 
@@ -195,27 +195,27 @@ func refresh(w http.ResponseWriter, r *http.Request) {
 	err := utils.ParseBody(r.Body, &mapBody)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Error while parsing body"}`))
+		w.Write(utils.NewResErr("Error while parsing body").ToJson())
 		return
 	}
 
 	if mapBody["refresh_token"] == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"err": "Missing refresh token"}`))
+		w.Write(utils.NewResErr("Missing refresh token").ToJson())
 		return
 	}
 
 	user, err := verifyRefreshToken(ctx, mapBody["refresh_token"])
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"err": "Invalid refresh token"}`))
+		w.Write(utils.NewResErr("Invalid refresh token").ToJson())
 		return
 	}
 
 	accessToken, err := generateAccessToken(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Failed to login"}`))
+		w.Write(utils.NewResErr("Failed to login").ToJson())
 		return
 	}
 
@@ -238,7 +238,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte(`{"err": "Method not allowed"}`))
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
 		return
 	}
 
@@ -254,13 +254,13 @@ func register(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Errorf("Failed to unmarshal body: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Error while parsing body"}`))
+		w.Write(utils.NewResErr("Error while parsing body").ToJson())
 		return
 	}
 
 	if mapBody["email"] == "" || mapBody["password"] == "" || mapBody["firstName"] == "" || mapBody["lastName"] == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"err": "Missing email or password or firstName or lastName"}`))
+		w.Write(utils.NewResErr("Missing email or password or firstName or lastName").ToJson())
 		return
 	}
 
@@ -276,12 +276,12 @@ func register(w http.ResponseWriter, r *http.Request) {
 		log.Errorf("Failed to create user: %v", err)
 		if mongo.IsDuplicateKeyError(err) {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte(`{"err": "Email already exists"}`))
+			w.Write(utils.NewResErr("Email already exists").ToJson())
 			return
 		}
 
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Failed to register"}`))
+		w.Write(utils.NewResErr("Failed to register").ToJson())
 		return
 	}
 
@@ -290,7 +290,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Errorf("Failed to generate access token: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Failed to register"}`))
+		w.Write(utils.NewResErr("Failed to register").ToJson())
 		return
 	}
 
@@ -298,7 +298,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Errorf("Failed to generate refresh token: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Failed to register"}`))
+		w.Write(utils.NewResErr("Failed to register").ToJson())
 		return
 	}
 

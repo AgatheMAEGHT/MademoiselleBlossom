@@ -26,6 +26,10 @@ func corsWrapper(next http.HandlerFunc) http.HandlerFunc {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
+
+		// Everything is JSON
+		w.Header().Set("Content-Type", "application/json")
+
 		next(w, r)
 	}
 }
@@ -37,7 +41,8 @@ func StartServer(path string) {
 	server.HandleFunc("/login", corsWrapper(login))
 	server.HandleFunc("/register", corsWrapper(register))
 	server.HandleFunc("/refresh", corsWrapper(refresh))
-	server.HandleFunc("/user/delete", middlewareWrapper(deleteAccount))
+	server.HandleFunc("/user/delete", middlewareWrapper(deleteUser))
+	server.HandleFunc("/user/update", middlewareWrapper(updateUser))
 	server.HandleFunc("/user/password", middlewareWrapper(changePassword))
 	server.HandleFunc("/who-am-i", middlewareWrapper(whoAmI))
 
