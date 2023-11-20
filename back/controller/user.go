@@ -132,15 +132,7 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 		return
 	}
 
-	err = user.ComparePassword(mapBody["oldPassword"])
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"err": "Wrong password"}`))
-		return
-	}
-
 	userToUpdate := user
-
 	if r.Form.Get("_id") != "" {
 		if !user.IsAdmin {
 			w.WriteHeader(http.StatusUnauthorized)
@@ -165,6 +157,13 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+	}
+
+	err = userToUpdate.ComparePassword(mapBody["oldPassword"])
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte(`{"err": "Wrong password"}`))
+		return
 	}
 
 	log.Infof("Changing password for user %s", userToUpdate.ID.Hex())

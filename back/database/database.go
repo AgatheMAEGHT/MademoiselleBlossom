@@ -15,6 +15,47 @@ var (
 	db *mongo.Database
 )
 
+func createAdmin(ctx context.Context, user User) {
+	log := logrus.WithContext(ctx)
+	_, err := user.CreateOne(ctx)
+	if mongo.IsDuplicateKeyError(err) {
+		log.Debug("User already exists")
+	} else if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func addAdmins(ctx context.Context) {
+	// Create admins
+	admin := User{
+		Email:     "quentinescudier@hotmail.fr",
+		FirstName: "Quentin",
+		LastName:  "Escudier",
+		Phone:     "0610790767",
+		Password:  "admin",
+		IsAdmin:   true,
+	}
+	createAdmin(ctx, admin)
+	admin = User{
+		Email:     "agathe.maeght@gmail.com",
+		FirstName: "Agathe",
+		LastName:  "Maeght",
+		Phone:     "0781996923",
+		Password:  "admin",
+		IsAdmin:   true,
+	}
+	createAdmin(ctx, admin)
+	admin = User{
+		Email:     "mademoiselle.blossom34@gmail.com",
+		FirstName: "Mademoiselle",
+		LastName:  "Blossom",
+		Phone:     "0616282883",
+		Password:  "admin",
+		IsAdmin:   true,
+	}
+	createAdmin(ctx, admin)
+}
+
 func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"package":  "database",
@@ -40,6 +81,9 @@ func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 
 	// Init collections
 	initUser(ctx, db)
+
+	// Add admins
+	addAdmins(ctx)
 
 	return client, nil
 }

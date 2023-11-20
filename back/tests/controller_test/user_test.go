@@ -103,7 +103,37 @@ func TestChangePassword(t *testing.T) {
 	result, status = requester("/user/password", http.MethodPut, body, testTok)
 	assert.Equal(t, 400, status, result["err"])
 
+	/* Test as admin */
+	// Connect to db
+	_, err := database.Connect(ctx, "mongodb://localhost:27017")
+	fmt.Println("Connected")
+	assert.NoError(t, err)
+
+	testUser := database.User{
+		Email:     "test",
+		FirstName: "test",
+		LastName:  "test",
+		Password:  "test",
+	}
+	_, err = testUser.CreateOne(ctx)
+	assert.NoError(t, err)
+	// Not admin
+	body = map[string]interface{}{
+		"newPassword": "test2",
+		"oldPassword": "test",
+	}
+
+	result, status = requester(fmt.Sprintf("/user/password?_id=%s", testUser.ID.Hex()), http.MethodPut, body, testTok)
+	assert.Equal(t, 401, status, result["err"])
+
+	// Admin
+	tok := getAdminAccessToken(t)
+	result, status = requester(fmt.Sprintf("/user/password?_id=%s", testUser.ID.Hex()), http.MethodPut, body, tok)
+	assert.Equal(t, 200, status, result["err"])
+
 	deleteAccount(t, testTok)
+	_, err = testUser.DeleteOne(ctx)
+	assert.NoError(t, err)
 }
 
 func TestDeleteAccount(t *testing.T) {
