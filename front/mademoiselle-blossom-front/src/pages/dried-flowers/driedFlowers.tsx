@@ -35,7 +35,7 @@ function DriedFlowers() {
 
     return (
         <div id="homepage">
-            <h2 id="dried-title">Fleurs séchées</h2>
+            <h2 id="dried-title">Couronnes de Fleurs Séchées</h2>
             <div id="dried-flowers-catalog">
                 {displayDriedFlowers()}
             </div>

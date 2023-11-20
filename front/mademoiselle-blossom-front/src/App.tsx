@@ -9,6 +9,7 @@ import DriedFlowers from './pages/dried-flowers/driedFlowers';
 import Contact from './pages/contact/contact';
 import Login from './pages/login/login';
 import CreateAccount from './pages/login/createAccount';
+import Profile from './pages/profile/profile';
 
 import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
 import CatalogAdmin from './pages/admin/catalog/catalog';
@@ -20,8 +21,10 @@ import "./pages/admin/_components/styleAdmin.css"
 import "./components/style.css";
 
 function App() {
-    localStorage.setItem("logged", "none")
-    let isAdmin: string | null = localStorage.getItem("logged");
+    if (localStorage.getItem("logged") === null) {
+        localStorage.setItem("logged", "none")
+    }
+    let logged: string | null = localStorage.getItem("logged");
 
     return (
         <div id='app'>
@@ -29,7 +32,7 @@ function App() {
             <HeaderButtons />
             <Routes >
                 {/* Admin */}
-                {isAdmin && <>
+                {logged === "admin" && <>
                     <Route path='/admin' element={<HomepageAdmin />} />
                     <Route path='/admin/fleurs-sechees' element={<CatalogAdmin />} />
                     <Route path='/admin/fleurs-de-la-semaine' element={<WeekAdmin />} />
@@ -59,6 +62,7 @@ function App() {
                 <Route path='/mentions-legales' element={<Homepage />} />
                 <Route path='/se-connecter' element={<Login />} />
                 <Route path='/creer-un-compte' element={<CreateAccount />} />
+                <Route path='/mon-compte' element={<Profile />} />
             </Routes>
             <Footer />
         </div>

@@ -21,7 +21,7 @@ function Header() {
                     <div id="header-top-buttons-right">
                         {isLogged === "none" ?
                             <p onClick={()=> navigate("/se-connecter")} className='header-top-button'>Se connecter</p> :
-                            <p className='header-top-button'>Mon compte</p>
+                            <p onClick={() => navigate("/mon-compte")} className='header-top-button'>Mon compte</p>
                         }
                         <p className='header-top-button'>Panier</p>
                     </div>

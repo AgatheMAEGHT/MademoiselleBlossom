@@ -55,8 +55,50 @@
     background-color: var(--color-3-darker);
 }
 
+#header-buttons-mobile-admin {
+    display: none;
+}
+
 @media (width <=768px) {
     #header-admin-buttons {
         display: none;
+    }
+
+    #header-buttons-mobile-admin {
+        display: flex;
+        flex-direction: column;
+        padding: 20px 0;
+        height: 100%;
+        background-color: var(--color-3);
+    }
+
+    .header-admin-lines {
+        border: 0px;
+        border-top: var(--color-3-darker) 1px solid;
+        margin-left: 0%;
+        width: 100%;
+    }
+
+    .header-admin-item-small {
+        margin: 0;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .header-admin-item-small:hover {
+        background-color: var(--color-3-darker);
+    }
+
+    .header-admin-dropdown-item {
+        margin: 0 0 0 20px;
+        padding: 3px;
+    }
+
+    .header-admin-dropdown-item:hover {
+        background-color: var(--color-3-darker);
+    }
+
+    .header-admin-item-small-no-page:hover {
+        background-color: initial;
     }
 }

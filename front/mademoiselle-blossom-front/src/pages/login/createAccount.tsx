@@ -8,8 +8,8 @@ import { requester } from '../../components/requester';
 function CreateAccount() {
     let navigate = useNavigate();
     let [profile, setProfile] = React.useState<any>({
-        firstname: '',
-        lastname: '',
+        firstName: '',
+        lastName: '',
         email: '',
         phone: '',
         password: '',
@@ -22,13 +22,24 @@ function CreateAccount() {
             return;
         }
 
-        if (profile.firstname === '' || profile.lastname === '' || profile.email === '' || profile.password === '') {
+        if (profile.firstName === '' || profile.lastName === '' || profile.email === '' || profile.password === '') {
             alert('Veuillez remplir tous les champs obligatoires');
             return;
         }
 
         console.log(process.env.REACT_APP_API_URL);
-        requester('/register', 'POST', profile)
+        requester('/register', 'POST', profile).then((res: any) => {
+            if (res.success) {
+                console.log(res);
+                localStorage.setItem('token', res.token);
+                navigate('/');
+            } else {
+                if (res.message === 'Email already exists') {
+                    alert('Cet email est déjà utilisé');
+                    return;
+                }
+            }
+        });
     }
 
     return (
@@ -62,8 +73,8 @@ function CreateAccount() {
                         </div>
                     </div>
                     <div className="login-container-input">
-                        <input value={profile.firstname} onChange={e => setProfile({ ...profile, firstname: e.target.value })} type="text" name='firstname' id="firstname" />
-                        <input value={profile.lastname} onChange={e => setProfile({ ...profile, lastname: e.target.value })} type="text" name='lastname' id="lastname" />
+                        <input value={profile.firstName} onChange={e => setProfile({ ...profile, firstName: e.target.value })} type="text" name='firstname' id="firstname" />
+                        <input value={profile.lastName} onChange={e => setProfile({ ...profile, lastName: e.target.value })} type="text" name='lastname' id="lastname" />
                         <input value={profile.email} onChange={e => setProfile({ ...profile, email: e.target.value })} type="email" name="email" id="email" />
                         <input value={profile.phone} onChange={e => setProfile({ ...profile, phone: e.target.value })} type="phone" name="phone" id="phone" />
                         <input value={profile.password} onChange={e => setProfile({ ...profile, password: e.target.value })} type="password" name="password" id="password" />

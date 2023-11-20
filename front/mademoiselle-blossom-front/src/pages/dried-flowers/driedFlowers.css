@@ -1,12 +1,12 @@
 #dried-flowers-catalog {
     display: flex;
     flex-direction: column;
-    gap: 2vw;
+    gap: 6vw;
 }
 
 .dried-flowers-row {
     display: flex;
-    gap: 2vw;
+    gap: 6vw;
 }
 
 @media (width <=768px) {
