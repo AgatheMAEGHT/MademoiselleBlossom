@@ -47,7 +47,7 @@ func getAdminAccessToken(t *testing.T) string {
 		"password": "admin",
 	}
 	result, status := requester("/login", http.MethodPost, body, "")
-	assert.Equal(t, 200, status)
+	assert.Equal(t, 200, status, result["err"])
 	res, ok := result["access_token"].(string)
 	assert.True(t, ok)
 	return res
@@ -61,7 +61,7 @@ func createTestAccount(t *testing.T) string {
 		"password":  "test",
 	}
 	result, status := requester("/register", http.MethodPost, body, "")
-	assert.Equal(t, 200, status)
+	assert.Equal(t, 200, status, result["err"])
 
 	res, ok := result["access_token"].(string)
 	assert.True(t, ok)
@@ -69,20 +69,52 @@ func createTestAccount(t *testing.T) string {
 }
 
 func deleteAccount(t *testing.T, tok string) {
-	_, status := requester("/user/delete", http.MethodDelete, nil, tok)
-	assert.Equal(t, 200, status)
+	result, status := requester("/user/delete", http.MethodDelete, nil, tok)
+	assert.Equal(t, 200, status, result["err"])
+}
+
+func TestChangePassword(t *testing.T) {
+	testTok := createTestAccount(t)
+	assert.NotEmpty(t, testTok)
+
+	body := map[string]interface{}{
+		"password": "test2",
+	}
+	result, status := requester("/user/password", http.MethodPut, body, testTok)
+	assert.Equal(t, 200, status, result["err"])
+	// Login with new password
+	body = map[string]interface{}{
+		"email":    "test@test.fr",
+		"password": "test2",
+	}
+	result, status = requester("/login", http.MethodPost, body, "")
+	assert.Equal(t, 200, status, result["err"])
+
+	/* Test with error */
+	// No token
+	result, status = requester("/user/delete", http.MethodDelete, nil, "")
+	assert.Equal(t, 401, status, result["err"])
+
+	// Missing password
+	body = map[string]interface{}{
+		"password": "",
+	}
+	result, status = requester("/user/password", http.MethodPut, body, testTok)
+	assert.Equal(t, 400, status, result["err"])
+
+	deleteAccount(t, testTok)
 }
 
 func TestDeleteAccount(t *testing.T) {
 	tok := createTestAccount(t)
 	assert.NotEmpty(t, tok)
-	_, status := requester("/user/delete", http.MethodDelete, nil, tok)
-	assert.Equal(t, 200, status)
+	result, status := requester("/user/delete", http.MethodDelete, nil, tok)
+	assert.Equal(t, 200, status, result["err"])
 
 	/* Test with error */
 	// No token
-	_, status = requester("/user/delete", http.MethodDelete, nil, "")
-	assert.Equal(t, 401, status)
+	result, status = requester("/user/delete", http.MethodDelete, nil, "")
+	assert.Equal(t, 401, status, result["err"])
 
 	/* Test as admin */
 	// Connect to db
@@ -99,13 +131,13 @@ func TestDeleteAccount(t *testing.T) {
 	_, err = testUser.CreateOne(ctx)
 	assert.NoError(t, err)
 	// Not admin
-	_, status = requester(fmt.Sprintf("/user/delete?_id=%s", testUser.ID.Hex()), http.MethodDelete, nil, tok)
-	assert.Equal(t, 401, status)
+	result, status = requester(fmt.Sprintf("/user/delete?_id=%s", testUser.ID.Hex()), http.MethodDelete, nil, tok)
+	assert.Equal(t, 401, status, result["err"])
 
 	// Admin
 	tok = getAdminAccessToken(t)
-	_, status = requester(fmt.Sprintf("/user/delete?_id=%s", testUser.ID.Hex()), http.MethodDelete, nil, tok)
-	assert.Equal(t, 200, status)
+	result, status = requester(fmt.Sprintf("/user/delete?_id=%s", testUser.ID.Hex()), http.MethodDelete, nil, tok)
+	assert.Equal(t, 200, status, result["err"])
 }
 
 func TestRegister(t *testing.T) {
@@ -116,15 +148,15 @@ func TestRegister(t *testing.T) {
 		"password":  "test",
 	}
 	result, status := requester("/register", http.MethodPost, body, "")
-	assert.Equal(t, 200, status)
+	assert.Equal(t, 200, status, result["err"])
 	resBody, ok := result["access_token"].(string)
 	assert.True(t, ok)
 	assert.NotEmpty(t, resBody)
 
 	/* Test with error */
 	// User already exists
-	_, status = requester("/register", http.MethodPost, body, "")
-	assert.Equal(t, 500, status)
+	result, status = requester("/register", http.MethodPost, body, "")
+	assert.Equal(t, 500, status, result["err"])
 
 	// Delete test account
 	deleteAccount(t, resBody)
@@ -135,13 +167,13 @@ func TestRegister(t *testing.T) {
 		"lastName":  "test",
 		"password":  "test",
 	}
-	_, status = requester("/register", http.MethodPost, body, "")
-	assert.Equal(t, 400, status)
+	result, status = requester("/register", http.MethodPost, body, "")
+	assert.Equal(t, 400, status, result["err"])
 }
 
 func TestLogin(t *testing.T) {
 	tok := getAdminAccessToken(t)
 
-	_, status := requester("/who-am-i", http.MethodGet, nil, tok)
-	assert.Equal(t, 200, status)
+	result, status := requester("/who-am-i", http.MethodGet, nil, tok)
+	assert.Equal(t, 200, status, result["err"])
 }

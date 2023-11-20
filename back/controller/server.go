@@ -8,6 +8,8 @@ import (
 )
 
 func root(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	log := logrus.WithContext(r.Context()).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
@@ -23,8 +25,9 @@ func StartServer(path string) {
 	server.HandleFunc("/ping", ping)
 	server.HandleFunc("/login", login)
 	server.HandleFunc("/register", register)
-	server.HandleFunc("/user/delete", middlewareWrapper(deleteAccount))
 	server.HandleFunc("/refresh", refresh)
+	server.HandleFunc("/user/delete", middlewareWrapper(deleteAccount))
+	server.HandleFunc("/user/password", middlewareWrapper(changePassword))
 	server.HandleFunc("/who-am-i", middlewareWrapper(whoAmI))
 
 	fmt.Printf("Listening on '%s'\n", path)

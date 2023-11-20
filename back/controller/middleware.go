@@ -11,6 +11,8 @@ import (
 type HandlerFunc func(w http.ResponseWriter, r *http.Request, user database.User)
 
 func middleware(w http.ResponseWriter, r *http.Request, next HandlerFunc) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
@@ -20,14 +22,14 @@ func middleware(w http.ResponseWriter, r *http.Request, next HandlerFunc) {
 
 	if r.Header.Get("Authorization") == "" {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("{err: 'No authorization header'}"))
+		w.Write([]byte(`{"err": "No authorization header"}`))
 		return
 	}
 
 	tok := strings.Split(r.Header.Get("Authorization"), " ")
 	if len(tok) != 2 {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("{err: 'Invalid authorization header'}"))
+		w.Write([]byte(`{"err": "Invalid authorization header"}`))
 		return
 	}
 
@@ -35,7 +37,7 @@ func middleware(w http.ResponseWriter, r *http.Request, next HandlerFunc) {
 	if err != nil {
 		log.Errorf("Failed to verify token: %v", err)
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("{err: 'Invalid token'}"))
+		w.Write([]byte(`{"err": "Invalid token"}`))
 		return
 	}
 
