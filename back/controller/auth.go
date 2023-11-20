@@ -2,6 +2,7 @@ package controller
 
 import (
 	"MademoiselleBlossom/database"
+	"MademoiselleBlossom/utils"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -112,54 +113,49 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte("Method not allowed"))
-		return
-	}
-
-	resBody, err := io.ReadAll(r.Body)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("{err: 'Method not allowed'}"))
 		return
 	}
 
 	mapBody := make(map[string]string)
-	err = json.Unmarshal(resBody, &mapBody)
+	err := utils.ParseBody(r.Body, &mapBody)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Error while parsing body"))
+		w.Write([]byte("{err: 'Error while parsing body'}"))
 		return
 	}
+
 	if mapBody["email"] == "" || mapBody["password"] == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Missing email or password"))
+		w.Write([]byte("{err: 'Missing email or password'}"))
 		return
 	}
 
 	user, err := database.FindOneUser(r.Context(), bson.M{"email": mapBody["email"]})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Wrong email or password"))
+		w.Write([]byte("{err: 'Wrong email or password'}"))
 		return
 	}
 
 	err = user.ComparePassword(mapBody["password"])
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("Wrong email or password"))
+		w.Write([]byte("{err: 'Wrong email or password'}"))
 		return
 	}
 
 	accessToken, err := generateAccessToken(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Failed to login"))
+		w.Write([]byte("{err: 'Failed to login'}"))
 		return
 	}
 
 	refreshToken, err := generateRefreshToken(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Failed to login"))
+		w.Write([]byte("{err: 'Failed to login'}"))
 		return
 	}
 
@@ -173,7 +169,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	b, err := json.MarshalIndent(returnToken, "", "  ")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Failed to login"))
+		w.Write([]byte("{err: 'Failed to login'}"))
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -190,40 +186,35 @@ func refresh(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte("Method not allowed"))
-		return
-	}
-
-	resBody, err := io.ReadAll(r.Body)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("{err: 'Method not allowed'}"))
 		return
 	}
 
 	mapBody := make(map[string]string)
-	err = json.Unmarshal(resBody, &mapBody)
+	err := utils.ParseBody(r.Body, &mapBody)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Error while parsing body"))
+		w.Write([]byte("{err: 'Error while parsing body'}"))
 		return
 	}
+
 	if mapBody["refresh_token"] == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Missing refresh token"))
+		w.Write([]byte("{err: 'Missing refresh token'}"))
 		return
 	}
 
 	user, err := verifyRefreshToken(ctx, mapBody["refresh_token"])
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte("Invalid refresh token"))
+		w.Write([]byte("{err: 'Invalid refresh token'}"))
 		return
 	}
 
 	accessToken, err := generateAccessToken(user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Failed to login"))
+		w.Write([]byte("{err: 'Failed to login'}"))
 		return
 	}
 
@@ -233,12 +224,84 @@ func refresh(w http.ResponseWriter, r *http.Request) {
 		ExpiresIn:   int(accessTokenTime.Seconds()),
 	}
 
-	b, err := json.MarshalIndent(returnToken, "", "  ")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Failed to login"))
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(returnToken)
+}
+
+func register(w http.ResponseWriter, r *http.Request) {
+	log := logrus.WithContext(r.Context()).WithFields(logrus.Fields{
+		"method": r.Method,
+		"path":   r.URL.Path,
+	})
+	log.Info("register")
+
+	if r.Method != "POST" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write([]byte("{err: 'Method not allowed'}"))
 		return
 	}
+
+	resBody, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Errorf("Failed to read body: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	mapBody := make(map[string]string)
+	err = json.Unmarshal(resBody, &mapBody)
+	if err != nil {
+		log.Errorf("Failed to unmarshal body: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("{err: 'Error while parsing body'}"))
+		return
+	}
+
+	if mapBody["email"] == "" || mapBody["password"] == "" || mapBody["firstName"] == "" || mapBody["lastName"] == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("{err: 'Missing email or password or firstName or lastName'}"))
+		return
+	}
+
+	user := database.User{
+		Email:     mapBody["email"],
+		FirstName: mapBody["firstName"],
+		LastName:  mapBody["lastName"],
+		Password:  mapBody["password"],
+	}
+
+	_, err = user.CreateOne(r.Context())
+	if err != nil {
+		log.Errorf("Failed to create user: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("{err: 'Failed to register'}"))
+		return
+	}
+
+	// Create token
+	accessToken, err := generateAccessToken(user)
+	if err != nil {
+		log.Errorf("Failed to generate access token: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("{err: 'Failed to register'}"))
+		return
+	}
+
+	refreshToken, err := generateRefreshToken(user)
+	if err != nil {
+		log.Errorf("Failed to generate refresh token: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("{err: 'Failed to register'}"))
+		return
+	}
+
+	returnToken := authToken{
+		AccessToken:  accessToken,
+		TokenType:    "Bearer",
+		ExpiresIn:    int(accessTokenTime.Seconds()),
+		RefreshToken: refreshToken,
+	}
+
 	w.WriteHeader(http.StatusOK)
-	w.Write(b)
+	json.NewEncoder(w).Encode(returnToken)
 }

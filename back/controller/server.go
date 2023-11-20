@@ -22,6 +22,8 @@ func StartServer(path string) {
 	server.HandleFunc("/", root)
 	server.HandleFunc("/ping", ping)
 	server.HandleFunc("/login", login)
+	server.HandleFunc("/register", register)
+	server.HandleFunc("/user/delete", middlewareWrapper(deleteAccount))
 	server.HandleFunc("/refresh", refresh)
 	server.HandleFunc("/who-am-i", middlewareWrapper(whoAmI))
 

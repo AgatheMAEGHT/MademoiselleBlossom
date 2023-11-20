@@ -5,9 +5,6 @@ services:
       - "8080:8080"
     volumes:
       - ./back:/go/src/MademoiselleBlossom/api
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mademoiselleblossom
-      MONGO_INITDB_ROOT_PASSWORD: azertyuiop
     env_file:
       - ./back/.env
     depends_on:
