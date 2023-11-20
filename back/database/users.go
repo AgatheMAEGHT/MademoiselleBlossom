@@ -11,7 +11,6 @@ import (
 )
 
 var (
-	// UserCollection
 	UserCollection *mongo.Collection
 )
 

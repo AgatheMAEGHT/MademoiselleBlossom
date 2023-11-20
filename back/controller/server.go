@@ -26,6 +26,10 @@ func corsWrapper(next http.HandlerFunc) http.HandlerFunc {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
+
+		// Everything is JSON
+		w.Header().Set("Content-Type", "application/json")
+
 		next(w, r)
 	}
 }

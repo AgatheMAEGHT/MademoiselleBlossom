@@ -2,6 +2,7 @@ package controller
 
 import (
 	"MademoiselleBlossom/database"
+	"MademoiselleBlossom/utils"
 	"net/http"
 	"strings"
 
@@ -20,14 +21,14 @@ func middleware(w http.ResponseWriter, r *http.Request, next HandlerFunc) {
 
 	if r.Header.Get("Authorization") == "" {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"err": "No authorization header"}`))
+		w.Write(utils.NewResErr("No authorization header").ToJson())
 		return
 	}
 
 	tok := strings.Split(r.Header.Get("Authorization"), " ")
 	if len(tok) != 2 {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"err": "Invalid authorization header"}`))
+		w.Write(utils.NewResErr("Invalid authorization header").ToJson())
 		return
 	}
 
@@ -35,7 +36,7 @@ func middleware(w http.ResponseWriter, r *http.Request, next HandlerFunc) {
 	if err != nil {
 		log.Errorf("Failed to verify token: %v", err)
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"err": "Invalid token"}`))
+		w.Write(utils.NewResErr("Invalid token").ToJson())
 		return
 	}
 

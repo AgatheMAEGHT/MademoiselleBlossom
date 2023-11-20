@@ -23,14 +23,14 @@ func whoAmI(w http.ResponseWriter, r *http.Request, user database.User) {
 
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte(`{"err": "Method not allowed"}`))
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
 		return
 	}
 
 	b, err := json.MarshalIndent(user, "", "  ")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Failed to login"}`))
+		w.Write(utils.NewResErr("Failed to login").ToJson())
 		return
 	}
 	w.WriteHeader(http.StatusOK)
@@ -47,14 +47,14 @@ func deleteAccount(w http.ResponseWriter, r *http.Request, user database.User) {
 
 	if r.Method != http.MethodDelete {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte(`{"err": "Method not allowed"}`))
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
 		return
 	}
 
 	err := r.ParseForm()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"err": "Bad request"}`))
+		w.Write(utils.NewResErr("Bad request").ToJson())
 		return
 	}
 
@@ -63,20 +63,21 @@ func deleteAccount(w http.ResponseWriter, r *http.Request, user database.User) {
 	if r.Form.Get("_id") != "" {
 		if !user.IsAdmin {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte(`{"err": "Unauthorized"}`))
+			w.Write(utils.NewResErr("Unauthorized").ToJson())
 			return
 		}
 
 		userID, err := primitive.ObjectIDFromHex(r.Form.Get("_id"))
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte(`{"err": "Wrong ID format"}`))
+			w.Write(utils.NewResErr("Wrong ID format").ToJson())
 			return
 		}
 		userToDelete, err = database.FindOneUser(ctx, bson.M{"_id": userID})
 		if err != nil {
 			if err == mongo.ErrNoDocuments {
-				http.Error(w, fmt.Sprintf(`{"err": "User %s not found"}`, userID), http.StatusNotFound)
+				w.WriteHeader(http.StatusNotFound)
+				w.Write(utils.NewResErr(fmt.Sprintf("User %s not found", userID)).ToJson())
 				return
 			}
 
@@ -95,7 +96,7 @@ func deleteAccount(w http.ResponseWriter, r *http.Request, user database.User) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"msg": "User deleted"}`))
+	w.Write(utils.NewResMsg("User deleted").ToJson())
 }
 
 func changePassword(w http.ResponseWriter, r *http.Request, user database.User) {
@@ -108,14 +109,14 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 
 	if r.Method != http.MethodPut {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		w.Write([]byte(`{"err": "Method not allowed"}`))
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
 		return
 	}
 
 	err := r.ParseForm()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"err": "Bad request"}`))
+		w.Write(utils.NewResErr("Bad request").ToJson())
 		return
 	}
 
@@ -123,12 +124,12 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 	err = utils.ParseBody(r.Body, &mapBody)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"err": "Error while parsing body"}`))
+		w.Write(utils.NewResErr("Error while parsing body").ToJson())
 		return
 	}
 	if mapBody["newPassword"] == "" || mapBody["oldPassword"] == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"err": "Missing password"}`))
+		w.Write(utils.NewResErr("Missing password").ToJson())
 		return
 	}
 
@@ -136,20 +137,21 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 	if r.Form.Get("_id") != "" {
 		if !user.IsAdmin {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte(`{"err": "Unauthorized"}`))
+			w.Write(utils.NewResErr("Unauthorized").ToJson())
 			return
 		}
 
 		userID, err := primitive.ObjectIDFromHex(r.Form.Get("_id"))
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte(`{"err": "Wrong ID format"}`))
+			w.Write(utils.NewResErr("Wrong ID format").ToJson())
 			return
 		}
 		userToUpdate, err = database.FindOneUser(ctx, bson.M{"_id": userID})
 		if err != nil {
 			if err == mongo.ErrNoDocuments {
-				http.Error(w, fmt.Sprintf(`{"err": "User %s not found"}`, userID), http.StatusNotFound)
+				w.WriteHeader(http.StatusNotFound)
+				w.Write(utils.NewResErr(fmt.Sprintf("User %s not found", userID)).ToJson())
 				return
 			}
 
@@ -162,7 +164,7 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 	err = userToUpdate.ComparePassword(mapBody["oldPassword"])
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"err": "Wrong password"}`))
+		w.Write(utils.NewResErr("Wrong password").ToJson())
 		return
 	}
 
@@ -175,5 +177,5 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"msg": "User password changed"}`))
+	w.Write(utils.NewResMsg("User password changed").ToJson())
 }
