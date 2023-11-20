@@ -2,7 +2,6 @@ package controller_test
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -10,8 +9,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 )
-
-var ctx = context.Background()
 
 func requester(path string, method string, body map[string]interface{}, auth string) (map[string]interface{}, int) {
 	url := "http://localhost:8080" + path
