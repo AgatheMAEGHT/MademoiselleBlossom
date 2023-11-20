@@ -1,7 +1,6 @@
 package controller_test
 
 import (
-	"MademoiselleBlossom/database"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -53,9 +52,9 @@ func getAdminAccessToken(t *testing.T) string {
 	return res
 }
 
-func createTestAccount(t *testing.T) string {
+func createTestAccount(t *testing.T, email string) string {
 	body := map[string]interface{}{
-		"email":     "test@test.fr",
+		"email":     email,
 		"firstName": "test",
 		"lastName":  "test",
 		"password":  "test",
@@ -73,8 +72,37 @@ func deleteAccount(t *testing.T, tok string) {
 	assert.Equal(t, 200, status, result["err"])
 }
 
+func TestWhoAmI(t *testing.T) {
+	tok := createTestAccount(t, "test@test.fr")
+	assert.NotEmpty(t, tok)
+
+	result, status := requester("/who-am-i", http.MethodGet, nil, tok)
+	assert.Equal(t, 200, status, result["err"])
+
+	deleteAccount(t, tok)
+}
+
+func TestUpdateAccount(t *testing.T) {
+	tok := createTestAccount(t, "test@test.fr")
+	assert.NotEmpty(t, tok)
+
+	body := map[string]interface{}{
+		"firstName": "test2",
+		"lastName":  "test2",
+	}
+	result, status := requester("/user/update", http.MethodPut, body, tok)
+	assert.Equal(t, 200, status, result["err"])
+
+	/* Test with error */
+	// No token
+	result, status = requester("/user/update", http.MethodPut, nil, "")
+	assert.Equal(t, 401, status, result["err"])
+
+	deleteAccount(t, tok)
+}
+
 func TestChangePassword(t *testing.T) {
-	testTok := createTestAccount(t)
+	testTok := createTestAccount(t, "test@test.fr")
 	assert.NotEmpty(t, testTok)
 
 	body := map[string]interface{}{
@@ -104,40 +132,36 @@ func TestChangePassword(t *testing.T) {
 	assert.Equal(t, 400, status, result["err"])
 
 	/* Test as admin */
-	// Connect to db
-	_, err := database.Connect(ctx, "mongodb://localhost:27017")
-	fmt.Println("Connected")
-	assert.NoError(t, err)
 
-	testUser := database.User{
-		Email:     "test",
-		FirstName: "test",
-		LastName:  "test",
-		Password:  "test",
-	}
-	_, err = testUser.CreateOne(ctx)
-	assert.NoError(t, err)
+	// Get test@test.fr id with who-am-i
+	result, status = requester("/who-am-i", http.MethodGet, nil, testTok)
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	testId, ok := result["_id"].(string)
+	assert.True(t, ok)
+
 	// Not admin
-	body = map[string]interface{}{
-		"newPassword": "test2",
-		"oldPassword": "test",
-	}
+	notAdminTok := createTestAccount(t, "test2@test.fr")
 
-	result, status = requester(fmt.Sprintf("/user/password?_id=%s", testUser.ID.Hex()), http.MethodPut, body, testTok)
+	// Update password
+	body = map[string]interface{}{
+		"newPassword": "test3",
+		"oldPassword": "test2",
+	}
+	result, status = requester(fmt.Sprintf("/user/password?_id=%s", testId), http.MethodPut, body, notAdminTok)
 	assert.Equal(t, 401, status, result["err"])
 
 	// Admin
-	tok := getAdminAccessToken(t)
-	result, status = requester(fmt.Sprintf("/user/password?_id=%s", testUser.ID.Hex()), http.MethodPut, body, tok)
+	adminTok := getAdminAccessToken(t)
+	result, status = requester(fmt.Sprintf("/user/password?_id=%s", testId), http.MethodPut, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 
 	deleteAccount(t, testTok)
-	_, err = testUser.DeleteOne(ctx)
-	assert.NoError(t, err)
+	deleteAccount(t, notAdminTok)
 }
 
 func TestDeleteAccount(t *testing.T) {
-	tok := createTestAccount(t)
+	tok := createTestAccount(t, "test@test.fr")
 	assert.NotEmpty(t, tok)
 	result, status := requester("/user/delete", http.MethodDelete, nil, tok)
 	assert.Equal(t, 200, status, result["err"])
@@ -148,26 +172,24 @@ func TestDeleteAccount(t *testing.T) {
 	assert.Equal(t, 401, status, result["err"])
 
 	/* Test as admin */
-	// Connect to db
-	_, err := database.Connect(ctx, "mongodb://localhost:27017")
-	fmt.Println("Connected")
-	assert.NoError(t, err)
 
-	testUser := database.User{
-		Email:     "test",
-		FirstName: "test",
-		LastName:  "test",
-		Password:  "test",
-	}
-	_, err = testUser.CreateOne(ctx)
-	assert.NoError(t, err)
 	// Not admin
-	result, status = requester(fmt.Sprintf("/user/delete?_id=%s", testUser.ID.Hex()), http.MethodDelete, nil, tok)
+
+	// Create test account
+	testTok := createTestAccount(t, "test2@test.fr")
+	assert.NotEmpty(t, testTok)
+	result, status = requester("/who-am-i", http.MethodGet, nil, testTok)
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	testId, ok := result["_id"].(string)
+	assert.True(t, ok)
+
+	result, status = requester(fmt.Sprintf("/user/delete?_id=%s", testId), http.MethodDelete, nil, tok)
 	assert.Equal(t, 401, status, result["err"])
 
 	// Admin
 	tok = getAdminAccessToken(t)
-	result, status = requester(fmt.Sprintf("/user/delete?_id=%s", testUser.ID.Hex()), http.MethodDelete, nil, tok)
+	result, status = requester(fmt.Sprintf("/user/delete?_id=%s", testId), http.MethodDelete, nil, tok)
 	assert.Equal(t, 200, status, result["err"])
 }
 

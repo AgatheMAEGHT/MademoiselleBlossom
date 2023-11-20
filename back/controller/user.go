@@ -37,7 +37,7 @@ func whoAmI(w http.ResponseWriter, r *http.Request, user database.User) {
 	w.Write(b)
 }
 
-func deleteAccount(w http.ResponseWriter, r *http.Request, user database.User) {
+func deleteUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
@@ -178,4 +178,52 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 
 	w.WriteHeader(http.StatusOK)
 	w.Write(utils.NewResMsg("User password changed").ToJson())
+}
+
+func updateUser(w http.ResponseWriter, r *http.Request, user database.User) {
+	ctx := r.Context()
+	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
+		"method": r.Method,
+		"path":   r.URL.Path,
+	})
+	log.Info("updateAccount")
+
+	if r.Method != http.MethodPut {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
+		return
+	}
+
+	err := r.ParseForm()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(utils.NewResErr("Bad request").ToJson())
+		return
+	}
+
+	mapBody := make(map[string]string)
+	err = utils.ParseBody(r.Body, &mapBody)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error while parsing body").ToJson())
+		return
+	}
+
+	if mapBody["firstName"] != "" {
+		user.FirstName = mapBody["firstName"]
+	}
+	if mapBody["lastName"] != "" {
+		user.LastName = mapBody["lastName"]
+	}
+
+	log.Infof("Updating user %s", user.ID.Hex())
+	_, err = user.UpdateOne(ctx)
+	if err != nil {
+		log.Error(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write(utils.NewResMsg("User updated").ToJson())
 }
