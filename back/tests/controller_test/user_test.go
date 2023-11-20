@@ -78,7 +78,8 @@ func TestChangePassword(t *testing.T) {
 	assert.NotEmpty(t, testTok)
 
 	body := map[string]interface{}{
-		"password": "test2",
+		"newPassword": "test2",
+		"oldPassword": "test",
 	}
 	result, status := requester("/user/password", http.MethodPut, body, testTok)
 	assert.Equal(t, 200, status, result["err"])
@@ -156,7 +157,7 @@ func TestRegister(t *testing.T) {
 	/* Test with error */
 	// User already exists
 	result, status = requester("/register", http.MethodPost, body, "")
-	assert.Equal(t, 500, status, result["err"])
+	assert.Equal(t, 400, status, result["err"])
 
 	// Delete test account
 	deleteAccount(t, resBody)

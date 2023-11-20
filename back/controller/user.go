@@ -126,7 +126,7 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 		w.Write([]byte(`{"err": "Error while parsing body"}`))
 		return
 	}
-	if mapBody["password"] == "" || mapBody["oldPassword"] == "" {
+	if mapBody["newPassword"] == "" || mapBody["oldPassword"] == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(`{"err": "Missing password"}`))
 		return
@@ -168,7 +168,7 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 	}
 
 	log.Infof("Changing password for user %s", userToUpdate.ID.Hex())
-	err = userToUpdate.UpdatePassword(ctx, r.Form.Get("password"))
+	err = userToUpdate.UpdatePassword(ctx, mapBody["newPassword"])
 	if err != nil {
 		log.Error(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
