@@ -1,9 +1,92 @@
 #homepage {
-    background-color: var(--color-1);
-    color: var(--color-0);
-    min-height: 10vh;
-
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    gap: 5vw;
+
+    padding: 5vw 20vw;
+    background-color: var(--color-1);
+    color: var(--color-0);
+    text-align: center;
+}
+
+#home-top {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    width: fit-content;
+    height: fit-content;
+    gap: 0.6vw;
+}
+
+/* Carousel */
+#home-carousel {
+    width: 30vw;
+    height: 30vw;
+    display: flex;
+    overflow: hidden;
+    border-radius: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+#home-carousel-dir-buttons-area {
+    position: absolute;
+    width: 30vw;
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+}
+
+.home-carousel-dir-buttons {
+    height: 30vw;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.home-carousel-dir-buttons-arrow {
+    height: 30px;
+    width: 30px;
+}
+
+#home-carousel-list {
+    display: flex;
+    transition: 0.8s ease-in-out
+}
+
+.home-carousel-img {
+    width: 30vw;
+    height: 30vw;
+    object-fit: cover;
+}
+
+/* Top Buttons */
+#home-top-buttons-area {
+    height: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.home-top-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    height: 9.6vw;
+    width: 20vw;
+
+    cursor: pointer;
+    background-color: var(--color-2);
+    border-radius: 15px;
+
+    font-size: larger;
+    font-weight: bold;
+    color: var(--color-1);
 }

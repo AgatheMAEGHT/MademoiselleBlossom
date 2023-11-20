@@ -3,16 +3,20 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+
+  font-family: 'Noto Sans', sans-serif;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   --color-0: black;
   --color-1: white;
-  --color-2: #927d49;
-  --color-2: #2b9465;
-  --color-2-darker: #7d6b3d;
-  --color-2-darker: #20724e;
+  --color-2: #D1BB87;
+  --color-2-lighter: #ebe3d1;
+  --color-2-darker: #ac935a;
+  --color-2-darker2: #867037;
   --color-3: #d40c48;
+  --color-3-darker: #94002c;
 
   --color-admin: #d82387;
   --color-admin-darker: #a11060;
@@ -21,4 +25,26 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-2-darker);
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-2-darker2);
 }

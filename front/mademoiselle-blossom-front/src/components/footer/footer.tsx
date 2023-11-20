@@ -10,7 +10,6 @@ function Footer() {
 
     return (
         <div id="footer">
-            <img src={logo} id="footer-logo" alt="logo" onClick={() => { navigate("/") }} />
             <div className='footer-col'>
                 <p className='footer-url' onClick={() => { navigate("/conditions-de-livraisons") }}>Livraisons</p>
                 <p className='footer-url' onClick={() => { navigate("/a-propos") }}>À propos de Mademoiselle Blossom</p>
