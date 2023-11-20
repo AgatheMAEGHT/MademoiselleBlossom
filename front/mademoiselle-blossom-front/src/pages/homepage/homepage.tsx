@@ -24,10 +24,10 @@ function Homepage() {
                 <div id="home-carousel">
                     <div id="home-carousel-dir-buttons-area">
                         <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1)}>
-                            <img className='home-carousel-dir-buttons-arrow' src='/arrow.png' style={{ transform: "rotate(180deg)" }} />
+                            <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} />
                         </div>
                         <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1)}>
-                            <img className='home-carousel-dir-buttons-arrow' src='/arrow.png' />
+                            <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' />
                         </div>
                     </div>
                     <div id="home-carousel-list">

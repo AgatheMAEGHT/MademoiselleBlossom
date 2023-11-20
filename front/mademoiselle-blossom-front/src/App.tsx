@@ -1,34 +1,30 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import HeaderTop from './components/header/header-top';
-
 import Header from './components/header/header';
 import HeaderButtons from './components/header/headerButtons';
 import Footer from './components/footer/footer';
 import Homepage from './pages/homepage/homepage';
+import DriedFlowers from './pages/dried-flowers/driedFlowers';
+import Contact from './pages/contact/contact';
+import Login from './pages/login/login';
+import CreateAccount from './pages/login/createAccount';
 
-import HeaderAdmin from './pages/admin/_components/header/headerAdmin';
 import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
 import CatalogAdmin from './pages/admin/catalog/catalog';
 import WeekAdmin from './pages/admin/catalog/week/week';
 import EventsAdmin from './pages/admin/events/eventsAdmin';
-
-import Homepage from './pages/homepage/homepage';
-import DriedFlowers from './pages/dried-flowers/driedFlowers';
-import Contact from './pages/contact/contact';
 
 import "./App.css"
 import "./pages/admin/_components/styleAdmin.css"
 import "./components/style.css";
 
 function App() {
-    localStorage.setItem("admin", "admin")
-    let isAdmin: string | null = localStorage.getItem("admin");
+    localStorage.setItem("logged", "none")
+    let isAdmin: string | null = localStorage.getItem("logged");
 
     return (
         <div id='app'>
-            <HeaderTop />
             <Header />
             <HeaderButtons />
             <Routes >
@@ -61,6 +57,8 @@ function App() {
                 <Route path='/livraisons' element={<Homepage />} />
                 <Route path='/cgv' element={<Homepage />} />
                 <Route path='/mentions-legales' element={<Homepage />} />
+                <Route path='/se-connecter' element={<Login />} />
+                <Route path='/creer-un-compte' element={<CreateAccount />} />
             </Routes>
             <Footer />
         </div>

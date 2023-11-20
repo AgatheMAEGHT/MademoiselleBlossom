@@ -1,10 +1,12 @@
 export type driedFlowerTags = {
     color: string,
-    size: string,
+    size: number,
+    tone: string,
     shape: string
 }
 
 export type driedFlowerTile = {
+    id: string,
     name: string,
     images: string[],
     price: number,

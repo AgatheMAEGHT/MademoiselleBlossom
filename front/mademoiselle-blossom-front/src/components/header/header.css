@@ -65,9 +65,9 @@
     min-height: 5vh;
 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-    padding: 0 20%;
+    gap: 2vw;
 
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
 }
@@ -142,7 +142,6 @@
 }
 
 @media (width <=768px) {
-
     #header-buttons-area {
         position: initial;
         top: initial;
@@ -151,16 +150,30 @@
     #header-buttons {
         display: none;
     }
-
+    
     #header-buttons-mobile {
         display: none;
         align-items: flex-start;
         width: 100vw;
-        height: 100vh;
+        min-height: 100vh;
+        height: fit-content;
         overflow: hidden;
         position: absolute;
         top: 0;
         z-index: 99;
+        background-color: rgba(0, 0, 0, 0.432);
+    }
+    
+    /*Client Buttons*/
+    #header-buttons-mobile-area {
+        padding-top: 50px;
+        min-height: 100vh;
+        height: fit-content;
+        width: 80vw;
+
+        background-color: var(--color-2);
+        color: var(--color-1);
+        font-size: large;
     }
 
     .header-lines {
@@ -179,6 +192,12 @@
         align-items: center;
     }
 
+    .header-item-bold {
+        position: relative;
+        height: fit-content;
+        margin: 0px;
+    }
+
     .header-item-small {
         margin: 0;
         cursor: pointer;
@@ -193,25 +212,37 @@
         margin-left: 15px;
     }
 
-    .header-item-bold {
-        position: relative;
-        height: fit-content;
-        margin: 0px;
+    #header-line-client-admin-separator {
+        border: 0px;
+        border-top: var(--color-2-darker) 1px solid;
+        margin: 0;
     }
 
-    #header-buttons-mobile-area {
-        padding-top: 50px;
-        height: 100vh;
-        width: 80vw;
-
-        background-color: var(--color-2);
-        color: var(--color-1);
-        font-size: large;
+    /*Admin Header*/
+    #header-buttons-mobile-admin {
+        padding: 20px 0;
+        height: 100%;
+        background-color: var(--color-3);
     }
 
+    .header-admin-item-small {
+        margin: 0;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .header-admin-item-small:hover {
+        background-color: var(--color-3-darker);
+    }
+
+    .header-admin-dropdown-item {
+        margin: 0 0 0 20px;
+        padding: 3px;
+    }
+
+    /*Non Header Part*/
     #header-hide-page {
         width: 20vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.432);
+        min-height: 100vh;
     }
 }

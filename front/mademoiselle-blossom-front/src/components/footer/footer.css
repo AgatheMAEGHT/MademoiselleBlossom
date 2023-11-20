@@ -1,6 +1,7 @@
 #footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 5vw;
     margin-top: auto;
     margin-bottom: 0;
 
@@ -8,17 +9,17 @@
     background-color: var(--color-2);
     color: var(--color-1);
     font-size: small;
-    padding: 0% 30vw;
 }
 
 .footer-col {
-    width: 50%;
+    width: fit-content;
     height: fit-content;
 }
 
 .footer-url {
     margin: 5px;
     cursor: pointer;
+    width: fit-content;
 }
 
 .footer-url:hover {

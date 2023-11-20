@@ -1,6 +1,5 @@
 export function burgerHeader() {
     let headerDisplay = document.getElementById('header-buttons-mobile')?.style.display;
-    console.log(headerDisplay);
 
     if (headerDisplay === "none") {
         document.getElementById('header-buttons-mobile')?.setAttribute("style", "display: flex");

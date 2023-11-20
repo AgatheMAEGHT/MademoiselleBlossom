@@ -1,5 +1,5 @@
 #header-admin {
-    background-color: var(--color-admin);
+    background-color: var(--color-3);
     color: var(--color-1);
     min-height: 5vh;
     width: 100%;
@@ -12,22 +12,28 @@
 
 #header-admin-buttons {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-    padding: 0 10%;
+    gap: 2vw;
+
     width: 100%;
+
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
+    background-color: var(--color-3);
+    color: var(--color-1);
+    min-height: 5vh;
 }
 
 .admin-header-item {
     cursor: pointer;
     text-decoration-color: initial;
     padding: 10px;
-} 
+}
 
 .admin-header-dropdowm {
     display: none;
     position: absolute;
-    background-color: var(--color-admin);
+    background-color: var(--color-3);
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     min-width: 100px;
@@ -46,5 +52,11 @@
 }
 
 .admin-header-dropdown-item:hover {
-    background-color: var(--color-admin-darker);
+    background-color: var(--color-3-darker);
+}
+
+@media (width <=768px) {
+    #header-admin-buttons {
+        display: none;
+    }
 }

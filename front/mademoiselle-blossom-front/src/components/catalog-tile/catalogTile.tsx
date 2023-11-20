@@ -9,9 +9,9 @@ function CatalogTile(props: driedFlowerTile) {
     let navigate = useNavigate();
 
     return (
-        <div className="dried-tile" onClick={() => navigate("/fleurs-sechees/")}>
+        <div className="dried-tile" key={props.id} onClick={() => navigate("/fleurs-sechees/")}>
             <div className="dried-tile-img-buttons">
-                <img className='dried-tile-img-buttons-fav' src="/heart.svg" title='Ajouter aux favoris' alt="ajouter aux favoris" />
+                <img className='dried-tile-img-buttons-fav' src="/icons/heart.svg" title='Ajouter aux favoris' alt="ajouter aux favoris" />
                 <div className='dried-tile-img-buttons-cart' title='Ajouter au panier'>Ajouter au panier</div>
             </div>
             <img className="dried-tile-img" src={props.images[0]} alt={"courone de fleurs séchées " + props.name} />
