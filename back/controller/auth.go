@@ -15,6 +15,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type authToken struct {
@@ -273,6 +274,12 @@ func register(w http.ResponseWriter, r *http.Request) {
 	_, err = user.CreateOne(r.Context())
 	if err != nil {
 		log.Errorf("Failed to create user: %v", err)
+		if mongo.IsDuplicateKeyError(err) {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(`{"err": "Email already exists"}`))
+			return
+		}
+
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"err": "Failed to register"}`))
 		return
