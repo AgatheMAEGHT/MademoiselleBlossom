@@ -29,6 +29,26 @@
     gap: 10px;
 }
 
+.login-container-input-element {
+    display: flex;
+}
+
+.login-mandatory {
+    color: var(--color-3);
+    font-weight: bold;
+    margin: 0 2px;
+    font-size: small;
+}
+
+#login-mandatory-text {
+    margin: 0;
+    font-size: small;
+}
+
+#login-container-element-mandatory {
+    margin-top: 15px;
+}
+
 .login-container-button-text {
     font-size: smaller;
     text-decoration: underline;

@@ -1,3 +1,5 @@
+import { type } from "os"
+
 export type driedFlowerTags = {
     color: string,
     size: number,
@@ -14,3 +16,8 @@ export type driedFlowerTile = {
 }
 
 export type driedFlowerCatalog = driedFlowerTile[]
+
+export type alert = {
+    message: string,
+    type: string
+}

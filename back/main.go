@@ -70,5 +70,5 @@ func main() {
 	createAdmin(ctx, admin)
 
 	// Start server
-	controller.StartServer(fmt.Sprintf("%s:%s", os.Getenv("HOSTNAME"), os.Getenv("PORT")))
+	controller.StartServer(fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT")))
 }
