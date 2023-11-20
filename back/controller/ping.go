@@ -10,8 +10,6 @@ import (
 
 // Ping is a simple ping controller
 func ping(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	log := logrus.WithContext(r.Context()).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,

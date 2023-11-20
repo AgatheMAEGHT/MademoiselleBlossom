@@ -11,8 +11,6 @@ import (
 type HandlerFunc func(w http.ResponseWriter, r *http.Request, user database.User)
 
 func middleware(w http.ResponseWriter, r *http.Request, next HandlerFunc) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
@@ -45,7 +43,7 @@ func middleware(w http.ResponseWriter, r *http.Request, next HandlerFunc) {
 }
 
 func middlewareWrapper(next HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+	return corsWrapper(func(w http.ResponseWriter, r *http.Request) {
 		middleware(w, r, next)
-	}
+	})
 }

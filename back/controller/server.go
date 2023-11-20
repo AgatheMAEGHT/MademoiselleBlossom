@@ -8,8 +8,6 @@ import (
 )
 
 func root(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	log := logrus.WithContext(r.Context()).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
@@ -19,13 +17,26 @@ func root(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Not found")
 }
 
+func corsWrapper(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next(w, r)
+	}
+}
+
 func StartServer(path string) {
 	server := http.NewServeMux()
-	server.HandleFunc("/", root)
-	server.HandleFunc("/ping", ping)
-	server.HandleFunc("/login", login)
-	server.HandleFunc("/register", register)
-	server.HandleFunc("/refresh", refresh)
+	server.HandleFunc("/", corsWrapper(root))
+	server.HandleFunc("/ping", corsWrapper(ping))
+	server.HandleFunc("/login", corsWrapper(login))
+	server.HandleFunc("/register", corsWrapper(register))
+	server.HandleFunc("/refresh", corsWrapper(refresh))
 	server.HandleFunc("/user/delete", middlewareWrapper(deleteAccount))
 	server.HandleFunc("/user/password", middlewareWrapper(changePassword))
 	server.HandleFunc("/who-am-i", middlewareWrapper(whoAmI))

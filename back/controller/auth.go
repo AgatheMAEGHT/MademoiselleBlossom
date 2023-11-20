@@ -105,8 +105,6 @@ func verifyRefreshToken(ctx context.Context, tokenString string) (database.User,
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	log := logrus.WithContext(r.Context()).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
@@ -179,8 +177,6 @@ func login(w http.ResponseWriter, r *http.Request) {
 }
 
 func refresh(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
@@ -233,8 +229,6 @@ func refresh(w http.ResponseWriter, r *http.Request) {
 }
 
 func register(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	log := logrus.WithContext(r.Context()).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
