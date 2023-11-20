@@ -44,7 +44,7 @@ func requester(path string, method string, body map[string]interface{}, auth str
 func getAdminAccessToken(t *testing.T) string {
 	body := map[string]interface{}{
 		"email":    "quentinescudier@hotmail.fr",
-		"password": "test",
+		"password": "admin",
 	}
 	result, status := requester("/login", http.MethodPost, body, "")
 	assert.Equal(t, 200, status)
