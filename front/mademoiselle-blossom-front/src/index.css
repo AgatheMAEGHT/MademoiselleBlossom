@@ -10,6 +10,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   --color-0: black;
+  --color-0-lighter: rgb(81, 81, 81);
+  --color-1-darker: rgb(203, 203, 203);
   --color-1: white;
   --color-2: #D1BB87;
   --color-2-lighter: #ebe3d1;
@@ -20,6 +22,7 @@ body {
 
   --color-admin: #d82387;
   --color-admin-darker: #a11060;
+  --color-admin-darker-tr: #a1106092;
 }
 
 code {

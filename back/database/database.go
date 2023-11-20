@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	// DB is the database instance
-	DB *mongo.Database
+	// db is the database instance
+	db *mongo.Database
 )
 
 func Connect(ctx context.Context, url string) (*mongo.Client, error) {
@@ -36,7 +36,10 @@ func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 	}
 	log.Info("Connected to database")
 
-	DB = client.Database("MademoiselleBlossom")
+	db = client.Database("MademoiselleBlossom")
+
+	// Init collections
+	initUser(ctx, db)
 
 	return client, nil
 }
