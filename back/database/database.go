@@ -81,6 +81,7 @@ func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 
 	// Init collections
 	initUser(ctx, db)
+	initArticleType(ctx, db)
 
 	// Add admins
 	addAdmins(ctx)
