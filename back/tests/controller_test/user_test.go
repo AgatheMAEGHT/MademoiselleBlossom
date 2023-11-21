@@ -10,6 +10,39 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func requesterList(path string, method string, body map[string]interface{}, auth string) ([]map[string]interface{}, int, string) {
+	url := "http://localhost:8080" + path
+	jsonStr, err := json.Marshal(body)
+	if err != nil {
+		panic(err)
+	}
+
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonStr))
+	if err != nil {
+		panic(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	if auth != "" {
+		req.Header.Set("Authorization", "Bearer "+auth)
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+
+	if resp.StatusCode != 200 {
+		result := make(map[string]interface{})
+		json.NewDecoder(resp.Body).Decode(&result)
+		return nil, resp.StatusCode, result["err"].(string)
+	}
+
+	result := make([]map[string]interface{}, 0)
+	json.NewDecoder(resp.Body).Decode(&result)
+	return result, resp.StatusCode, ""
+}
+
 func requester(path string, method string, body map[string]interface{}, auth string) (map[string]interface{}, int) {
 	url := "http://localhost:8080" + path
 	jsonStr, err := json.Marshal(body)

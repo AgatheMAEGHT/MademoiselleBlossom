@@ -38,6 +38,7 @@ func StartServer(path string) {
 	server := http.NewServeMux()
 	server.HandleFunc("/", corsWrapper(root))
 	server.HandleFunc("/ping", corsWrapper(ping))
+
 	server.HandleFunc("/login", corsWrapper(login))
 	server.HandleFunc("/register", corsWrapper(register))
 	server.HandleFunc("/refresh", corsWrapper(refresh))
@@ -45,6 +46,11 @@ func StartServer(path string) {
 	server.HandleFunc("/user/update", middlewareWrapper(updateUser))
 	server.HandleFunc("/user/password", middlewareWrapper(changePassword))
 	server.HandleFunc("/who-am-i", middlewareWrapper(whoAmI))
+
+	server.HandleFunc("/article-type", corsWrapper(getArticleType))
+	server.HandleFunc("/article-type/create", middlewareWrapper(postArticleType))
+	server.HandleFunc("/article-type/update", middlewareWrapper(putArticleType))
+	server.HandleFunc("/article-type/delete", middlewareWrapper(deleteArticleType))
 
 	fmt.Printf("Listening on '%s'\n", path)
 	http.ListenAndServe(path, server)
