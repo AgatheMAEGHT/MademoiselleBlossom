@@ -70,8 +70,8 @@ func FindOneUser(ctx context.Context, query bson.M) (User, error) {
 	return user, err
 }
 
-func (u *User) DeleteOne(ctx context.Context) (*mongo.DeleteResult, error) {
-	return UserCollection.DeleteOne(ctx, bson.M{"_id": u.ID})
+func DeleteOneUser(ctx context.Context, id primitive.ObjectID) (*mongo.DeleteResult, error) {
+	return UserCollection.DeleteOne(ctx, bson.M{"_id": id})
 }
 
 func initUser(ctx context.Context, db *mongo.Database) {

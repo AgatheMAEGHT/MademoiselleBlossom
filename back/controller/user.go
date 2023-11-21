@@ -58,7 +58,7 @@ func deleteUser(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	userToDelete := user
+	userIDToDelete := user.ID
 
 	if r.Form.Get("_id") != "" {
 		if !user.IsAdmin {
@@ -67,31 +67,26 @@ func deleteUser(w http.ResponseWriter, r *http.Request, user database.User) {
 			return
 		}
 
-		userID, err := primitive.ObjectIDFromHex(r.Form.Get("_id"))
+		userIDToDelete, err = primitive.ObjectIDFromHex(r.Form.Get("_id"))
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(utils.NewResErr("Wrong ID format").ToJson())
 			return
 		}
-		userToDelete, err = database.FindOneUser(ctx, bson.M{"_id": userID})
-		if err != nil {
-			if err == mongo.ErrNoDocuments {
-				w.WriteHeader(http.StatusNotFound)
-				w.Write(utils.NewResErr(fmt.Sprintf("User %s not found", userID)).ToJson())
-				return
-			}
-
-			log.Error(err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
 	}
 
-	log.Infof("Deleting user %s", userToDelete.ID.Hex())
-	_, err = userToDelete.DeleteOne(ctx)
+	log.Infof("Deleting user %s", userIDToDelete)
+	res, err := database.DeleteOneUser(ctx, userIDToDelete)
 	if err != nil {
 		log.Error(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error while deleting user").ToJson())
+		return
+	}
+
+	if res.DeletedCount == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write(utils.NewResErr(fmt.Sprintf("User %s not found", userIDToDelete)).ToJson())
 		return
 	}
 

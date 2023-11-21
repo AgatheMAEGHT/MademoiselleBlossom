@@ -12,13 +12,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func getArticleType(w http.ResponseWriter, r *http.Request) {
+func getColor(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
 	})
-	log.Info("getArticleType")
+	log.Info("getColor")
 
 	err := r.ParseForm()
 	if err != nil {
@@ -41,25 +41,28 @@ func getArticleType(w http.ResponseWriter, r *http.Request) {
 	if r.Form.Get("name") != "" {
 		query["name"] = r.Form.Get("name")
 	}
+	if r.Form.Get("hexa") != "" {
+		query["hexa"] = r.Form.Get("hexa")
+	}
 
-	articleTypes, err := database.FindArticleTypes(ctx, query)
+	colors, err := database.FindColors(ctx, query)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error getting article types").ToJson())
+		w.Write(utils.NewResErr("Error getting color").ToJson())
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(articleTypes)
+	json.NewEncoder(w).Encode(colors)
 }
 
-func postArticleType(w http.ResponseWriter, r *http.Request, user database.User) {
+func postColor(w http.ResponseWriter, r *http.Request, user database.User) {
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
 	})
-	log.Info("postArticleType")
+	log.Info("postColor")
 
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -81,33 +84,40 @@ func postArticleType(w http.ResponseWriter, r *http.Request, user database.User)
 		return
 	}
 
-	articleType := database.ArticleType{
-		Name: body["name"].(string),
+	if body["hexa"] == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(utils.NewResErr("Missing hexa").ToJson())
+		return
 	}
 
-	_, err = articleType.CreateOne(ctx)
+	color := database.Color{
+		Name: body["name"].(string),
+		Hexa: body["hexa"].(string),
+	}
+
+	_, err = color.CreateOne(ctx)
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write(utils.NewResErr("Article type already exists").ToJson())
+			w.Write(utils.NewResErr("Color already exists").ToJson())
 			return
 		}
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error creating article type").ToJson())
+		w.Write(utils.NewResErr("Error creating color").ToJson())
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(articleType)
+	json.NewEncoder(w).Encode(color)
 }
 
-func putArticleType(w http.ResponseWriter, r *http.Request, user database.User) {
+func putColor(w http.ResponseWriter, r *http.Request, user database.User) {
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
 	})
-	log.Info("postArticleType")
+	log.Info("postColor")
 
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -143,35 +153,39 @@ func putArticleType(w http.ResponseWriter, r *http.Request, user database.User) 
 		return
 	}
 
-	articleType, err := database.FindOneArticleType(ctx, bson.M{"_id": id})
+	color, err := database.FindOneColor(ctx, bson.M{"_id": id})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error getting article type").ToJson())
+		w.Write(utils.NewResErr("Error getting color").ToJson())
 		return
 	}
 
 	if body["name"] != nil {
-		articleType.Name = body["name"].(string)
+		color.Name = body["name"].(string)
 	}
 
-	_, err = articleType.UpdateOne(ctx)
+	if body["hexa"] != nil {
+		color.Hexa = body["hexa"].(string)
+	}
+
+	_, err = color.UpdateOne(ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error updating article type").ToJson())
+		w.Write(utils.NewResErr("Error updating color").ToJson())
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(articleType)
+	json.NewEncoder(w).Encode(color)
 }
 
-func deleteArticleType(w http.ResponseWriter, r *http.Request, user database.User) {
+func deleteColor(w http.ResponseWriter, r *http.Request, user database.User) {
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
 	})
-	log.Info("postArticleType")
+	log.Info("postColor")
 
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -199,19 +213,19 @@ func deleteArticleType(w http.ResponseWriter, r *http.Request, user database.Use
 		return
 	}
 
-	res, err := database.DeleteOneArticleType(ctx, id)
+	res, err := database.DeleteOneColor(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error getting article type").ToJson())
+		w.Write(utils.NewResErr("Error getting color").ToJson())
 		return
 	}
 
 	if res.DeletedCount == 0 {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write(utils.NewResErr("Article type not found").ToJson())
+		w.Write(utils.NewResErr("Color type not found").ToJson())
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(utils.NewResMsg("Article type deleted").ToJson())
+	w.Write(utils.NewResMsg("Color type deleted").ToJson())
 }

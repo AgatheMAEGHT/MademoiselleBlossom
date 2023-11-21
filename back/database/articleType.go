@@ -32,8 +32,8 @@ func (a *ArticleType) UpdateOne(ctx context.Context) (*mongo.UpdateResult, error
 	return ArticleTypeCollection.UpdateOne(ctx, bson.M{"_id": a.ID}, bson.M{"$set": a})
 }
 
-func (a *ArticleType) DeleteOne(ctx context.Context) (*mongo.DeleteResult, error) {
-	return ArticleTypeCollection.DeleteOne(ctx, bson.M{"_id": a.ID})
+func DeleteOneArticleType(ctx context.Context, id primitive.ObjectID) (*mongo.DeleteResult, error) {
+	return ArticleTypeCollection.DeleteOne(ctx, bson.M{"_id": id})
 }
 
 func FindOneArticleType(ctx context.Context, filter bson.M) (*ArticleType, error) {
