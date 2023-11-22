@@ -83,6 +83,7 @@ func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 	initUser(ctx, db)
 	initArticleType(ctx, db)
 	initColor(ctx, db)
+	initTextBlock(ctx, db)
 
 	// Add admins
 	addAdmins(ctx)
