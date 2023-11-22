@@ -108,6 +108,11 @@ func TestWhoAmI(t *testing.T) {
 
 	result, status := requester("/who-am-i", http.MethodGet, nil, tok)
 	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"], result)
+	assert.NotEmpty(t, result["email"], result)
+	assert.NotEmpty(t, result["firstName"], result)
+	assert.NotEmpty(t, result["lastName"], result)
+	assert.Contains(t, "truefalse", fmt.Sprintf("%t", result["isAdmin"]), result)
 
 	deleteAccount(t, tok)
 }
