@@ -86,6 +86,7 @@ func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 	initTextBlock(ctx, db)
 	initTone(ctx, db)
 	initFile(ctx, db)
+	initCarousselHomepageImg(ctx, db)
 
 	// Add admins
 	addAdmins(ctx)

@@ -71,6 +71,11 @@ func StartServer(path string) {
 	server.HandleFunc("/file/create", middlewareWrapper(postFile))
 	server.HandleFunc("/file/delete/", middlewareWrapper(deleteFile))
 
+	server.HandleFunc("/carousselHomepageImg", corsWrapper(getCarousselHomepageImg))
+	server.HandleFunc("/carousselHomepageImg/create", middlewareWrapper(postCarousselHomepageImg))
+	server.HandleFunc("/carousselHomepageImg/update", middlewareWrapper(putCarousselHomepageImg))
+	server.HandleFunc("/carousselHomepageImg/delete", middlewareWrapper(deleteCarousselHomepageImg))
+
 	fmt.Printf("Listening on '%s'\n", path)
 	http.ListenAndServe(path, server)
 }
