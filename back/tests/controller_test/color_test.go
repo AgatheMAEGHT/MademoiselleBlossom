@@ -10,6 +10,7 @@ import (
 
 func TestColor(t *testing.T) {
 	testTok := createTestAccount(t, "test@color.com")
+	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
 
 	// Post color
@@ -112,6 +113,4 @@ func TestColor(t *testing.T) {
 
 	result, status = requester(fmt.Sprintf("/color/delete?_id=%s", res2), http.MethodDelete, nil, adminTok)
 	assert.Equal(t, 200, status, result["err"])
-
-	deleteAccount(t, testTok)
 }

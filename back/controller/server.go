@@ -67,6 +67,10 @@ func StartServer(path string) {
 	server.HandleFunc("/tone/update", middlewareWrapper(putTone))
 	server.HandleFunc("/tone/delete", middlewareWrapper(deleteTone))
 
+	server.HandleFunc("/file/download/", corsWrapper(downloadFile))
+	server.HandleFunc("/file/create", middlewareWrapper(postFile))
+	server.HandleFunc("/file/delete/", middlewareWrapper(deleteFile))
+
 	fmt.Printf("Listening on '%s'\n", path)
 	http.ListenAndServe(path, server)
 }

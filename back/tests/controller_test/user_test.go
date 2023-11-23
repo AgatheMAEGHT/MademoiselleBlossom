@@ -1,8 +1,6 @@
 package controller_test
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -10,100 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func requesterList(path string, method string, body map[string]interface{}, auth string) ([]map[string]interface{}, int, string) {
-	url := "http://localhost:8080" + path
-	jsonStr, err := json.Marshal(body)
-	if err != nil {
-		panic(err)
-	}
-
-	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonStr))
-	if err != nil {
-		panic(err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-	if auth != "" {
-		req.Header.Set("Authorization", "Bearer "+auth)
-	}
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-
-	if resp.StatusCode != 200 {
-		result := make(map[string]interface{})
-		json.NewDecoder(resp.Body).Decode(&result)
-		return nil, resp.StatusCode, result["err"].(string)
-	}
-
-	result := make([]map[string]interface{}, 0)
-	json.NewDecoder(resp.Body).Decode(&result)
-	return result, resp.StatusCode, ""
-}
-
-func requester(path string, method string, body map[string]interface{}, auth string) (map[string]interface{}, int) {
-	url := "http://localhost:8080" + path
-	jsonStr, err := json.Marshal(body)
-	if err != nil {
-		panic(err)
-	}
-
-	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonStr))
-	if err != nil {
-		panic(err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-	if auth != "" {
-		req.Header.Set("Authorization", "Bearer "+auth)
-	}
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-
-	result := make(map[string]interface{})
-	json.NewDecoder(resp.Body).Decode(&result)
-	return result, resp.StatusCode
-}
-
-func getAdminAccessToken(t *testing.T) string {
-	body := map[string]interface{}{
-		"email":    "quentinescudier@hotmail.fr",
-		"password": "admin",
-	}
-	result, status := requester("/login", http.MethodPost, body, "")
-	assert.Equal(t, 200, status, result["err"])
-	res, ok := result["access_token"].(string)
-	assert.True(t, ok)
-	return res
-}
-
-func createTestAccount(t *testing.T, email string) string {
-	body := map[string]interface{}{
-		"email":     email,
-		"firstName": "test",
-		"lastName":  "test",
-		"password":  "test",
-	}
-	result, status := requester("/register", http.MethodPost, body, "")
-	assert.Equal(t, 200, status, result["err"])
-
-	res, ok := result["access_token"].(string)
-	assert.True(t, ok)
-	return res
-}
-
-func deleteAccount(t *testing.T, tok string) {
-	result, status := requester("/user/delete", http.MethodDelete, nil, tok)
-	assert.Equal(t, 200, status, result["err"])
-}
-
 func TestWhoAmI(t *testing.T) {
 	tok := createTestAccount(t, "test@test.fr")
+	defer deleteAccount(t, tok)
 	assert.NotEmpty(t, tok)
 
 	result, status := requester("/who-am-i", http.MethodGet, nil, tok)
@@ -113,12 +20,11 @@ func TestWhoAmI(t *testing.T) {
 	assert.NotEmpty(t, result["firstName"], result)
 	assert.NotEmpty(t, result["lastName"], result)
 	assert.Contains(t, "truefalse", fmt.Sprintf("%t", result["isAdmin"]), result)
-
-	deleteAccount(t, tok)
 }
 
 func TestUpdateAccount(t *testing.T) {
 	tok := createTestAccount(t, "test@test.fr")
+	defer deleteAccount(t, tok)
 	assert.NotEmpty(t, tok)
 
 	body := map[string]interface{}{
@@ -132,12 +38,11 @@ func TestUpdateAccount(t *testing.T) {
 	// No token
 	result, status = requester("/user/update", http.MethodPut, nil, "")
 	assert.Equal(t, 401, status, result["err"])
-
-	deleteAccount(t, tok)
 }
 
 func TestChangePassword(t *testing.T) {
 	testTok := createTestAccount(t, "test@test.fr")
+	defer deleteAccount(t, testTok)
 	assert.NotEmpty(t, testTok)
 
 	body := map[string]interface{}{
@@ -177,6 +82,7 @@ func TestChangePassword(t *testing.T) {
 
 	// Not admin
 	notAdminTok := createTestAccount(t, "test2@test.fr")
+	defer deleteAccount(t, notAdminTok)
 
 	// Update password
 	body = map[string]interface{}{
@@ -190,9 +96,6 @@ func TestChangePassword(t *testing.T) {
 	adminTok := getAdminAccessToken(t)
 	result, status = requester(fmt.Sprintf("/user/password?_id=%s", testId), http.MethodPut, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
-
-	deleteAccount(t, testTok)
-	deleteAccount(t, notAdminTok)
 }
 
 func TestDeleteAccount(t *testing.T) {

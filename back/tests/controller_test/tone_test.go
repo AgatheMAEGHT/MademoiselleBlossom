@@ -10,6 +10,7 @@ import (
 
 func TestTone(t *testing.T) {
 	testTok := createTestAccount(t, "test@articletype.com")
+	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
 
 	// Post article type
@@ -99,6 +100,4 @@ func TestTone(t *testing.T) {
 
 	result, status = requester(fmt.Sprintf("/tone/delete?_id=%s", res2), http.MethodDelete, nil, adminTok)
 	assert.Equal(t, 200, status, result["err"])
-
-	deleteAccount(t, testTok)
 }

@@ -10,6 +10,7 @@ import (
 
 func TestTextBlock(t *testing.T) {
 	testTok := createTestAccount(t, "test@textBlock.com")
+	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
 
 	// Post textBlock
@@ -112,6 +113,4 @@ func TestTextBlock(t *testing.T) {
 
 	result, status = requester(fmt.Sprintf("/text-block/delete?_id=%s", res2), http.MethodDelete, nil, adminTok)
 	assert.Equal(t, 200, status, result["err"])
-
-	deleteAccount(t, testTok)
 }
