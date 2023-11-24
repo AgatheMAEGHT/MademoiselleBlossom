@@ -19,6 +19,7 @@ import EventsAdmin from './pages/admin/events/eventsAdmin';
 import "./App.css"
 import "./pages/admin/_components/styleAdmin.css"
 import "./components/style.css";
+import DriedFlowersItempage from './pages/dried-flowers-itempage/driedFlowersItempage';
 
 function App() {
     if (localStorage.getItem("logged") === null) {
@@ -48,7 +49,7 @@ function App() {
                 <Route path='/' element={<Homepage />} />
                 <Route path='/catalogue' element={<Homepage />} />
                 <Route path='/fleurs-sechees' element={<DriedFlowers />} />
-                <Route path='/fleurs-sechees/:name' element={<DriedFlowers />} />
+                <Route path='/fleurs-sechees/:itemId' element={<DriedFlowersItempage />} />
                 <Route path='/fleurs-de-la-semaine' element={<Homepage />} />
                 <Route path='/inspirations' element={<Homepage />} />
                 <Route path='/inspirations/mariage' element={<Homepage />} />
