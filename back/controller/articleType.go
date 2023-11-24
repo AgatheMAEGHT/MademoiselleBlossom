@@ -67,22 +67,18 @@ func postArticleType(w http.ResponseWriter, r *http.Request, user database.User)
 		return
 	}
 
-	body := map[string]interface{}{}
-	err := utils.ParseBody(r.Body, &body)
+	articleType := database.ArticleType{}
+	err := utils.ParseBody(r.Body, &articleType)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Error parsing body").ToJson())
 		return
 	}
 
-	if body["name"] == nil {
+	if articleType.Name == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing name").ToJson())
 		return
-	}
-
-	articleType := database.ArticleType{
-		Name: body["name"].(string),
 	}
 
 	_, err = articleType.CreateOne(ctx)
@@ -115,43 +111,29 @@ func putArticleType(w http.ResponseWriter, r *http.Request, user database.User) 
 		return
 	}
 
-	body := map[string]interface{}{}
-	err := utils.ParseBody(r.Body, &body)
+	parsedBody := database.ArticleType{}
+	err := utils.ParseBody(r.Body, &parsedBody)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Error parsing body").ToJson())
 		return
 	}
 
-	if body["_id"] == nil {
+	if parsedBody.ID == primitive.NilObjectID {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing _id").ToJson())
 		return
 	}
 
-	idStr, ok := body["_id"].(string)
-	if !ok {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	id, err := primitive.ObjectIDFromHex(idStr)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	articleType, err := database.FindOneArticleType(ctx, bson.M{"_id": id})
+	articleType, err := database.FindOneArticleType(ctx, bson.M{"_id": parsedBody.ID})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting article type").ToJson())
 		return
 	}
 
-	if body["name"] != nil {
-		articleType.Name = body["name"].(string)
+	if parsedBody.Name != "" {
+		articleType.Name = parsedBody.Name
 	}
 
 	_, err = articleType.UpdateOne(ctx)

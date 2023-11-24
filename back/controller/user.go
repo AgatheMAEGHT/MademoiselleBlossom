@@ -196,7 +196,7 @@ func updateUser(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	mapBody := make(map[string]string)
+	mapBody := database.User{}
 	err = utils.ParseBody(r.Body, &mapBody)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -204,11 +204,11 @@ func updateUser(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if mapBody["firstName"] != "" {
-		user.FirstName = mapBody["firstName"]
+	if mapBody.FirstName == "" {
+		user.FirstName = mapBody.FirstName
 	}
-	if mapBody["lastName"] != "" {
-		user.LastName = mapBody["lastName"]
+	if mapBody.LastName == "" {
+		user.LastName = mapBody.LastName
 	}
 
 	log.Infof("Updating user %s", user.ID.Hex())

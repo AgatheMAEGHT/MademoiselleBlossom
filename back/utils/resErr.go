@@ -10,6 +10,10 @@ func NewResErr(err string) *ResErr {
 	}
 }
 
+func (r *ResErr) Error() string {
+	return r.Err
+}
+
 func (r *ResErr) ToJson() []byte {
 	return []byte(`{"err": "` + r.Err + `"}`)
 }

@@ -70,29 +70,24 @@ func postTextBlock(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	body := map[string]interface{}{}
-	err := utils.ParseBody(r.Body, &body)
+	textBlock := database.TextBlock{}
+	err := utils.ParseBody(r.Body, &textBlock)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Error parsing body").ToJson())
 		return
 	}
 
-	if body["name"] == nil {
+	if textBlock.Name == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing name").ToJson())
 		return
 	}
 
-	if body["content"] == nil {
+	if textBlock.Content == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing content").ToJson())
 		return
-	}
-
-	textBlock := database.TextBlock{
-		Name: body["name"].(string),
-		Content: body["content"].(string),
 	}
 
 	_, err = textBlock.CreateOne(ctx)
@@ -125,7 +120,7 @@ func putTextBlock(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	body := map[string]interface{}{}
+	body := database.TextBlock{}
 	err := utils.ParseBody(r.Body, &body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -133,39 +128,25 @@ func putTextBlock(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if body["_id"] == nil {
+	if body.ID == primitive.NilObjectID {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing _id").ToJson())
 		return
 	}
 
-	idStr, ok := body["_id"].(string)
-	if !ok {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	id, err := primitive.ObjectIDFromHex(idStr)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	textBlock, err := database.FindOneTextBlock(ctx, bson.M{"_id": id})
+	textBlock, err := database.FindOneTextBlock(ctx, bson.M{"_id": body.ID})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting textBlock").ToJson())
 		return
 	}
 
-	if body["name"] != nil {
-		textBlock.Name = body["name"].(string)
+	if body.Name != "" {
+		textBlock.Name = body.Name
 	}
 
-	if body["content"] != nil {
-		textBlock.Content = body["content"].(string)
+	if body.Content != "" {
+		textBlock.Content = body.Content
 	}
 
 	_, err = textBlock.UpdateOne(ctx)

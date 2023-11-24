@@ -77,47 +77,30 @@ func postCarousselHomepageImg(w http.ResponseWriter, r *http.Request, user datab
 		return
 	}
 
-	body := map[string]interface{}{}
-	err := utils.ParseBody(r.Body, &body)
+	carousselHomepageImg := database.CarousselHomepageImg{}
+	err := utils.ParseBody(r.Body, &carousselHomepageImg)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Error parsing body").ToJson())
 		return
 	}
 
-	if body["altName"] == nil {
+	if carousselHomepageImg.AltName == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing altName").ToJson())
 		return
 	}
 
-	if body["file"] == nil {
+	if carousselHomepageImg.File == primitive.NilObjectID {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing file").ToJson())
 		return
 	}
-	fileID, err := primitive.ObjectIDFromHex(body["file"].(string))
-	if err != nil {
+
+	if err := utils.IsObjectIdExist(carousselHomepageImg.File, database.FileCollection); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid file id").ToJson())
+		w.Write(err.ToJson())
 		return
-	}
-
-	_, err = database.FindOneFile(ctx, bson.M{"_id": fileID})
-	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			w.WriteHeader(http.StatusNotFound)
-			w.Write(utils.NewResErr("File not found").ToJson())
-			return
-		}
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error getting file").ToJson())
-		return
-	}
-
-	carousselHomepageImg := database.CarousselHomepageImg{
-		AltName: body["altName"].(string),
-		File:    fileID,
 	}
 
 	_, err = carousselHomepageImg.CreateOne(ctx)
@@ -150,7 +133,7 @@ func putCarousselHomepageImg(w http.ResponseWriter, r *http.Request, user databa
 		return
 	}
 
-	body := map[string]interface{}{}
+	body := database.CarousselHomepageImg{}
 	err := utils.ParseBody(r.Body, &body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -158,58 +141,31 @@ func putCarousselHomepageImg(w http.ResponseWriter, r *http.Request, user databa
 		return
 	}
 
-	if body["_id"] == nil {
+	if body.ID == primitive.NilObjectID {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing _id").ToJson())
 		return
 	}
 
-	idStr, ok := body["_id"].(string)
-	if !ok {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	id, err := primitive.ObjectIDFromHex(idStr)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	carousselHomepageImg, err := database.FindOneCarousselHomepageImg(ctx, bson.M{"_id": id})
+	carousselHomepageImg, err := database.FindOneCarousselHomepageImg(ctx, bson.M{"_id": body.ID})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting carousselHomepageImg").ToJson())
 		return
 	}
 
-	if body["altName"] != nil {
-		carousselHomepageImg.AltName = body["altName"].(string)
+	if body.AltName != "" {
+		carousselHomepageImg.AltName = body.AltName
 	}
 
-	if body["file"] != nil {
-		fileID, err := primitive.ObjectIDFromHex(body["file"].(string))
+	if body.File != primitive.NilObjectID {
+		err := utils.IsObjectIdExist(body.File, database.FileCollection)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write(utils.NewResErr("Invalid file id").ToJson())
+			w.Write(err.ToJson())
 			return
 		}
-
-		_, err = database.FindOneFile(ctx, bson.M{"_id": fileID})
-		if err != nil {
-			if err == mongo.ErrNoDocuments {
-				w.WriteHeader(http.StatusNotFound)
-				w.Write(utils.NewResErr("File not found").ToJson())
-				return
-			}
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write(utils.NewResErr("Error getting file").ToJson())
-			return
-		}
-
-		carousselHomepageImg.File = fileID
+		carousselHomepageImg.File = body.File
 	}
 
 	_, err = carousselHomepageImg.UpdateOne(ctx)

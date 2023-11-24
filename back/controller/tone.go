@@ -67,22 +67,18 @@ func postTone(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	body := map[string]interface{}{}
-	err := utils.ParseBody(r.Body, &body)
+	tone := database.Tone{}
+	err := utils.ParseBody(r.Body, &tone)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Error parsing body").ToJson())
 		return
 	}
 
-	if body["name"] == nil {
+	if tone.Name == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing name").ToJson())
 		return
-	}
-
-	tone := database.Tone{
-		Name: body["name"].(string),
 	}
 
 	_, err = tone.CreateOne(ctx)
@@ -115,7 +111,7 @@ func putTone(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	body := map[string]interface{}{}
+	body := database.Tone{}
 	err := utils.ParseBody(r.Body, &body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -123,35 +119,21 @@ func putTone(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if body["_id"] == nil {
+	if body.ID == primitive.NilObjectID {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing _id").ToJson())
 		return
 	}
 
-	idStr, ok := body["_id"].(string)
-	if !ok {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	id, err := primitive.ObjectIDFromHex(idStr)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	tone, err := database.FindOneTone(ctx, bson.M{"_id": id})
+	tone, err := database.FindOneTone(ctx, bson.M{"_id": body.ID})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting article type").ToJson())
 		return
 	}
 
-	if body["name"] != nil {
-		tone.Name = body["name"].(string)
+	if body.Name != "" {
+		tone.Name = body.Name
 	}
 
 	_, err = tone.UpdateOne(ctx)

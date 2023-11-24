@@ -9,7 +9,7 @@ import (
 )
 
 func TestCarousselHomepageImg(t *testing.T) {
-	testTok := createTestAccount(t, "test@file.fr")
+	testTok := createTestAccount(t, "test@carousselhomepageimg.fr")
 	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
 

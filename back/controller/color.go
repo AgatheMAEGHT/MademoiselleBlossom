@@ -70,29 +70,24 @@ func postColor(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	body := map[string]interface{}{}
-	err := utils.ParseBody(r.Body, &body)
+	color := database.Color{}
+	err := utils.ParseBody(r.Body, &color)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Error parsing body").ToJson())
 		return
 	}
 
-	if body["name"] == nil {
+	if color.Name == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing name").ToJson())
 		return
 	}
 
-	if body["hexa"] == nil {
+	if color.Hexa == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing hexa").ToJson())
 		return
-	}
-
-	color := database.Color{
-		Name: body["name"].(string),
-		Hexa: body["hexa"].(string),
 	}
 
 	_, err = color.CreateOne(ctx)
@@ -125,7 +120,7 @@ func putColor(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	body := map[string]interface{}{}
+	body := database.Color{}
 	err := utils.ParseBody(r.Body, &body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -133,39 +128,25 @@ func putColor(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if body["_id"] == nil {
+	if body.ID == primitive.NilObjectID {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing _id").ToJson())
 		return
 	}
 
-	idStr, ok := body["_id"].(string)
-	if !ok {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	id, err := primitive.ObjectIDFromHex(idStr)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Invalid _id").ToJson())
-		return
-	}
-
-	color, err := database.FindOneColor(ctx, bson.M{"_id": id})
+	color, err := database.FindOneColor(ctx, bson.M{"_id": body.ID})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting color").ToJson())
 		return
 	}
 
-	if body["name"] != nil {
-		color.Name = body["name"].(string)
+	if body.Name != "" {
+		color.Name = body.Name
 	}
 
-	if body["hexa"] != nil {
-		color.Hexa = body["hexa"].(string)
+	if body.Hexa != "" {
+		color.Hexa = body.Hexa
 	}
 
 	_, err = color.UpdateOne(ctx)
