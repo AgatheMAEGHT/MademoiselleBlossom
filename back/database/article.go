@@ -16,6 +16,7 @@ var (
 type Article struct {
 	ID          primitive.ObjectID   `json:"_id" bson:"_id,omitempty"`
 	Name        string               `json:"name" bson:"name"`
+	Description string               `json:"description" bson:"description"`
 	Files       []primitive.ObjectID `json:"files" bson:"files"`
 	Price       float64              `json:"price" bson:"price"`
 	Stock       int                  `json:"stock" bson:"stock"`
@@ -50,8 +51,8 @@ func FindOneArticle(ctx context.Context, filter bson.M) (*Article, error) {
 	return &a, err
 }
 
-func FindArticles(ctx context.Context, filter bson.M) ([]*Article, error) {
-	cursor, err := ArticleCollection.Find(ctx, filter)
+func FindArticles(ctx context.Context, filter bson.M, opts ...*options.FindOptions) ([]*Article, error) {
+	cursor, err := ArticleCollection.Find(ctx, filter, opts...)
 	if err != nil {
 		return nil, err
 	}

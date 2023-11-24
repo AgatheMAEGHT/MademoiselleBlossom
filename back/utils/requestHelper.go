@@ -22,7 +22,7 @@ func IsObjectIdExist(id primitive.ObjectID, collection *mongo.Collection) *ResEr
 	})
 
 	if res.Err() != nil {
-		return NewResErr(fmt.Sprintf("_id not found: %s", id.Hex()))
+		return NewResErr(fmt.Sprintf("%s _id not found: %s", collection.Name(), id.Hex()))
 	}
 
 	return nil
@@ -39,10 +39,10 @@ func IsListObjectIdExist(ids []primitive.ObjectID, collection *mongo.Collection)
 	return nil
 }
 
-func IsStringObjectIdValid(id string, collection *mongo.Collection) *ResErr {
+func IsStringObjectIdValid(id string, collection *mongo.Collection) (primitive.ObjectID, *ResErr) {
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		return NewResErr(fmt.Sprintf("Invalid _id: %s", id))
+		return primitive.NilObjectID, NewResErr(fmt.Sprintf("Invalid %s _id: %s", collection.Name(), id))
 	}
 
 	res := collection.FindOne(context.Background(), bson.M{
@@ -50,27 +50,30 @@ func IsStringObjectIdValid(id string, collection *mongo.Collection) *ResErr {
 	})
 
 	if res.Err() != nil {
-		return NewResErr(fmt.Sprintf("_id not found: %s", id))
+		return primitive.NilObjectID, NewResErr(fmt.Sprintf("%s _id not found: %s", collection.Name(), id))
 	}
 
-	return nil
+	return objID, nil
 }
 
-func IsStringListObjectIdValid(ids []string, collection *mongo.Collection) *ResErr {
+func IsStringListObjectIdValid(ids []string, collection *mongo.Collection) ([]primitive.ObjectID, *ResErr) {
+	objIDs := []primitive.ObjectID{}
 	for _, id := range ids {
-		err := IsStringObjectIdValid(id, collection)
+		objID, err := IsStringObjectIdValid(id, collection)
 		if err != nil {
-			return err
+			return objIDs, err
 		}
+
+		objIDs = append(objIDs, objID)
 	}
 
-	return nil
+	return objIDs, nil
 }
 
 func GetObjectIdsInField(ctx context.Context, field string, body map[string]interface{}, collection *mongo.Collection) ([]primitive.ObjectID, *ResErr) {
 	idStr, ok := body[field].([]string)
 	if !ok {
-		return nil, NewResErr(fmt.Sprintf("Invalid %s", field))
+		return nil, NewResErr(fmt.Sprintf("Invalid %s %s", collection.Name(), field))
 	}
 
 	ids := []primitive.ObjectID{}
