@@ -1,16 +1,8 @@
-#dried-flowers-catalog {
+#item-page {
     display: flex;
     flex-direction: column;
-    gap: 6vw;
+    justify-content: center;
+    align-items: center;
 }
 
-.dried-flowers-row {
-    display: flex;
-    gap: 6vw;
-}
-
-@media (width <=768px) {
-    .dried-flowers-row {
-        flex-direction: column;
-    }
-}
+@media (width <=768px) {}

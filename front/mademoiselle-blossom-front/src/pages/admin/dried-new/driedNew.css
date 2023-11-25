@@ -1,0 +1,30 @@
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    width: 60%;
+    padding: 3vw;
+    border-radius: 2vw;
+    border: var(--color-3) 2px solid;
+    box-shadow: 2px 2px 4px rgb(141, 141, 141);
+}
+
+.admin-form-element {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+
+    width: 100%;
+}
+
+.admin-form-title {}
+
+.admin-form-input {
+    width: 60%;
+    height: 30px;
+    border-radius: 5px;
+    border: var(--color-3) 1px solid;
+}

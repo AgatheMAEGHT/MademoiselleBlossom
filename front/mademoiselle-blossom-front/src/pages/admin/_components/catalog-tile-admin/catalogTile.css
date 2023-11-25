@@ -1,0 +1,95 @@
+.dried-tile {
+    width: 15vw;
+    height: fit-content;
+    overflow: hidden;
+    position: relative;
+
+    border-radius: 15px;
+    background-color: var(--color-2-lighter);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 3px;
+    z-index: 2;
+}
+
+.dried-tile-img-buttons {
+    position: absolute;
+    width: 15vw;
+    height: 15vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.dried-tile-img-buttons-cart {
+    display: none;
+    cursor: pointer;
+    width: 100%;
+    padding: 5px 0;
+    background-color: rgba(250, 235, 215, 0.849);
+}
+
+.dried-tile-img-buttons:hover .dried-tile-img-buttons-cart {
+    display: initial;
+}
+
+.dried-tile-img-buttons-fav {
+    padding: 10px;
+    width: 1vw;
+    cursor: pointer;
+    border-image: white 10px solid;
+}
+
+.dried-tile-img {
+    width: 15vw;
+    height: 15vw;
+    object-fit: cover;
+}
+
+.dried-tile-name {
+    font-size: 1.5vw;
+    font-weight: 600;
+    margin-top: 0.5vw;
+    font-family: 'Great Vibes', cursive;
+}
+
+.dried-tile-price {
+    font-weight: bold;
+    margin: none;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+@media (width <=768px) {
+    .dried-tile {
+        width: 50vw;
+    }
+
+    .dried-tile-img-buttons {
+        width: 50vw;
+        height: 50vw;
+    }
+
+    .dried-tile-img-buttons-fav {
+        width: 5vw;
+    }
+
+    .dried-tile-img-buttons-cart {
+        display: initial;
+        width: 100%;
+        font-size: smaller;
+    }
+
+    .dried-tile-img {
+        width: 50vw;
+        height: 50vw;
+    }
+
+    .dried-tile-name {
+        font-size: 6vw;
+    }
+
+    .dried-tile-price {
+        font-size: 4vw;
+    }
+}

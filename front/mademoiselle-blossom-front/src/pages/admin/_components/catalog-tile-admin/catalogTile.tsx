@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { driedFlowerTile } from '../types';
+import { driedFlowerTile } from '../../../../components/types';
 
 import './catalogTile.css';
 
-function CatalogTile(props: driedFlowerTile) {
+function AdminCatalogTile(props: driedFlowerTile) {
     let navigate = useNavigate();
 
     return (
@@ -21,4 +21,4 @@ function CatalogTile(props: driedFlowerTile) {
     );
 }
 
-export default CatalogTile;
+export default AdminCatalogTile;
