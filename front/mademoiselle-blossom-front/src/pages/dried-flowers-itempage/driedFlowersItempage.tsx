@@ -14,12 +14,13 @@ function DriedFlowersItempage() {
         _id: "1",
         name: "",
         files: ["", ""],
-        price: 30,
+        price: "30",
         stock: 1,
         description: "Couronne de fleurs séchées",
-        color: ["rose", "blanc"],
-        tone: ["pastel"],
+        colors: ["rose", "blanc"],
+        tones: ["pastel"],
         size: 30,
+        type: "dried",
         shape: "rond"
     };
 

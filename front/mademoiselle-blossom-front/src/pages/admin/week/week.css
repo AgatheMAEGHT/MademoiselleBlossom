@@ -1,10 +1,9 @@
-#admin-week {
-    background-color: var(--color-1);
-    color: var(--color-0);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+#admin-week-gradient {
+    width: 70%;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid rgb(184, 184, 184);
+    margin-bottom: 50px;
 }
 
 #admin-week-colors {
@@ -29,7 +28,7 @@
     padding: 15px 0px;
 }
 
-.admin-week-colors-level {
+.admin-week-colors-color {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,15 +37,11 @@
 
 .admin-week-colors-display {
     width: 50px;
-    height: 30px;
-    border: 1px solid;
+    height: 35px;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
     border-radius: 3px;
-}
-
-.admin-week-colors-name {
-    min-width: 50px;
-    height: 17px;
-    resize: none;
 }
 
 .admin-week-colors-delete {

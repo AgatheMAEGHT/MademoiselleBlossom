@@ -5,15 +5,18 @@ import AdminCatalogTile from '../_components/catalog-tile-admin/catalogTile';
 import { catalog } from '../../../components/types';
 
 import './dried.css';
+import { requester } from '../../../components/requester';
 
 function CatalogAdmin() {
     let navigate = useNavigate();
-    let [flowers, setFlowers] = React.useState<catalog>(fetchFlowers());
+    const [flowers, setFlowers] = React.useState<catalog>([]);
 
-    function fetchFlowers(): catalog {
-        
-        return [];
-    }
+    React.useEffect(() => {
+        requester('/article', 'GET').then((res: any) => {
+            console.log(res);
+            setFlowers(res);
+        })
+    }, []);
 
     function displayDriedFlowers() {
         let driedFlowersList: JSX.Element[] = [];
@@ -37,7 +40,7 @@ function CatalogAdmin() {
             <h1 className='admin-page-title'>Admin - Fleurs séchées</h1>
             <div></div>
             <button className='admin-button' onClick={() => navigate("/admin/fleurs-sechees/nouveau")}>Ajouter un article</button>
-            <div>
+            <div id="admin-dried-catalog">
                 {displayDriedFlowers()}
             </div>
         </div>

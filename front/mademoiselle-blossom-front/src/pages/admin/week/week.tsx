@@ -1,7 +1,5 @@
 import React from 'react';
 
-import HeaderAdmin from '../_components/header/headerAdmin';
-
 import './week.css';
 
 function WeekAdmin() {
@@ -12,11 +10,10 @@ function WeekAdmin() {
         let elements: JSX.Element[] = [];
 
         for (let i = 0; i < colors.length; i++) {
-            let tileColor: string = colors[i].name ? "#" + colors[i].name : "white";
             elements.push(
-                <div className='admin-week-colors-level' key={i}>
-                    <div className='admin-week-colors-display' style={{ backgroundColor: tileColor }}></div>
-                    <textarea className='admin-week-colors-name' value={colors[i].name} onChange={(e) => { editLevel(e.target.value, i) }} />
+                <div className='admin-week-colors-color' key={i}>
+                    <div style={{ backgroundColor: colors[i].name }}></div>
+                    <input type='color' value={colors[i].name} onChange={(e) => { editColor(e.target.value, i) }} className='admin-week-colors-display' />
                     <button className='admin-week-colors-delete' onClick={() => { removeColor(i) }}>Supprimer la couleur</button>
                 </div>
             )
@@ -27,21 +24,23 @@ function WeekAdmin() {
         </div>
     }
 
-    function editLevel(name: string, id: number) {
-        setSolors(colors.map(level => level.id === id ? { name: name, id: id } : level))
+    function editColor(name: string, id: number) {
+        setSolors(colors.map(color => color.id === id ? { name: name, id: id } : color))
     }
 
     function removeColor(id: number) {
-        let newColor: { name: string, id: number }[] = colors.filter((_, i) => i != id);
+        let newColor: { name: string, id: number }[] = colors.filter((_, i) => i !== id);
         for (let i = id; i < newColor.length; i++) {
             newColor[i].id--;
         }
 
         setSolors(newColor);
+        setGradient(createGradient());
     }
 
     function addColor() {
         setSolors(prev => [...prev, { name: "", id: colors.length }]);
+        setGradient(createGradient());
     }
 
     function saveColors() {
@@ -50,14 +49,37 @@ function WeekAdmin() {
          */
     }
 
+    const [gradient, setGradient] = React.useState<string>(createGradient());
+    function createGradient(): string {
+        if (colors.length === 0) {
+            return "white";
+        } else if (colors.length === 1) {
+            return colors[0].name;
+        }
+
+        let gradient = "linear-gradient(to right, ";
+        for (let i = 0; i < colors.length; i++) {
+            gradient += colors[i].name + (i !== colors.length - 1 ? ", " : "");
+        }
+        gradient += ")";
+
+        return gradient;
+    }
+
+    function postColors() {
+        let tmp = colors.map((elt: { name: string, id: number }) => elt.name.replace("#", ""));
+        
+    }
+
     return (
         <div className='admin-page page'>
             <h1 className='admin-week-page-title'>Admin - Fleurs de la semaine</h1>
             <p>Penses à sauvegarder avec le bouton <b>Sauvegarder les couleurs</b> en bas de la page</p>
 
-            <div id='admin-week-colors'>
-                <p className='admin-week-element-title'>Couleurs de la semaine en codes hexadécimaux que tu peux trouver grace au site <a href="https://htmlcolorcodes.com/" target="_blank">htmlcolorcodes.com</a></p>
+            <p>Prévisualisation du dégradé</p>
+            <div id="admin-week-gradient" style={{ background: createGradient() }}></div>
 
+            <div id='admin-week-colors'>
                 {displayColors()}
                 <button className='admin-button' onClick={() => { addColor() }}>Ajouter une couleur</button>
                 <button className='admin-button' onClick={() => { saveColors() }}>Sauvegarder les couleurs</button>

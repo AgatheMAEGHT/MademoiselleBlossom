@@ -15,11 +15,11 @@
 }
 
 .admin-button {
-    border: var(--color-3) 1px solid;
+    border: var(--color-logo-dark) 1px solid;
     border-radius: 5px;
-    background-color: var(--color-3-lighter);
+    background-color: var(--color-logo-light);
     cursor: pointer;
 
-    padding: 10px;
+    padding: 10px 20px;
     margin: 5px;
 }

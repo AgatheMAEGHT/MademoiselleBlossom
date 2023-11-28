@@ -42,12 +42,15 @@
 
 .dried-tile-img {
     width: 15vw;
+    min-width: 15vw;
     height: 15vw;
+    min-height: 15vw;
     object-fit: cover;
 }
 
 .dried-tile-name {
-    font-size: 1.5vw;
+    text-align: center;
+    font-size: 27px;
     font-weight: 600;
     margin-top: 0.5vw;
     font-family: 'Great Vibes', cursive;
@@ -56,7 +59,7 @@
 .dried-tile-price {
     font-weight: bold;
     margin: none;
-    font-weight: bold;
+    text-align: center;
     padding-bottom: 5px;
 }
 
@@ -82,7 +85,9 @@
 
     .dried-tile-img {
         width: 50vw;
+        min-width: 50vw;
         height: 50vw;
+        min-height: 50vw;
     }
 
     .dried-tile-name {

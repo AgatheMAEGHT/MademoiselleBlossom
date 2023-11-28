@@ -1,12 +1,21 @@
 import React from 'react';
 
-import './driedFlowers.css';
 import { catalog } from '../../components/types';
 import CatalogTile from '../../components/catalog-tile/catalogTile';
+import { requester } from '../../components/requester';
+
+import './driedFlowers.css';
 
 function DriedFlowers() {
 
     const [driedFlowers, setDriedFlowers] = React.useState<catalog>([]);
+
+    React.useEffect(() => {
+        requester('/article', 'GET').then((res: any) => {
+            console.log(res);
+            setDriedFlowers(res);
+        })
+    }, []);
 
     function displayDriedFlowers() {
         let driedFlowersList: JSX.Element[] = [];

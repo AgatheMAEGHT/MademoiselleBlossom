@@ -8,7 +8,7 @@ import './login.css';
 
 function Login() {
     let navigate = useNavigate();
-    let [profile, setProfile] = React.useState<any>({
+    const [profile, setProfile] = React.useState<any>({
         email: '',
         password: '',
     });

@@ -9,6 +9,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --color-logo-light: #ffe5d8;
+  --color-logo-dark: #e9b3a3;
   --color-0: black;
   --color-0-lighter: rgb(81, 81, 81);
   --color-1-darker: rgb(203, 203, 203);
