@@ -131,19 +131,29 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		log.Warnf("tones: %v", tones)
 		query["tones"] = bson.M{"$in": tones}
 	}
 
-	if r.Form.Get("type") != "" {
-		articleType, err := utils.IsStringObjectIdValid(r.Form.Get("type"), database.ArticleTypeCollection)
+	if r.Form.Get("types") != "" {
+		articleType, err := utils.IsStringListObjectIdValid(r.Form["types"], database.ArticleTypeCollection)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(err.ToJson())
 			return
 		}
 
-		query["type"] = articleType
+		query["type"] = bson.M{"$in": articleType}
+	}
+
+	if r.Form.Get("shapes") != "" {
+		articleShape, err := utils.IsStringListObjectIdValid(r.Form["shapes"], database.ArticleShapeCollection)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(err.ToJson())
+			return
+		}
+
+		query["shape"] = bson.M{"$in": articleShape}
 	}
 
 	queryOptions := options.Find()
@@ -213,12 +223,12 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if body.ArticleTones == nil {
+	if body.Tones == nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing ArticleTones").ToJson())
 		return
 	}
-	if err := utils.IsListObjectIdExist(body.ArticleTones, database.ArticleToneCollection); err != nil {
+	if err := utils.IsListObjectIdExist(body.Tones, database.ArticleToneCollection); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(err.ToJson())
 		return
@@ -235,12 +245,23 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if body.ArticleType == primitive.NilObjectID {
+	if body.Type == primitive.NilObjectID {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing article type").ToJson())
 		return
 	}
-	if err := utils.IsObjectIdExist(body.ArticleType, database.ArticleTypeCollection); err != nil {
+	if err := utils.IsObjectIdExist(body.Type, database.ArticleTypeCollection); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(err.ToJson())
+		return
+	}
+
+	if body.Shape == primitive.NilObjectID {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(utils.NewResErr("Missing article shape").ToJson())
+		return
+	}
+	if err := utils.IsObjectIdExist(body.Shape, database.ArticleShapeCollection); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(err.ToJson())
 		return
@@ -256,10 +277,6 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 
 	if body.Size == 0 {
 		log.Infof("Article '%f' has no size", body.Size)
-	}
-
-	if body.Shape == "" {
-		log.Infof("Article '%s' has no shape", body.Shape)
 	}
 
 	_, err = body.CreateOne(ctx)
@@ -330,13 +347,13 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		article.Files = body.Files
 	}
 
-	if body.ArticleTones != nil {
-		if err := utils.IsListObjectIdExist(body.ArticleTones, database.ArticleToneCollection); err != nil {
+	if body.Tones != nil {
+		if err := utils.IsListObjectIdExist(body.Tones, database.ArticleToneCollection); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(err.ToJson())
 			return
 		}
-		article.ArticleTones = body.ArticleTones
+		article.Tones = body.Tones
 	}
 
 	if body.Colors != nil {
@@ -348,13 +365,22 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		article.Colors = body.Colors
 	}
 
-	if body.ArticleType != primitive.NilObjectID {
-		if err := utils.IsObjectIdExist(body.ArticleType, database.ArticleTypeCollection); err != nil {
+	if body.Type != primitive.NilObjectID {
+		if err := utils.IsObjectIdExist(body.Type, database.ArticleTypeCollection); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(err.ToJson())
 			return
 		}
-		article.ArticleType = body.ArticleType
+		article.Type = body.Type
+	}
+
+	if body.Shape != primitive.NilObjectID {
+		if err := utils.IsObjectIdExist(body.Shape, database.ArticleShapeCollection); err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(err.ToJson())
+			return
+		}
+		article.Shape = body.Shape
 	}
 
 	if body.Price != 0 {
@@ -363,10 +389,6 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 
 	if body.Size != 0 {
 		article.Size = body.Size
-	}
-
-	if body.Shape != "" {
-		article.Shape = body.Shape
 	}
 
 	_, err = article.UpdateOne(ctx)

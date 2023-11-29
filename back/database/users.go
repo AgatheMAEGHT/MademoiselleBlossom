@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 
+	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -81,4 +82,43 @@ func initUser(ctx context.Context, db *mongo.Database) {
 		Keys:    map[string]int{"email": 1},
 		Options: options.Index().SetUnique(true),
 	})
+}
+
+func defaultUsers(ctx context.Context) {
+	log := logrus.WithContext(ctx)
+	// Create admins
+	admins := []User{
+		{
+			Email:     "quentinescudier@hotmail.fr",
+			FirstName: "Quentin",
+			LastName:  "Escudier",
+			Phone:     "0610790767",
+			Password:  "admin",
+			IsAdmin:   true,
+		},
+		{
+			Email:     "agathe.maeght@gmail.com",
+			FirstName: "Agathe",
+			LastName:  "Maeght",
+			Phone:     "0781996923",
+			Password:  "admin",
+			IsAdmin:   true,
+		},
+		{
+			Email:     "mademoiselle.blossom34@gmail.com",
+			FirstName: "Mademoiselle",
+			LastName:  "Blossom",
+			Phone:     "0616282883",
+			Password:  "admin",
+			IsAdmin:   true,
+		},
+	}
+	for _, admin := range admins {
+		_, err := admin.CreateOne(ctx)
+		if mongo.IsDuplicateKeyError(err) {
+			log.Debug("User already exists")
+		} else if err != nil {
+			log.Fatal(err)
+		}
+	}
 }

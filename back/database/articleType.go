@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 
+	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -68,4 +69,22 @@ func initArticleType(ctx context.Context, db *mongo.Database) {
 		Keys:    bson.M{"name": 1},
 		Options: options.Index().SetUnique(true),
 	})
+}
+
+func defaultArticleTypes(ctx context.Context) {
+	log := logrus.WithContext(ctx)
+	articleTypes := []ArticleType{
+		{Name: "Fleurs séchées"},
+	}
+
+	for _, articleType := range articleTypes {
+		_, err := articleType.CreateOne(ctx)
+		if err != nil {
+			if mongo.IsDuplicateKeyError(err) {
+				log.Debug("Article Type already exists")
+			} else if err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
 }

@@ -47,6 +47,11 @@ func StartServer(path string) {
 	server.HandleFunc("/user/password", middlewareWrapper(changePassword))
 	server.HandleFunc("/who-am-i", middlewareWrapper(whoAmI))
 
+	server.HandleFunc("/text-block", corsWrapper(getTextBlock))
+	server.HandleFunc("/text-block/create", middlewareWrapper(postTextBlock))
+	server.HandleFunc("/text-block/update", middlewareWrapper(putTextBlock))
+	server.HandleFunc("/text-block/delete", middlewareWrapper(deleteTextBlock))
+
 	server.HandleFunc("/article-type", corsWrapper(getArticleType))
 	server.HandleFunc("/article-type/create", middlewareWrapper(postArticleType))
 	server.HandleFunc("/article-type/update", middlewareWrapper(putArticleType))
@@ -57,10 +62,10 @@ func StartServer(path string) {
 	server.HandleFunc("/article-color/update", middlewareWrapper(putArticleColor))
 	server.HandleFunc("/article-color/delete", middlewareWrapper(deleteArticleColor))
 
-	server.HandleFunc("/text-block", corsWrapper(getTextBlock))
-	server.HandleFunc("/text-block/create", middlewareWrapper(postTextBlock))
-	server.HandleFunc("/text-block/update", middlewareWrapper(putTextBlock))
-	server.HandleFunc("/text-block/delete", middlewareWrapper(deleteTextBlock))
+	server.HandleFunc("/article-shape", corsWrapper(getArticleShape))
+	server.HandleFunc("/article-shape/create", middlewareWrapper(postArticleShape))
+	server.HandleFunc("/article-shape/update", middlewareWrapper(putArticleShape))
+	server.HandleFunc("/article-shape/delete", middlewareWrapper(deleteArticleShape))
 
 	server.HandleFunc("/article-tone", corsWrapper(getArticleTone))
 	server.HandleFunc("/article-tone/create", middlewareWrapper(postArticleTone))

@@ -8,15 +8,34 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types []string, tones []string) {
+func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types []string, tones []string, shapes []string) {
 	adminTok := getAdminAccessToken(t)
 
-	// Post ArticleTones
+	// Post ArticleShapes
 	body := map[string]interface{}{
 		"name": "test",
 	}
 
-	result, status := requester("/article-tone/create", http.MethodPost, body, adminTok)
+	result, status := requester("/article-shape/create", http.MethodPost, body, adminTok)
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	shapes = append(shapes, result["_id"].(string))
+
+	body = map[string]interface{}{
+		"name": "test2",
+	}
+
+	result, status = requester("/article-shape/create", http.MethodPost, body, adminTok)
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	shapes = append(shapes, result["_id"].(string))
+
+	// Post ArticleTones
+	body = map[string]interface{}{
+		"name": "test",
+	}
+
+	result, status = requester("/article-tone/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	tones = append(tones, result["_id"].(string))
@@ -86,7 +105,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 		"stock":  10,
 		"tones":  []string{tones[0]},
 		"size":   10,
-		"shape":  "square",
+		"shape":  shapes[0],
 		"type":   types[0],
 		"colors": []string{colors[0], colors[1]},
 	}
@@ -104,7 +123,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 		"stock":  20,
 		"tones":  []string{tones[0], tones[1]},
 		"size":   20,
-		"shape":  "square",
+		"shape":  shapes[0],
 		"type":   types[0],
 		"colors": []string{colors[0]},
 	}
@@ -122,7 +141,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 		"stock":  30,
 		"tones":  []string{tones[1]},
 		"size":   30,
-		"shape":  "round",
+		"shape":  shapes[1],
 		"type":   types[1],
 		"colors": []string{colors[2]},
 	}
@@ -157,13 +176,19 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 			result, status = requester(fmt.Sprintf("/article-tone/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
 			assert.Equal(t, 200, status, result["err"])
 		}
+
+		// Delete ArticleShapes
+		for _, id := range shapes {
+			result, status = requester(fmt.Sprintf("/article-shape/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
+			assert.Equal(t, 200, status, result["err"])
+		}
 	}
 
-	return deferFunc, colors, types, tones
+	return deferFunc, colors, types, tones, shapes
 }
 
 func TestFilterArticle(t *testing.T) {
-	deferFunc, colorsID, types, tones := PostArticleFilter(t)
+	deferFunc, colorsID, types, tones, shapes := PostArticleFilter(t)
 	defer deferFunc()
 
 	// Get articles
@@ -183,11 +208,6 @@ func TestFilterArticle(t *testing.T) {
 	assert.Equal(t, 1, len(resultList))
 	assert.Equal(t, "mid", resultList[0]["name"])
 
-	// Filter by shape
-	resultList, status, resErr = requesterList("/article?shape=square", http.MethodGet, nil, "")
-	assert.Equal(t, 200, status, resErr)
-	assert.Equal(t, 2, len(resultList))
-
 	// Filter by colors
 	resultList, status, resErr = requesterList(fmt.Sprintf("/article?colors=%s", colorsID[0]), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, resErr)
@@ -198,9 +218,22 @@ func TestFilterArticle(t *testing.T) {
 	assert.Equal(t, 2, len(resultList))
 
 	// Filter by type
-	resultList, status, resErr = requesterList(fmt.Sprintf("/article?type=%s", types[0]), http.MethodGet, nil, "")
+	resultList, status, resErr = requesterList(fmt.Sprintf("/article?types=%s", types[0]), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, resErr)
 	assert.Equal(t, 2, len(resultList))
+
+	resultList, status, resErr = requesterList(fmt.Sprintf("/article?types=%s&types=%s", types[0], types[1]), http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, resErr)
+	assert.Equal(t, 3, len(resultList))
+
+	// Filter by shapes
+	resultList, status, resErr = requesterList(fmt.Sprintf("/article?shapes=%s", shapes[0]), http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, resErr)
+	assert.Equal(t, 2, len(resultList))
+
+	resultList, status, resErr = requesterList(fmt.Sprintf("/article?shapes=%s&shapes=%s", shapes[0], shapes[1]), http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, resErr)
+	assert.Equal(t, 3, len(resultList))
 
 	// Filter by tones
 	resultList, status, resErr = requesterList(fmt.Sprintf("/article?tones=%s", tones[0]), http.MethodGet, nil, "")
@@ -233,8 +266,24 @@ func TestArticle(t *testing.T) {
 		assert.Equal(t, 200, status, result["err"])
 	}()
 
-	// Post article type
+	// Post article shape
 	body := map[string]interface{}{
+		"name": "test",
+	}
+	result, status = requester("/article-shape/create", http.MethodPost, body, adminTok)
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	resArticleShapeID, ok := result["_id"].(string)
+	assert.True(t, ok)
+
+	defer func() {
+		// Delete article shape
+		result, status = requester(fmt.Sprintf("/article-shape/delete?_id=%s", resArticleShapeID), http.MethodDelete, nil, adminTok)
+		assert.Equal(t, 200, status, result["err"])
+	}()
+
+	// Post article type
+	body = map[string]interface{}{
 		"name": "test",
 	}
 	result, status = requester("/article-type/create", http.MethodPost, body, adminTok)
@@ -292,7 +341,7 @@ func TestArticle(t *testing.T) {
 		"stock":  10,
 		"tones":  []string{resArticleToneID},
 		"size":   10,
-		"shape":  "test",
+		"shape":  resArticleShapeID,
 		"type":   resArticleTypeID,
 		"colors": []string{resColorID},
 	}
@@ -319,7 +368,7 @@ func TestArticle(t *testing.T) {
 		"stock":  10,
 		"tones":  []string{resArticleToneID},
 		"size":   10,
-		"shape":  "test",
+		"shape":  resArticleShapeID,
 		"type":   resArticleTypeID,
 		"colors": []string{resColorID},
 	}

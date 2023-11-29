@@ -8,15 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestArticleType(t *testing.T) {
-	testTok := createTestAccount(t, "test@articletype.com")
+func TestArticleShape(t *testing.T) {
+	testTok := createTestAccount(t, "test@articleshape.com")
 	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
-
-	// First get article type number
-	resultList, status, err := requesterList("/article-type", http.MethodGet, nil, "")
-	assert.Equal(t, 200, status, err)
-	nbArticleType := len(resultList)
 
 	// Post article type
 	body := map[string]interface{}{
@@ -24,15 +19,15 @@ func TestArticleType(t *testing.T) {
 	}
 
 	// Not logged
-	result, status := requester("/article-type/create", http.MethodPost, body, "")
+	result, status := requester("/article-shape/create", http.MethodPost, body, "")
 	assert.Equal(t, 401, status, result["err"])
 
 	// Not admin
-	result, status = requester("/article-type/create", http.MethodPost, body, testTok)
+	result, status = requester("/article-shape/create", http.MethodPost, body, testTok)
 	assert.Equal(t, 401, status, result["err"])
 
 	// Admin
-	result, status = requester("/article-type/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-shape/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	res1, ok := result["_id"].(string)
@@ -40,7 +35,7 @@ func TestArticleType(t *testing.T) {
 
 	// Post a second article type to test get
 	body["name"] = "test2"
-	result, status = requester("/article-type/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-shape/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	res2, ok := result["_id"].(string)
@@ -49,7 +44,7 @@ func TestArticleType(t *testing.T) {
 	assert.True(t, ok)
 
 	// Dup article type
-	result, status = requester("/article-type/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-shape/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 400, status, result["err"])
 
 	// Put article type
@@ -59,15 +54,15 @@ func TestArticleType(t *testing.T) {
 	}
 
 	// Not logged
-	result, status = requester("/article-type/update", http.MethodPut, body, "")
+	result, status = requester("/article-shape/update", http.MethodPut, body, "")
 	assert.Equal(t, 401, status, result["err"])
 
 	// Not admin
-	result, status = requester("/article-type/update", http.MethodPut, body, testTok)
+	result, status = requester("/article-shape/update", http.MethodPut, body, testTok)
 	assert.Equal(t, 401, status, result["err"])
 
 	// Admin
-	result, status = requester("/article-type/update", http.MethodPut, body, adminTok)
+	result, status = requester("/article-shape/update", http.MethodPut, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["name"])
 	resName, ok := result["name"].(string)
@@ -75,34 +70,34 @@ func TestArticleType(t *testing.T) {
 	assert.Equal(t, body["name"], resName)
 
 	// Get article type
-	resultList, status, err = requesterList("/article-type", http.MethodGet, nil, "")
+	resultList, status, err := requesterList("/article-shape", http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
-	assert.Equal(t, 2+nbArticleType, len(resultList))
+	assert.Equal(t, 2, len(resultList))
 
 	// Get article type by id
-	resultList, status, err = requesterList(fmt.Sprintf("/article-type?_id=%s", res1), http.MethodGet, nil, "")
+	resultList, status, err = requesterList(fmt.Sprintf("/article-shape?_id=%s", res1), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
 	assert.Equal(t, 1, len(resultList))
 
 	// Get article type by name
-	resultList, status, err = requesterList(fmt.Sprintf("/article-type?name=%s", res2Name), http.MethodGet, nil, "")
+	resultList, status, err = requesterList(fmt.Sprintf("/article-shape?name=%s", res2Name), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
 	assert.Equal(t, 1, len(resultList))
 
 	// Delete article type
 
 	// Not logged
-	result, status = requester(fmt.Sprintf("/article-type/delete?_id=%s", res1), http.MethodDelete, nil, "")
+	result, status = requester(fmt.Sprintf("/article-shape/delete?_id=%s", res1), http.MethodDelete, nil, "")
 	assert.Equal(t, 401, status, result["err"])
 
 	// Not admin
-	result, status = requester(fmt.Sprintf("/article-type/delete?_id=%s", res1), http.MethodDelete, nil, testTok)
+	result, status = requester(fmt.Sprintf("/article-shape/delete?_id=%s", res1), http.MethodDelete, nil, testTok)
 	assert.Equal(t, 401, status, result["err"])
 
 	// Admin
-	result, status = requester(fmt.Sprintf("/article-type/delete?_id=%s", res1), http.MethodDelete, nil, adminTok)
+	result, status = requester(fmt.Sprintf("/article-shape/delete?_id=%s", res1), http.MethodDelete, nil, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 
-	result, status = requester(fmt.Sprintf("/article-type/delete?_id=%s", res2), http.MethodDelete, nil, adminTok)
+	result, status = requester(fmt.Sprintf("/article-shape/delete?_id=%s", res2), http.MethodDelete, nil, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 }
