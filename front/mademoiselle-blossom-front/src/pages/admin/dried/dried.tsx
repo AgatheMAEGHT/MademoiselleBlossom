@@ -20,7 +20,7 @@ function CatalogAdmin() {
 
     function displayDriedFlowers() {
         let driedFlowersList: JSX.Element[] = [];
-        for (let i = 0; i < flowers.length; i += 3) {
+        for (let i = 0; i < flowers?.length; i += 3) {
             let row: JSX.Element[] = [];
             row.push(<AdminCatalogTile key={flowers[i]._id} name={flowers[i].name} price={flowers[i].price} images={flowers[i].files} id={flowers[i]._id} />);
             if (flowers[i + 1]) {

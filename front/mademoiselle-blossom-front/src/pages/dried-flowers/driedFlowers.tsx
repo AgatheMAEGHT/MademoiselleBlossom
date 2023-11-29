@@ -13,13 +13,15 @@ function DriedFlowers() {
     React.useEffect(() => {
         requester('/article', 'GET').then((res: any) => {
             console.log(res);
-            setDriedFlowers(res);
+            if (res) {
+                setDriedFlowers(res);
+            }
         })
     }, []);
 
     function displayDriedFlowers() {
         let driedFlowersList: JSX.Element[] = [];
-        for (let i = 0; i < driedFlowers.length; i += 3) {
+        for (let i = 0; i < driedFlowers?.length; i += 3) {
             let row: JSX.Element[] = [];
             row.push(<CatalogTile key={driedFlowers[i]._id} name={driedFlowers[i].name} price={driedFlowers[i].price} images={driedFlowers[i].files} id={driedFlowers[i]._id} />);
             if (driedFlowers[i + 1]) {

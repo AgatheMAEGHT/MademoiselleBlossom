@@ -11,8 +11,7 @@ function AdminCatalogTile(props: driedFlowerTile) {
     return (
         <div className="dried-tile" key={props.id} onClick={() => navigate("/fleurs-sechees/" + props.name)}>
             <div className="dried-tile-img-buttons">
-                <img className='dried-tile-img-buttons-fav' src="/icons/heart.svg" title='Ajouter aux favoris' alt="ajouter aux favoris" />
-                <div className='dried-tile-img-buttons-cart' title='Ajouter au panier'>Ajouter au panier</div>
+                <div className='dried-tile-img-buttons-cart' title="Modifier l'article">Modifier l'article</div>
             </div>
             <img className="dried-tile-img" src={props.images[0]} alt={"courone de fleurs séchées " + props.name} />
             <div className="dried-tile-name">{props.name}</div>
