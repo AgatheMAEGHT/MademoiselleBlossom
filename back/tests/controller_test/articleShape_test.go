@@ -13,7 +13,12 @@ func TestArticleShape(t *testing.T) {
 	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
 
-	// Post article type
+	// Get article shape number
+	resultList, status, err := requesterList("/article-shape", http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, err)
+	nbArticleShape := len(resultList)
+
+	// Post article shape
 	body := map[string]interface{}{
 		"name": "test",
 	}
@@ -33,7 +38,7 @@ func TestArticleShape(t *testing.T) {
 	res1, ok := result["_id"].(string)
 	assert.True(t, ok)
 
-	// Post a second article type to test get
+	// Post a second article shape to test get
 	body["name"] = "test2"
 	result, status = requester("/article-shape/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
@@ -43,11 +48,11 @@ func TestArticleShape(t *testing.T) {
 	res2Name, ok := result["name"].(string)
 	assert.True(t, ok)
 
-	// Dup article type
+	// Dup article shape
 	result, status = requester("/article-shape/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 400, status, result["err"])
 
-	// Put article type
+	// Put article shape
 	body = map[string]interface{}{
 		"_id":  res1,
 		"name": "testPut",
@@ -69,22 +74,22 @@ func TestArticleShape(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, body["name"], resName)
 
-	// Get article type
-	resultList, status, err := requesterList("/article-shape", http.MethodGet, nil, "")
+	// Get article shape
+	resultList, status, err = requesterList("/article-shape", http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
-	assert.Equal(t, 2, len(resultList))
+	assert.Equal(t, 2+nbArticleShape, len(resultList))
 
-	// Get article type by id
+	// Get article shape by id
 	resultList, status, err = requesterList(fmt.Sprintf("/article-shape?_id=%s", res1), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
 	assert.Equal(t, 1, len(resultList))
 
-	// Get article type by name
+	// Get article shape by name
 	resultList, status, err = requesterList(fmt.Sprintf("/article-shape?name=%s", res2Name), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
 	assert.Equal(t, 1, len(resultList))
 
-	// Delete article type
+	// Delete article shape
 
 	// Not logged
 	result, status = requester(fmt.Sprintf("/article-shape/delete?_id=%s", res1), http.MethodDelete, nil, "")

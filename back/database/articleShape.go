@@ -74,7 +74,7 @@ func initArticleShape(ctx context.Context, db *mongo.Database) {
 func defaultArticleShapes(ctx context.Context) {
 	log := logrus.WithContext(ctx)
 	articleShapes := []ArticleShape{
-		{Name: "Fleurs séchées"},
+		{Name: "Rond"},
 	}
 
 	for _, articleShape := range articleShapes {

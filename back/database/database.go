@@ -18,6 +18,7 @@ var (
 func defaultValues(ctx context.Context) {
 	defaultUsers(ctx)
 	defaultArticleTypes(ctx)
+	defaultArticleShapes(ctx)
 }
 
 func initCollections(ctx context.Context) {
