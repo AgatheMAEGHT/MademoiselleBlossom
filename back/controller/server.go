@@ -52,20 +52,20 @@ func StartServer(path string) {
 	server.HandleFunc("/article-type/update", middlewareWrapper(putArticleType))
 	server.HandleFunc("/article-type/delete", middlewareWrapper(deleteArticleType))
 
-	server.HandleFunc("/color", corsWrapper(getColor))
-	server.HandleFunc("/color/create", middlewareWrapper(postColor))
-	server.HandleFunc("/color/update", middlewareWrapper(putColor))
-	server.HandleFunc("/color/delete", middlewareWrapper(deleteColor))
+	server.HandleFunc("/article-color", corsWrapper(getArticleColor))
+	server.HandleFunc("/article-color/create", middlewareWrapper(postArticleColor))
+	server.HandleFunc("/article-color/update", middlewareWrapper(putArticleColor))
+	server.HandleFunc("/article-color/delete", middlewareWrapper(deleteArticleColor))
 
 	server.HandleFunc("/text-block", corsWrapper(getTextBlock))
 	server.HandleFunc("/text-block/create", middlewareWrapper(postTextBlock))
 	server.HandleFunc("/text-block/update", middlewareWrapper(putTextBlock))
 	server.HandleFunc("/text-block/delete", middlewareWrapper(deleteTextBlock))
 
-	server.HandleFunc("/tone", corsWrapper(getTone))
-	server.HandleFunc("/tone/create", middlewareWrapper(postTone))
-	server.HandleFunc("/tone/update", middlewareWrapper(putTone))
-	server.HandleFunc("/tone/delete", middlewareWrapper(deleteTone))
+	server.HandleFunc("/article-tone", corsWrapper(getArticleTone))
+	server.HandleFunc("/article-tone/create", middlewareWrapper(postArticleTone))
+	server.HandleFunc("/article-tone/update", middlewareWrapper(putArticleTone))
+	server.HandleFunc("/article-tone/delete", middlewareWrapper(deleteArticleTone))
 
 	server.HandleFunc("/file/download/", corsWrapper(downloadFile))
 	server.HandleFunc("/file/create", middlewareWrapper(postFile))

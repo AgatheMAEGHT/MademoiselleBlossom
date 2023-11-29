@@ -82,9 +82,9 @@ func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 	// Init collections
 	initUser(ctx, db)
 	initArticleType(ctx, db)
-	initColor(ctx, db)
+	initArticleColor(ctx, db)
 	initTextBlock(ctx, db)
-	initTone(ctx, db)
+	initArticleTone(ctx, db)
 	initFile(ctx, db)
 	initCarousselHomepageImg(ctx, db)
 	initArticle(ctx, db)

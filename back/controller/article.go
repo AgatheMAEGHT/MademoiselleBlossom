@@ -113,7 +113,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Form.Get("colors") != "" {
-		colors, err := utils.IsStringListObjectIdValid(r.Form["colors"], database.ColorCollection)
+		colors, err := utils.IsStringListObjectIdValid(r.Form["colors"], database.ArticleColorCollection)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(err.ToJson())
@@ -124,13 +124,14 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Form.Get("tones") != "" {
-		tones, err := utils.IsStringListObjectIdValid(r.Form["tones"], database.ToneCollection)
+		tones, err := utils.IsStringListObjectIdValid(r.Form["tones"], database.ArticleToneCollection)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(err.ToJson())
 			return
 		}
 
+		log.Warnf("tones: %v", tones)
 		query["tones"] = bson.M{"$in": tones}
 	}
 
@@ -212,12 +213,12 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if body.Tones == nil {
+	if body.ArticleTones == nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Missing tones").ToJson())
+		w.Write(utils.NewResErr("Missing ArticleTones").ToJson())
 		return
 	}
-	if err := utils.IsListObjectIdExist(body.Tones, database.ToneCollection); err != nil {
+	if err := utils.IsListObjectIdExist(body.ArticleTones, database.ArticleToneCollection); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(err.ToJson())
 		return
@@ -228,7 +229,7 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		w.Write(utils.NewResErr("Missing colors").ToJson())
 		return
 	}
-	if err := utils.IsListObjectIdExist(body.Colors, database.ColorCollection); err != nil {
+	if err := utils.IsListObjectIdExist(body.Colors, database.ArticleColorCollection); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(err.ToJson())
 		return
@@ -329,17 +330,17 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		article.Files = body.Files
 	}
 
-	if body.Tones != nil {
-		if err := utils.IsListObjectIdExist(body.Tones, database.ToneCollection); err != nil {
+	if body.ArticleTones != nil {
+		if err := utils.IsListObjectIdExist(body.ArticleTones, database.ArticleToneCollection); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(err.ToJson())
 			return
 		}
-		article.Tones = body.Tones
+		article.ArticleTones = body.ArticleTones
 	}
 
 	if body.Colors != nil {
-		if err := utils.IsListObjectIdExist(body.Colors, database.ColorCollection); err != nil {
+		if err := utils.IsListObjectIdExist(body.Colors, database.ArticleColorCollection); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(err.ToJson())
 			return

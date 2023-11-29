@@ -11,12 +11,12 @@ import (
 func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types []string, tones []string) {
 	adminTok := getAdminAccessToken(t)
 
-	// Post tones
+	// Post ArticleTones
 	body := map[string]interface{}{
 		"name": "test",
 	}
 
-	result, status := requester("/tone/create", http.MethodPost, body, adminTok)
+	result, status := requester("/article-tone/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	tones = append(tones, result["_id"].(string))
@@ -25,7 +25,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 		"name": "test2",
 	}
 
-	result, status = requester("/tone/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-tone/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	tones = append(tones, result["_id"].(string))
@@ -36,7 +36,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 		"hexa": "000000",
 	}
 
-	result, status = requester("/color/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	colors = append(colors, result["_id"].(string))
@@ -46,7 +46,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 		"hexa": "ffffff",
 	}
 
-	result, status = requester("/color/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	colors = append(colors, result["_id"].(string))
@@ -56,7 +56,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 		"hexa": "ff0000",
 	}
 
-	result, status = requester("/color/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	colors = append(colors, result["_id"].(string))
@@ -148,13 +148,13 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 
 		// Delete colors
 		for _, id := range colors {
-			result, status = requester(fmt.Sprintf("/color/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
+			result, status = requester(fmt.Sprintf("/article-color/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
 			assert.Equal(t, 200, status, result["err"])
 		}
 
-		// Delete tones
+		// Delete ArticleTones
 		for _, id := range tones {
-			result, status = requester(fmt.Sprintf("/tone/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
+			result, status = requester(fmt.Sprintf("/article-tone/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
 			assert.Equal(t, 200, status, result["err"])
 		}
 	}
@@ -249,20 +249,20 @@ func TestArticle(t *testing.T) {
 		assert.Equal(t, 200, status, result["err"])
 	}()
 
-	// Post Tone
+	// Post ArticleTone
 	body = map[string]interface{}{
 		"name": "test",
 	}
 
-	result, status = requester("/tone/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-tone/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
-	resToneID, ok := result["_id"].(string)
+	resArticleToneID, ok := result["_id"].(string)
 	assert.True(t, ok)
 
 	defer func() {
-		// Delete Tone
-		result, status = requester(fmt.Sprintf("/tone/delete?_id=%s", resToneID), http.MethodDelete, nil, adminTok)
+		// Delete ArticleTone
+		result, status = requester(fmt.Sprintf("/article-tone/delete?_id=%s", resArticleToneID), http.MethodDelete, nil, adminTok)
 		assert.Equal(t, 200, status, result["err"])
 	}()
 
@@ -272,7 +272,7 @@ func TestArticle(t *testing.T) {
 		"hexa": "000000",
 	}
 
-	result, status = requester("/color/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	resColorID, ok := result["_id"].(string)
@@ -280,7 +280,7 @@ func TestArticle(t *testing.T) {
 
 	defer func() {
 		// Delete color
-		result, status = requester(fmt.Sprintf("/color/delete?_id=%s", resColorID), http.MethodDelete, nil, adminTok)
+		result, status = requester(fmt.Sprintf("/article-color/delete?_id=%s", resColorID), http.MethodDelete, nil, adminTok)
 		assert.Equal(t, 200, status, result["err"])
 	}()
 
@@ -290,7 +290,7 @@ func TestArticle(t *testing.T) {
 		"name":   "test",
 		"price":  10,
 		"stock":  10,
-		"tones":  []string{resToneID},
+		"tones":  []string{resArticleToneID},
 		"size":   10,
 		"shape":  "test",
 		"type":   resArticleTypeID,
@@ -317,7 +317,7 @@ func TestArticle(t *testing.T) {
 		"name":   "test2",
 		"price":  10,
 		"stock":  10,
-		"tones":  []string{resToneID},
+		"tones":  []string{resArticleToneID},
 		"size":   10,
 		"shape":  "test",
 		"type":   resArticleTypeID,

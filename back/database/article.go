@@ -14,17 +14,17 @@ var (
 )
 
 type Article struct {
-	ID          primitive.ObjectID   `json:"_id" bson:"_id,omitempty"`
-	Name        string               `json:"name" bson:"name"`
-	Description string               `json:"description" bson:"description"`
-	Files       []primitive.ObjectID `json:"files" bson:"files"`
-	Price       float64              `json:"price" bson:"price"`
-	Stock       int                  `json:"stock" bson:"stock"`
-	Tones       []primitive.ObjectID `json:"tones" bson:"tones"`
-	Size        float64              `json:"size" bson:"size"`
-	Shape       string               `json:"shape" bson:"shape"`
-	ArticleType primitive.ObjectID   `json:"type" bson:"type"`
-	Colors      []primitive.ObjectID `json:"colors" bson:"colors"`
+	ID           primitive.ObjectID   `json:"_id" bson:"_id,omitempty"`
+	Name         string               `json:"name" bson:"name"`
+	Description  string               `json:"description" bson:"description"`
+	Files        []primitive.ObjectID `json:"files" bson:"files"`
+	Price        float64              `json:"price" bson:"price"`
+	Stock        int                  `json:"stock" bson:"stock"`
+	ArticleTones []primitive.ObjectID `json:"tones" bson:"tones"`
+	Size         float64              `json:"size" bson:"size"`
+	Shape        string               `json:"shape" bson:"shape"`
+	ArticleType  primitive.ObjectID   `json:"type" bson:"type"`
+	Colors       []primitive.ObjectID `json:"colors" bson:"colors"`
 }
 
 func (a *Article) CreateOne(ctx context.Context) (*mongo.InsertOneResult, error) {
