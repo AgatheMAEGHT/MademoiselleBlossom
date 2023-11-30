@@ -30,11 +30,13 @@ function NewDriedAdmin() {
         tones: select[],
         shapes: select[],
         names: string[],
+        type: string,
     }>({
         colors: [],
         tones: [],
         shapes: [],
         names: ["Oui"],
+        type: "",
     });
 
     /* Options */
@@ -44,23 +46,26 @@ function NewDriedAdmin() {
             tones: [],
             shapes: [],
             names: [],
+            type: "",
         }
         let promises: Promise<any>[] = [];
 
-        promises.push(requester('/color', 'GET'));
-        promises.push(requester('/tone', 'GET'));
-        promises.push(requester('/color', 'GET')); // TO DO
+        promises.push(requester('/article-color', 'GET'));
+        promises.push(requester('/article-tone', 'GET'));
+        promises.push(requester('/article-shape', 'GET'));
+        promises.push(requester('/article-type', 'GET'));
         promises.push(requester('/article', 'GET'));
 
         Promise.all(promises).then((res) => {
-            newOptions.colors = res[0]?.data?.map((elt: string) => ({ value: elt, label: elt }));
-            newOptions.tones = res[1]?.data?.map((elt: string) => ({ value: elt, label: elt }));
-            newOptions.shapes = res[2]?.data?.map((elt: string) => ({ value: elt, label: elt }));
-            newOptions.names = res[3]?.data?.map((elt: string) => elt);
+            newOptions.colors = res[0]?.map((elt: { name: string, _id: string }) => ({ value: elt._id, label: elt.name }));
+            newOptions.tones = res[1]?.map((elt: { name: string, _id: string }) => ({ value: elt._id, label: elt.name }));
+            newOptions.shapes = res[2]?.map((elt: { name: string, _id: string }) => ({ value: elt._id, label: elt.name }));
+            let tmp = res[3]?.map((elt: { name: string, _id: string }) => ({ name: elt.name, _id: elt._id }));
+            newOptions.type = tmp.filter((elt: { name: string, _id: string }) => (elt.name === "Fleurs séchées"))[0]?._id ?? "";
+            newOptions.names = res[4]?.map((elt: string) => elt);
             setOptions(newOptions);
         });
 
-        // eslint-disable-next-line
     }, []);
 
     function checkName(e: string) {
@@ -85,9 +90,34 @@ function NewDriedAdmin() {
             colors: tmp ?? [],
             tones: article.tones ?? [],
             size: article.size ?? 0,
-            type: "65666f4156be5a3d35eaeb01",
+            type: options.type,
             shape: article.shape ?? "",
         }
+
+        if (article.name === "" || article.files.length === 0 || article.price === "" || article.stock === 0 || article.colors.length === 0 || article.tones.length === 0 || article.shape === "" || article.size === 0) {
+            return;
+        }
+
+        // Create new colors, tones and shapes if they don't exist
+        // TODO finish this
+        if (options.colors.filter((elt: select) => elt.value === article.colors[0]).length === 0) {
+            requester('/article-color/create', 'POST', { name: article.colors[0] }).then((res: any) => {
+                tmpArticle.colors = [{ name: article.colors[0], value: res._id }];
+            });
+        }
+
+        if (options.shapes.filter((elt: select) => elt.value === article.shape).length === 0) {
+            requester('/article-shape/create', 'POST', { name: article.shape }).then((res: any) => {
+                tmpArticle.shape = res._id;
+            });
+        }
+
+        if (options.tones.filter((elt: select) => elt.value === article.tones[0]).length === 0) {
+            requester('/article-tone/create', 'POST', { name: article.tones[0] }).then((res: any) => {
+                tmpArticle.tones = [res._id];
+            });
+        }
+        
 
         requester('/article/create', 'POST', tmpArticle).then((res: any) => {
             if (res._id) {
@@ -200,18 +230,17 @@ function NewDriedAdmin() {
                     <div className='admin-form-title'>Forme</div>
                     <div className='admin-form-input-select'>
                         <CreatableSelect
-                            name="tones"
+                            name="shapes"
                             styles={{
                                 control: (baseStyles, state) => ({
                                     ...baseStyles,
                                     borderColor: 'var(--color-3)',
                                 }),
                             }}
-                            isMulti
                             isSearchable
                             isClearable
-                            options={options.tones}
-                            onChange={(e) => setArticle({ ...article, tones: (e ? e.map((elt: select) => elt.value) : []) })}
+                            options={options.shapes}
+                            onChange={(e) => setArticle({ ...article, shape: (e?.value ?? '') as string })}
                         />
                     </div>
                 </div>
