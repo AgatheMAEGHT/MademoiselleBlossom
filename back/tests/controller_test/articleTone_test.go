@@ -13,7 +13,7 @@ func TestArticleTone(t *testing.T) {
 	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
 
-	// Post article type
+	// Post article tone
 	body := map[string]interface{}{
 		"name": "test",
 	}
@@ -33,7 +33,7 @@ func TestArticleTone(t *testing.T) {
 	res1, ok := result["_id"].(string)
 	assert.True(t, ok)
 
-	// Post a second article type to test get
+	// Post a second article tone to test get
 	body["name"] = "test2"
 	result, status = requester("/article-tone/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
@@ -43,11 +43,11 @@ func TestArticleTone(t *testing.T) {
 	res2Name, ok := result["name"].(string)
 	assert.True(t, ok)
 
-	// Dup article type
+	// Dup article tone
 	result, status = requester("/article-tone/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 400, status, result["err"])
 
-	// Put article type
+	// Put article tone
 	body = map[string]interface{}{
 		"_id":  res1,
 		"name": "testPut",
@@ -69,22 +69,22 @@ func TestArticleTone(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, body["name"], resName)
 
-	// Get article type
+	// Get article tone
 	resultList, status, err := requesterList("/article-tone", http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
 	assert.Equal(t, 2, len(resultList))
 
-	// Get article type by id
+	// Get article tone by id
 	resultList, status, err = requesterList(fmt.Sprintf("/article-tone?_id=%s", res1), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
 	assert.Equal(t, 1, len(resultList))
 
-	// Get article type by name
+	// Get article tone by name
 	resultList, status, err = requesterList(fmt.Sprintf("/article-tone?name=%s", res2Name), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
 	assert.Equal(t, 1, len(resultList))
 
-	// Delete article type
+	// Delete article tone
 
 	// Not logged
 	result, status = requester(fmt.Sprintf("/article-tone/delete?_id=%s", res1), http.MethodDelete, nil, "")

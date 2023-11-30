@@ -75,13 +75,14 @@ func defaultArticleShapes(ctx context.Context) {
 	log := logrus.WithContext(ctx)
 	articleShapes := []ArticleShape{
 		{Name: "Rond"},
+		{Name: "Coeur"},
 	}
 
 	for _, articleShape := range articleShapes {
 		_, err := articleShape.CreateOne(ctx)
 		if err != nil {
 			if mongo.IsDuplicateKeyError(err) {
-				log.Debug("Article Type already exists")
+				log.Debug("Article Shape already exists")
 			} else if err != nil {
 				log.Fatal(err)
 			}

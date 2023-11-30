@@ -13,6 +13,20 @@ var (
 	ArticleCollection *mongo.Collection
 )
 
+type ArticleRes struct {
+	ID          primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Name        string             `json:"name" bson:"name"`
+	Description string             `json:"description" bson:"description"`
+	Files       []string           `json:"files" bson:"files"`
+	Price       float64            `json:"price" bson:"price"`
+	Stock       int                `json:"stock" bson:"stock"`
+	Tones       []*ArticleTone     `json:"tones" bson:"tones"`
+	Size        float64            `json:"size" bson:"size"`
+	Shape       *ArticleShape      `json:"shape" bson:"shape"`
+	Type        *ArticleType       `json:"type" bson:"type"`
+	Colors      []*ArticleColor    `json:"colors" bson:"colors"`
+}
+
 type Article struct {
 	ID          primitive.ObjectID   `json:"_id" bson:"_id,omitempty"`
 	Name        string               `json:"name" bson:"name"`
@@ -68,6 +82,51 @@ func FindArticles(ctx context.Context, filter bson.M, opts ...*options.FindOptio
 	}
 
 	return articles, nil
+}
+
+func (a *Article) Populate(ctx context.Context) (*ArticleRes, error) {
+	var articleRes ArticleRes
+	articleRes.ID = a.ID
+	articleRes.Name = a.Name
+	articleRes.Description = a.Description
+	articleRes.Price = a.Price
+	articleRes.Stock = a.Stock
+	articleRes.Size = a.Size
+
+	articleType, err := FindOneArticleType(ctx, bson.M{"_id": a.Type})
+	if err != nil {
+		return nil, err
+	}
+	articleRes.Type = articleType
+
+	articleShape, err := FindOneArticleShape(ctx, bson.M{"_id": a.Shape})
+	if err != nil {
+		return nil, err
+	}
+	articleRes.Shape = articleShape
+
+	articleColors, err := FindArticleColors(ctx, bson.M{"_id": bson.M{"$in": a.Colors}})
+	if err != nil {
+		return nil, err
+	}
+	articleRes.Colors = articleColors
+
+	articleTones, err := FindArticleTones(ctx, bson.M{"_id": bson.M{"$in": a.Tones}})
+	if err != nil {
+		return nil, err
+	}
+	articleRes.Tones = articleTones
+
+	files, err := FindFiles(ctx, bson.M{"_id": bson.M{"$in": a.Files}})
+	articleRes.Files = make([]string, 0, len(files))
+	if err != nil {
+		return nil, err
+	}
+	for _, file := range files {
+		articleRes.Files = append(articleRes.Files, file.FullName())
+	}
+
+	return &articleRes, nil
 }
 
 func initArticle(ctx context.Context, db *mongo.Database) {

@@ -85,6 +85,10 @@ func FindFiles(ctx context.Context, filter bson.M) ([]*File, error) {
 	return files, nil
 }
 
+func (a *File) FullName() string {
+	return fmt.Sprintf("%s.%s", a.ID.Hex(), a.Ext)
+}
+
 func initFile(ctx context.Context, db *mongo.Database) {
 	FileCollection = db.Collection("files")
 

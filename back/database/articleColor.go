@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 
+	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -63,7 +64,7 @@ func FindArticleColors(ctx context.Context, filter bson.M) ([]*ArticleColor, err
 }
 
 func initArticleColor(ctx context.Context, db *mongo.Database) {
-	ArticleColorCollection = db.Collection("colors")
+	ArticleColorCollection = db.Collection("articleColors")
 
 	ArticleColorCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
 		Keys:    bson.M{"name": 1},
@@ -74,4 +75,81 @@ func initArticleColor(ctx context.Context, db *mongo.Database) {
 		Keys:    bson.M{"hexa": 1},
 		Options: options.Index().SetUnique(true),
 	})
+}
+
+func defaultArticleColors(ctx context.Context) {
+	log := logrus.WithContext(ctx)
+	colors := []ArticleColor{
+		{
+			Name: "Blanc",
+			Hexa: "FFFFFF",
+		},
+		{
+			Name: "Noir",
+			Hexa: "000000",
+		},
+		{
+			Name: "Bleu",
+			Hexa: "000080",
+		},
+		{
+			Name: "Rouge",
+			Hexa: "FF0000",
+		},
+		{
+			Name: "Vert",
+			Hexa: "00FF00",
+		},
+		{
+			Name: "Jaune",
+			Hexa: "FFFF00",
+		},
+		{
+			Name: "Orange",
+			Hexa: "FFA500",
+		},
+		{
+			Name: "Violet",
+			Hexa: "800080",
+		},
+		{
+			Name: "Rose",
+			Hexa: "FFC0CB",
+		},
+		{
+			Name: "Gris",
+			Hexa: "808080",
+		},
+		{
+			Name: "Brun",
+			Hexa: "5b3c11",
+		},
+		{
+			Name: "Beige",
+			Hexa: "F5F5DC",
+		},
+		{
+			Name: "Bordeaux",
+			Hexa: "800000",
+		},
+		{
+			Name: "Gris clair",
+			Hexa: "D3D3D3",
+		},
+		{
+			Name: "Gris foncé",
+			Hexa: "A9A9A9",
+		},
+	}
+
+	for _, color := range colors {
+		_, err := color.CreateOne(ctx)
+		if err != nil {
+			if mongo.IsDuplicateKeyError(err) {
+				log.Debug("Article Color already exists")
+			} else if err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
 }

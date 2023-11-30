@@ -13,10 +13,15 @@ func TestArticleColor(t *testing.T) {
 	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
 
+	// Get color number
+	resultList, status, err := requesterList("/article-color", http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, err)
+	nbColor := len(resultList)
+
 	// Post color
 	body := map[string]interface{}{
 		"name": "test",
-		"hexa": "000000",
+		"hexa": "test",
 	}
 
 	// Not logged
@@ -41,7 +46,7 @@ func TestArticleColor(t *testing.T) {
 
 	// Post a second color to test get
 	body["name"] = "test2"
-	body["hexa"] = "ffffff"
+	body["hexa"] = "test2"
 	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
@@ -58,7 +63,7 @@ func TestArticleColor(t *testing.T) {
 	body = map[string]interface{}{
 		"_id":  res1,
 		"name": "testPut",
-		"hexa": "eeeeee",
+		"hexa": "testPut",
 	}
 
 	// Not logged
@@ -78,9 +83,9 @@ func TestArticleColor(t *testing.T) {
 	assert.Equal(t, body["name"], resName)
 
 	// Get color
-	resultList, status, err := requesterList("/article-color", http.MethodGet, nil, "")
+	resultList, status, err = requesterList("/article-color", http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
-	assert.Equal(t, 2, len(resultList), resultList)
+	assert.Equal(t, 2+nbColor, len(resultList), resultList)
 
 	// Get color by id
 	resultList, status, err = requesterList(fmt.Sprintf("/article-color?_id=%s", res1), http.MethodGet, nil, "")
@@ -93,7 +98,7 @@ func TestArticleColor(t *testing.T) {
 	assert.Equal(t, 1, len(resultList), resultList)
 
 	// Get color by hexa
-	resultList, status, err = requesterList(fmt.Sprintf("/article-color?hexa=%s", "ffffff"), http.MethodGet, nil, "")
+	resultList, status, err = requesterList(fmt.Sprintf("/article-color?hexa=%s", "testPut"), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, err)
 	assert.Equal(t, 1, len(resultList), resultList)
 

@@ -45,7 +45,7 @@ func getArticleTone(w http.ResponseWriter, r *http.Request) {
 	articleTones, err := database.FindArticleTones(ctx, query)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error getting article types").ToJson())
+		w.Write(utils.NewResErr("Error getting article shapes").ToJson())
 		return
 	}
 
@@ -85,11 +85,11 @@ func postArticleTone(w http.ResponseWriter, r *http.Request, user database.User)
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write(utils.NewResErr("Article type already exists").ToJson())
+			w.Write(utils.NewResErr("Article tone already exists").ToJson())
 			return
 		}
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error creating article type").ToJson())
+		w.Write(utils.NewResErr("Error creating article tone").ToJson())
 		return
 	}
 
@@ -128,7 +128,7 @@ func putArticleTone(w http.ResponseWriter, r *http.Request, user database.User) 
 	articleTone, err := database.FindOneArticleTone(ctx, bson.M{"_id": body.ID})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error getting article type").ToJson())
+		w.Write(utils.NewResErr("Error getting article shape").ToJson())
 		return
 	}
 
@@ -139,7 +139,7 @@ func putArticleTone(w http.ResponseWriter, r *http.Request, user database.User) 
 	_, err = articleTone.UpdateOne(ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error updating article type").ToJson())
+		w.Write(utils.NewResErr("Error updating article shape").ToJson())
 		return
 	}
 
@@ -184,16 +184,16 @@ func deleteArticleTone(w http.ResponseWriter, r *http.Request, user database.Use
 	res, err := database.DeleteOneArticleTone(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error getting article type").ToJson())
+		w.Write(utils.NewResErr("Error getting article shape").ToJson())
 		return
 	}
 
 	if res.DeletedCount == 0 {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write(utils.NewResErr("Article type not found").ToJson())
+		w.Write(utils.NewResErr("Article shape not found").ToJson())
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(utils.NewResMsg("Article type deleted").ToJson())
+	w.Write(utils.NewResMsg("Article shape deleted").ToJson())
 }

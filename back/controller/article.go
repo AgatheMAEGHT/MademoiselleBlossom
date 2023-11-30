@@ -160,7 +160,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	queryOptions.SetLimit(10)
 	if r.Form.Get("limit") != "" {
 		limit, err := strconv.Atoi(r.Form.Get("limit"))
-		if err != nil {
+		if err != nil || limit < 0 || limit > 100 {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(utils.NewResErr("Invalid limit").ToJson())
 			return
@@ -169,10 +169,38 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 		queryOptions.SetLimit(int64(limit))
 	}
 
+	if r.Form.Get("page") != "" {
+		page, err := strconv.Atoi(r.Form.Get("page"))
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(utils.NewResErr("Invalid page").ToJson())
+			return
+		}
+
+		queryOptions.SetSkip(int64(page * int(*queryOptions.Limit)))
+	}
+
 	articles, err := database.FindArticles(ctx, query, queryOptions)
 	if err != nil && err != mongo.ErrNoDocuments {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting article").ToJson())
+		return
+	}
+
+	if r.Form.Get("populate") == "true" {
+		populatedArticles := make([]*database.ArticleRes, len(articles))
+		var err error
+		for i := range articles {
+			populatedArticles[i], err = articles[i].Populate(ctx)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write(utils.NewResErr("Error populating article").ToJson())
+				return
+			}
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(populatedArticles)
 		return
 	}
 

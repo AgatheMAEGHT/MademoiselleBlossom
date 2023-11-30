@@ -11,12 +11,22 @@ import (
 func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types []string, tones []string, shapes []string) {
 	adminTok := getAdminAccessToken(t)
 
+	// Post File
+	result, status := requesterFile("/file/create", http.MethodPost, adminTok, "screenTest.png")
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	fileID, ok := result["_id"].(string)
+	assert.True(t, ok)
+	fileExt, ok := result["ext"].(string)
+	assert.True(t, ok)
+	assert.Equal(t, "png", fileExt)
+
 	// Post ArticleShapes
 	body := map[string]interface{}{
 		"name": "test",
 	}
 
-	result, status := requester("/article-shape/create", http.MethodPost, body, adminTok)
+	result, status = requester("/article-shape/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	shapes = append(shapes, result["_id"].(string))
@@ -52,7 +62,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 	// Post colors
 	body = map[string]interface{}{
 		"name": "black",
-		"hexa": "000000",
+		"hexa": "black",
 	}
 
 	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
@@ -62,7 +72,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 
 	body = map[string]interface{}{
 		"name": "white",
-		"hexa": "ffffff",
+		"hexa": "white",
 	}
 
 	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
@@ -72,7 +82,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 
 	body = map[string]interface{}{
 		"name": "red",
-		"hexa": "ff0000",
+		"hexa": "red",
 	}
 
 	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
@@ -135,7 +145,7 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 	assert.True(t, ok)
 
 	body = map[string]interface{}{
-		"files":  []string{},
+		"files":  []string{fileID},
 		"name":   "high",
 		"price":  30,
 		"stock":  30,
@@ -182,6 +192,10 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 			result, status = requester(fmt.Sprintf("/article-shape/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
 			assert.Equal(t, 200, status, result["err"])
 		}
+
+		// Delete file
+		result, status = requester(fmt.Sprintf("/file/delete/%s.%s", fileID, fileExt), http.MethodDelete, nil, adminTok)
+		assert.Equal(t, 200, status, result["err"])
 	}
 
 	return deferFunc, colors, types, tones, shapes
@@ -243,6 +257,15 @@ func TestFilterArticle(t *testing.T) {
 	resultList, status, resErr = requesterList(fmt.Sprintf("/article?tones=%s&tones=%s", tones[0], tones[1]), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, resErr)
 	assert.Equal(t, 3, len(resultList))
+
+	// Populate
+	resultList, status, resErr = requesterList("/article?populate=true", http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, resErr)
+	assert.Equal(t, 3, len(resultList))
+	assert.NotEmpty(t, resultList[0]["shape"])
+	assert.NotEmpty(t, resultList[0]["type"])
+	assert.NotEmpty(t, resultList[0]["tones"])
+	assert.NotEmpty(t, resultList[0]["colors"])
 }
 
 func TestArticle(t *testing.T) {
@@ -318,7 +341,7 @@ func TestArticle(t *testing.T) {
 	// Post color
 	body = map[string]interface{}{
 		"name": "test",
-		"hexa": "000000",
+		"hexa": "test",
 	}
 
 	result, status = requester("/article-color/create", http.MethodPost, body, adminTok)
