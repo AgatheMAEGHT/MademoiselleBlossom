@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './week.css';
+import { requester } from '../../../components/requester';
 
 function WeekAdmin() {
 
@@ -35,21 +36,12 @@ function WeekAdmin() {
         }
 
         setSolors(newColor);
-        setGradient(createGradient());
     }
 
     function addColor() {
-        setSolors(prev => [...prev, { name: "", id: colors.length }]);
-        setGradient(createGradient());
+        setSolors(prev => [...prev, { name: "#ffffff", id: colors.length }]);
     }
 
-    function saveColors() {
-        /**
-         * TO DO
-         */
-    }
-
-    const [gradient, setGradient] = React.useState<string>(createGradient());
     function createGradient(): string {
         if (colors.length === 0) {
             return "white";
@@ -67,8 +59,15 @@ function WeekAdmin() {
     }
 
     function postColors() {
-        let tmp = colors.map((elt: { name: string, id: number }) => elt.name.replace("#", ""));
-        
+        let tmp: string[] = colors.map((elt: { name: string, id: number }) => elt.name.replace("#", ""));
+        requester('/admin/week', "POST", { colors: tmp }).then((res: any) => {
+            console.log(res);
+            if (res._confirm === "ok") {
+                alert("Les couleurs ont bien été sauvegardées");
+            } else {
+                alert("Une erreur est survenue");
+            }
+        })
     }
 
     return (
@@ -82,7 +81,7 @@ function WeekAdmin() {
             <div id='admin-week-colors'>
                 {displayColors()}
                 <button className='admin-button' onClick={() => { addColor() }}>Ajouter une couleur</button>
-                <button className='admin-button' onClick={() => { saveColors() }}>Sauvegarder les couleurs</button>
+                <button className='admin-button' onClick={() => { postColors() }}>Sauvegarder les couleurs</button>
             </div>
         </div>
     );
