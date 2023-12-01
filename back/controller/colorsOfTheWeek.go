@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func getColorsOfTheWeek(w http.ResponseWriter, r *http.Request) {
@@ -38,17 +39,30 @@ func getColorsOfTheWeek(w http.ResponseWriter, r *http.Request) {
 
 		query["_id"] = id
 	}
-	if r.Form.Get("name") != "" {
-		query["name"] = r.Form.Get("name")
-	}
-	if r.Form.Get("hexa") != "" {
-		query["hexa"] = r.Form.Get("hexa")
-	}
 
-	colors, err := database.FindColorsOfTheWeeks(ctx, query)
+	queryOptions := options.Find()
+	queryOptions.SetSort(bson.M{"createdAt": -1})
+
+	colors, err := database.FindColorsOfTheWeeks(ctx, query, queryOptions)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting colors of the week").ToJson())
+		return
+	}
+
+	if r.Form.Get("populate") == "true" {
+		populatedColors := make([]*database.ColorsOfTheWeekRes, len(colors))
+		for i, color := range colors {
+			populatedColors[i], err = color.Populate(ctx)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write(utils.NewResErr("Error populating colors of the week").ToJson())
+				return
+			}
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(populatedColors)
 		return
 	}
 
@@ -84,6 +98,15 @@ func postColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database.U
 		return
 	}
 
+	if color.Files == nil {
+		err := utils.IsListObjectIdExist(color.Files, database.FileCollection)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(err.ToJson())
+			return
+		}
+	}
+
 	_, err = color.CreateOne(ctx)
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {
@@ -93,56 +116,6 @@ func postColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database.U
 		}
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error creating colors of the week").ToJson())
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(color)
-}
-
-func putColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database.User) {
-	ctx := r.Context()
-	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
-		"method": r.Method,
-		"path":   r.URL.Path,
-	})
-	log.Info("putColorsOfTheWeek")
-
-	if !user.IsAdmin {
-		w.WriteHeader(http.StatusUnauthorized)
-		w.Write(utils.NewResErr("Unauthorized").ToJson())
-		return
-	}
-
-	body := database.ColorsOfTheWeek{}
-	err := utils.ParseBody(r.Body, &body)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Error parsing body").ToJson())
-		return
-	}
-
-	if body.ID == primitive.NilObjectID {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Missing _id").ToJson())
-		return
-	}
-
-	color, err := database.FindOneColorsOfTheWeek(ctx, bson.M{"_id": body.ID})
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error getting colors of the week").ToJson())
-		return
-	}
-
-	if body.Hexas != nil && len(body.Hexas) > 0 {
-		color.Hexas = body.Hexas
-	}
-
-	_, err = color.UpdateOne(ctx)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Error updating colors of the week").ToJson())
 		return
 	}
 

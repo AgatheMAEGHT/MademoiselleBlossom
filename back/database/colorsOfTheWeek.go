@@ -7,16 +7,25 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var (
 	ColorsOfTheWeekCollection *mongo.Collection
 )
 
-type ColorsOfTheWeek struct {
+type ColorsOfTheWeekRes struct {
 	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	Hexas     []string           `json:"hexas" bson:"hexas"`
+	Files     []string           `json:"files" bson:"files"`
 	CreatedAt primitive.DateTime `json:"createdAt" bson:"createdAt"`
+}
+
+type ColorsOfTheWeek struct {
+	ID        primitive.ObjectID   `json:"_id" bson:"_id,omitempty"`
+	Hexas     []string             `json:"hexas" bson:"hexas"`
+	Files     []primitive.ObjectID `json:"files" bson:"files"`
+	CreatedAt primitive.DateTime   `json:"createdAt" bson:"createdAt"`
 }
 
 func (a *ColorsOfTheWeek) CreateOne(ctx context.Context) (*mongo.InsertOneResult, error) {
@@ -44,8 +53,8 @@ func FindOneColorsOfTheWeek(ctx context.Context, filter bson.M) (*ColorsOfTheWee
 	return &a, err
 }
 
-func FindColorsOfTheWeeks(ctx context.Context, filter bson.M) ([]*ColorsOfTheWeek, error) {
-	cursor, err := ColorsOfTheWeekCollection.Find(ctx, filter)
+func FindColorsOfTheWeeks(ctx context.Context, filter bson.M, options ...*options.FindOptions) ([]*ColorsOfTheWeek, error) {
+	cursor, err := ColorsOfTheWeekCollection.Find(ctx, filter, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,6 +70,26 @@ func FindColorsOfTheWeeks(ctx context.Context, filter bson.M) ([]*ColorsOfTheWee
 	}
 
 	return colorsOfTheWeeks, nil
+}
+
+func (a *ColorsOfTheWeek) Populate(ctx context.Context) (*ColorsOfTheWeekRes, error) {
+	var colorsOfTheWeekRes ColorsOfTheWeekRes
+	colorsOfTheWeekRes.ID = a.ID
+	colorsOfTheWeekRes.Hexas = a.Hexas
+	colorsOfTheWeekRes.Files = make([]string, len(a.Files))
+	files, err := FindFiles(ctx, bson.M{"_id": bson.M{"$in": a.Files}})
+
+	colorsOfTheWeekRes.Files = make([]string, 0, len(files))
+	if err != nil {
+		return nil, err
+	}
+	for _, file := range files {
+		colorsOfTheWeekRes.Files = append(colorsOfTheWeekRes.Files, file.FullName())
+	}
+
+	colorsOfTheWeekRes.CreatedAt = a.CreatedAt
+
+	return &colorsOfTheWeekRes, nil
 }
 
 func initColorsOfTheWeek(ctx context.Context, db *mongo.Database) {

@@ -12,6 +12,12 @@ var (
 	CarousselHomepageImgCollection *mongo.Collection
 )
 
+type CarousselHomepageImgRes struct {
+	ID      primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	File    string             `json:"file" bson:"file"`
+	AltName string             `json:"altName" bson:"altName"`
+}
+
 type CarousselHomepageImg struct {
 	ID      primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	File    primitive.ObjectID `json:"file" bson:"file"`
@@ -59,6 +65,19 @@ func FindCarousselHomepageImgs(ctx context.Context, filter bson.M) ([]*Caroussel
 	}
 
 	return carousselHomepageImgs, nil
+}
+
+func (a *CarousselHomepageImg) Populate(ctx context.Context) (*CarousselHomepageImgRes, error) {
+	file, err := FindOneFile(ctx, bson.M{"_id": a.File})
+	if err != nil {
+		return nil, err
+	}
+
+	return &CarousselHomepageImgRes{
+		ID:      a.ID,
+		File:    file.FullName(),
+		AltName: a.AltName,
+	}, nil
 }
 
 func initCarousselHomepageImg(ctx context.Context, db *mongo.Database) {

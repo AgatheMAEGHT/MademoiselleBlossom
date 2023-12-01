@@ -88,7 +88,6 @@ func StartServer(path string) {
 
 	server.HandleFunc("/colors-of-the-week", corsWrapper(getColorsOfTheWeek))
 	server.HandleFunc("/colors-of-the-week/create", middlewareWrapper(postColorsOfTheWeek))
-	server.HandleFunc("/colors-of-the-week/update", middlewareWrapper(putColorsOfTheWeek))
 	server.HandleFunc("/colors-of-the-week/delete", middlewareWrapper(deleteColorsOfTheWeek))
 
 	fmt.Printf("Listening on '%s'\n", path)

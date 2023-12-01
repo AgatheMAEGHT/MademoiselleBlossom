@@ -59,6 +59,22 @@ func getCarousselHomepageImg(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if r.Form.Get("populate") == "true" {
+		populatedCarousselHomepageImgs := make([]*database.CarousselHomepageImgRes, len(carousselHomepageImgs))
+		for i, carousselHomepageImg := range carousselHomepageImgs {
+			populatedCarousselHomepageImgs[i], err = carousselHomepageImg.Populate(ctx)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write(utils.NewResErr("Error populating carousselHomepageImg").ToJson())
+				return
+			}
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(populatedCarousselHomepageImgs)
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(carousselHomepageImgs)
 }
