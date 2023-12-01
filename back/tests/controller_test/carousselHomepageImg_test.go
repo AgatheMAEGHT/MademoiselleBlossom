@@ -36,15 +36,15 @@ func TestCarousselHomepageImg(t *testing.T) {
 		"altName": "test",
 	}
 	// Not admin
-	result, status = requester("/carousselHomepageImg/create", http.MethodPost, body, testTok)
+	result, status = requester("/caroussel-homepage-img/create", http.MethodPost, body, testTok)
 	assert.Equal(t, 401, status, result["err"])
 
 	// No file
-	result, status = requester("/carousselHomepageImg/create", http.MethodPost, map[string]interface{}{"altName": "test"}, adminTok)
+	result, status = requester("/caroussel-homepage-img/create", http.MethodPost, map[string]interface{}{"altName": "test"}, adminTok)
 	assert.Equal(t, 400, status, result["err"])
 
 	// Admin
-	result, status = requester("/carousselHomepageImg/create", http.MethodPost, body, adminTok)
+	result, status = requester("/caroussel-homepage-img/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	resCarousselID1, ok := result["_id"].(string)
@@ -55,7 +55,7 @@ func TestCarousselHomepageImg(t *testing.T) {
 		"file":    resFileID,
 		"altName": "test2",
 	}
-	result, status = requester("/carousselHomepageImg/create", http.MethodPost, body, adminTok)
+	result, status = requester("/caroussel-homepage-img/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	resCarousselID2, ok := result["_id"].(string)
@@ -64,18 +64,18 @@ func TestCarousselHomepageImg(t *testing.T) {
 	defer func() {
 		// Delete carousselHomepageImg
 		// Admin
-		result, status = requester(fmt.Sprintf("/carousselHomepageImg/delete?_id=%s", resCarousselID2), http.MethodDelete, nil, adminTok)
+		result, status = requester(fmt.Sprintf("/caroussel-homepage-img/delete?_id=%s", resCarousselID2), http.MethodDelete, nil, adminTok)
 		assert.Equal(t, 200, status, result["err"])
 	}()
 
 	// Get carousselHomepageImgs
-	resultList, status, resErr := requesterList("/carousselHomepageImg", http.MethodGet, nil, testTok)
+	resultList, status, resErr := requesterList("/caroussel-homepage-img", http.MethodGet, nil, testTok)
 	assert.Equal(t, 200, status, resErr)
 	assert.Equal(t, 2, len(resultList))
 	assert.NotEmpty(t, resultList[0]["_id"])
 
 	// Get carousselHomepageImg
-	resultList, status, resErr = requesterList(fmt.Sprintf("/carousselHomepageImg?_id=%s", resCarousselID1), http.MethodGet, nil, testTok)
+	resultList, status, resErr = requesterList(fmt.Sprintf("/caroussel-homepage-img?_id=%s", resCarousselID1), http.MethodGet, nil, testTok)
 	assert.Equal(t, 200, status, resErr)
 	assert.Equal(t, 1, len(resultList))
 
@@ -86,11 +86,11 @@ func TestCarousselHomepageImg(t *testing.T) {
 	}
 
 	// Not admin
-	result, status = requester("/carousselHomepageImg/update", http.MethodPut, body, testTok)
+	result, status = requester("/caroussel-homepage-img/update", http.MethodPut, body, testTok)
 	assert.Equal(t, 401, status, result["err"])
 
 	// Admin
-	result, status = requester("/carousselHomepageImg/update", http.MethodPut, body, adminTok)
+	result, status = requester("/caroussel-homepage-img/update", http.MethodPut, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
 	resCarousselID3, ok := result["_id"].(string)
@@ -99,12 +99,12 @@ func TestCarousselHomepageImg(t *testing.T) {
 	defer func() {
 		// Delete carousselHomepageImg
 		// Admin
-		result, status = requester(fmt.Sprintf("/carousselHomepageImg/delete?_id=%s", resCarousselID3), http.MethodDelete, nil, adminTok)
+		result, status = requester(fmt.Sprintf("/caroussel-homepage-img/delete?_id=%s", resCarousselID3), http.MethodDelete, nil, adminTok)
 		assert.Equal(t, 200, status, result["err"])
 	}()
 
 	// Get carousselHomepageImg
-	resultList, status, resErr = requesterList(fmt.Sprintf("/carousselHomepageImg?_id=%s", resCarousselID3), http.MethodGet, nil, testTok)
+	resultList, status, resErr = requesterList(fmt.Sprintf("/caroussel-homepage-img?_id=%s", resCarousselID3), http.MethodGet, nil, testTok)
 	assert.Equal(t, 200, status, resErr)
 	assert.Equal(t, 1, len(resultList))
 	assert.Equal(t, "test3", resultList[0]["altName"])

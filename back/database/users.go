@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
@@ -23,6 +24,7 @@ type User struct {
 	LastName  string             `json:"lastName" bson:"lastName"`
 	Password  string             `json:"-" bson:"password"`
 	IsAdmin   bool               `json:"isAdmin" bson:"isAdmin" default:"false"`
+	CreatedAt primitive.DateTime `json:"createdAt" bson:"createdAt"`
 }
 
 func HashPassword(password string) (string, error) {
@@ -35,6 +37,7 @@ func (u *User) ComparePassword(password string) error {
 }
 
 func (u *User) CreateOne(ctx context.Context) (*mongo.InsertOneResult, error) {
+	u.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
 	var err error
 	u.Password, err = HashPassword(u.Password)
 	if err != nil {

@@ -76,15 +76,20 @@ func StartServer(path string) {
 	server.HandleFunc("/file/create", middlewareWrapper(postFile))
 	server.HandleFunc("/file/delete/", middlewareWrapper(deleteFile))
 
-	server.HandleFunc("/carousselHomepageImg", corsWrapper(getCarousselHomepageImg))
-	server.HandleFunc("/carousselHomepageImg/create", middlewareWrapper(postCarousselHomepageImg))
-	server.HandleFunc("/carousselHomepageImg/update", middlewareWrapper(putCarousselHomepageImg))
-	server.HandleFunc("/carousselHomepageImg/delete", middlewareWrapper(deleteCarousselHomepageImg))
+	server.HandleFunc("/caroussel-homepage-img", corsWrapper(getCarousselHomepageImg))
+	server.HandleFunc("/caroussel-homepage-img/create", middlewareWrapper(postCarousselHomepageImg))
+	server.HandleFunc("/caroussel-homepage-img/update", middlewareWrapper(putCarousselHomepageImg))
+	server.HandleFunc("/caroussel-homepage-img/delete", middlewareWrapper(deleteCarousselHomepageImg))
 
 	server.HandleFunc("/article", corsWrapper(getArticle))
 	server.HandleFunc("/article/create", middlewareWrapper(postArticle))
 	server.HandleFunc("/article/update", middlewareWrapper(putArticle))
 	server.HandleFunc("/article/delete", middlewareWrapper(deleteArticle))
+
+	server.HandleFunc("/colors-of-the-week", corsWrapper(getColorsOfTheWeek))
+	server.HandleFunc("/colors-of-the-week/create", middlewareWrapper(postColorsOfTheWeek))
+	server.HandleFunc("/colors-of-the-week/update", middlewareWrapper(putColorsOfTheWeek))
+	server.HandleFunc("/colors-of-the-week/delete", middlewareWrapper(deleteColorsOfTheWeek))
 
 	fmt.Printf("Listening on '%s'\n", path)
 	http.ListenAndServe(path, server)

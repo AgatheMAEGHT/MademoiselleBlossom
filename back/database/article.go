@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -25,6 +26,7 @@ type ArticleRes struct {
 	Shape       *ArticleShape      `json:"shape" bson:"shape"`
 	Type        *ArticleType       `json:"type" bson:"type"`
 	Colors      []*ArticleColor    `json:"colors" bson:"colors"`
+	CreatedAt   primitive.DateTime `json:"createdAt" bson:"createdAt"`
 }
 
 type Article struct {
@@ -39,9 +41,11 @@ type Article struct {
 	Shape       primitive.ObjectID   `json:"shape" bson:"shape"`
 	Type        primitive.ObjectID   `json:"type" bson:"type"`
 	Colors      []primitive.ObjectID `json:"colors" bson:"colors"`
+	CreatedAt   primitive.DateTime   `json:"createdAt" bson:"createdAt"`
 }
 
 func (a *Article) CreateOne(ctx context.Context) (*mongo.InsertOneResult, error) {
+	a.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
 	res, err := ArticleCollection.InsertOne(ctx, a)
 	if err != nil {
 		return nil, err

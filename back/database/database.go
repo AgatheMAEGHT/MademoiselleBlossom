@@ -32,6 +32,7 @@ func initCollections(ctx context.Context) {
 	initFile(ctx, db)
 	initCarousselHomepageImg(ctx, db)
 	initArticle(ctx, db)
+	initColorsOfTheWeek(ctx, db)
 }
 
 func Connect(ctx context.Context, url string) (*mongo.Client, error) {
