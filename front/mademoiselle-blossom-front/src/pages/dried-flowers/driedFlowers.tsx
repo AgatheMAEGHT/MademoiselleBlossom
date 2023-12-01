@@ -23,11 +23,11 @@ function DriedFlowers() {
         let driedFlowersList: JSX.Element[] = [];
         for (let i = 0; i < driedFlowers?.length; i += 3) {
             let row: JSX.Element[] = [];
-            row.push(<CatalogTile key={driedFlowers[i]._id} name={driedFlowers[i].name} price={driedFlowers[i].price} images={driedFlowers[i].files} id={driedFlowers[i]._id} />);
+            row.push(<CatalogTile key={driedFlowers[i]._id} name={driedFlowers[i].name} price={driedFlowers[i].price.toString().toString()} images={driedFlowers[i].files} id={driedFlowers[i]._id} />);
             if (driedFlowers[i + 1]) {
-                row.push(<CatalogTile key={driedFlowers[i + 1]._id} name={driedFlowers[i + 1].name} price={driedFlowers[i + 1].price} images={driedFlowers[i + 1].files} id={driedFlowers[i + 1]._id} />);
+                row.push(<CatalogTile key={driedFlowers[i + 1]._id} name={driedFlowers[i + 1].name} price={driedFlowers[i + 1].price.toString()} images={driedFlowers[i + 1].files} id={driedFlowers[i + 1]._id} />);
                 if (driedFlowers[i + 2]) {
-                    row.push(<CatalogTile key={driedFlowers[i + 2]._id} name={driedFlowers[i + 2].name} price={driedFlowers[i + 2].price} images={driedFlowers[i + 2].files} id={driedFlowers[i + 2]._id} />);
+                    row.push(<CatalogTile key={driedFlowers[i + 2]._id} name={driedFlowers[i + 2].name} price={driedFlowers[i + 2].price.toString()} images={driedFlowers[i + 2].files} id={driedFlowers[i + 2]._id} />);
                 }
             }
             driedFlowersList.push(<div key={i} className="dried-flowers-row">{row}</div>);

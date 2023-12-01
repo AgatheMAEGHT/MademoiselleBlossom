@@ -50,26 +50,26 @@ function CreateAccount() {
                     <div className="login-container-input">
                         <div className='login-container-input-element'>
                             <label htmlFor="text">Prénom</label>
-                            <p className='login-mandatory'>*</p>
+                            <p className='form-mandatory'>*</p>
                         </div>
                         <div className='login-container-input-element'>
                             <label htmlFor="text">Nom</label>
-                            <p className='login-mandatory'>*</p>
+                            <p className='form-mandatory'>*</p>
                         </div>
                         <div className='login-container-input-element'>
                             <label htmlFor="email">Email</label>
-                            <p className='login-mandatory'>*</p>
+                            <p className='form-mandatory'>*</p>
                         </div>
                         <div className='login-container-input-element'>
                             <label htmlFor="phone">Téléphone</label>
                         </div>
                         <div className='login-container-input-element'>
                             <label htmlFor="password">Mot de passe</label>
-                            <p className='login-mandatory'>*</p>
+                            <p className='form-mandatory'>*</p>
                         </div>
                         <div className='login-container-input-element'>
                             <label htmlFor="password">Confirmer le mot de passe</label>
-                            <p className='login-mandatory'>*</p>
+                            <p className='form-mandatory'>*</p>
                         </div>
                     </div>
                     <div className="login-container-input">
@@ -83,8 +83,8 @@ function CreateAccount() {
                 </div>
                 <button onClick={() => createAccount()} className='login-container-button'>Créer un compte</button>
                 <div className='login-container-input-element' id="login-container-element-mandatory">
-                    <p className='login-mandatory'>*</p>
-                    <p id="login-mandatory-text">Champs obligatoires</p>
+                    <p className='form-mandatory'>*</p>
+                    <p id="form-mandatory-text">Champs obligatoires</p>
                 </div>
             </div>
             <div className="login-container">

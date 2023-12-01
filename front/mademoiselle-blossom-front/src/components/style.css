@@ -1,3 +1,21 @@
 .page {
     margin: 5vh;
 }
+
+/* Mandatory Form Elements */
+#form-mandatory-info {
+    display: flex;
+    align-items: center;
+}
+
+.form-mandatory {
+    color: var(--color-3);
+    font-weight: bold;
+    margin: 0 2px;
+    font-size: small;
+}
+
+#form-mandatory-text {
+    margin: 0;
+    font-size: small;
+}

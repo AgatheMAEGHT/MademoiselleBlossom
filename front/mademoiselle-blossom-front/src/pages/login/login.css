@@ -33,18 +33,6 @@
     display: flex;
 }
 
-.login-mandatory {
-    color: var(--color-3);
-    font-weight: bold;
-    margin: 0 2px;
-    font-size: small;
-}
-
-#login-mandatory-text {
-    margin: 0;
-    font-size: small;
-}
-
 #login-container-element-mandatory {
     margin-top: 15px;
 }

@@ -7,6 +7,7 @@
 
 .admin-page-title {
     width: fit-content;
+    text-align: center;
 }
 
 .admin-element-title {
@@ -22,4 +23,9 @@
 
     padding: 10px 20px;
     margin: 5px;
+    height: 40px;
+}
+
+.admin-button:active {
+    background-color: var(--color-logo-dark);
 }
