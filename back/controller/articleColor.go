@@ -194,7 +194,7 @@ func deleteArticleColor(w http.ResponseWriter, r *http.Request, user database.Us
 		return
 	}
 
-	res, err := database.DeleteOneColor(ctx, id)
+	res, err := database.DeleteOneArticleColor(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting article color").ToJson())
@@ -203,10 +203,10 @@ func deleteArticleColor(w http.ResponseWriter, r *http.Request, user database.Us
 
 	if res.DeletedCount == 0 {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write(utils.NewResErr("Article Color type not found").ToJson())
+		w.Write(utils.NewResErr("Article Color not found").ToJson())
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(utils.NewResMsg("Article Color type deleted").ToJson())
+	w.Write(utils.NewResMsg("Article Color deleted").ToJson())
 }

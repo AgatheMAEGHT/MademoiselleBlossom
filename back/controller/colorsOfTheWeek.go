@@ -157,7 +157,7 @@ func deleteColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database
 		return
 	}
 
-	res, err := database.DeleteOneColor(ctx, id)
+	res, err := database.DeleteOneColorsOfTheWeek(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error getting colors of the week").ToJson())
@@ -166,10 +166,10 @@ func deleteColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database
 
 	if res.DeletedCount == 0 {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write(utils.NewResErr("Colors of the week type not found").ToJson())
+		w.Write(utils.NewResErr("Colors of the week not found").ToJson())
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(utils.NewResMsg("Colors of the week type deleted").ToJson())
+	w.Write(utils.NewResMsg("Colors of the week deleted").ToJson())
 }

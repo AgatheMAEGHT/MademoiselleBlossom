@@ -34,7 +34,7 @@ func (a *ArticleColor) UpdateOne(ctx context.Context) (*mongo.UpdateResult, erro
 	return ArticleColorCollection.UpdateOne(ctx, bson.M{"_id": a.ID}, bson.M{"$set": a})
 }
 
-func DeleteOneColor(ctx context.Context, id primitive.ObjectID) (*mongo.DeleteResult, error) {
+func DeleteOneArticleColor(ctx context.Context, id primitive.ObjectID) (*mongo.DeleteResult, error) {
 	return ArticleColorCollection.DeleteOne(ctx, bson.M{"_id": id})
 }
 
