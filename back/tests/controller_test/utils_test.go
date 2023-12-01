@@ -15,6 +15,7 @@ func requesterFile(path string, method string, auth string, fileName string) (ma
 	url := "http://localhost:8080" + path
 
 	content := []byte{}
+	contentType := "image/png"
 	if fileName != "" {
 		file, err := os.Open(fileName)
 		if err != nil {
@@ -26,6 +27,9 @@ func requesterFile(path string, method string, auth string, fileName string) (ma
 		if err != nil {
 			panic(err)
 		}
+
+		ext := fileName[len(fileName)-3:]
+		contentType = "image/" + ext
 	}
 
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(content))
@@ -33,7 +37,7 @@ func requesterFile(path string, method string, auth string, fileName string) (ma
 		panic(err)
 	}
 
-	req.Header.Set("Content-Type", "image/png")
+	req.Header.Set("Content-Type", contentType)
 	if auth != "" {
 		req.Header.Set("Authorization", "Bearer "+auth)
 	}
