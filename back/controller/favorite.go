@@ -167,6 +167,24 @@ func deleteFavorite(w http.ResponseWriter, r *http.Request, user database.User) 
 		return
 	}
 
+	favorite, err := database.FindOneFavorite(ctx, bson.M{"_id": id})
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write(utils.NewResErr("Favorite not found").ToJson())
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting favorite").ToJson())
+		return
+	}
+
+	if favorite.User != user.ID {
+		w.WriteHeader(http.StatusForbidden)
+		w.Write(utils.NewResErr("Forbidden").ToJson())
+		return
+	}
+
 	res, err := database.DeleteOneFavorite(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
