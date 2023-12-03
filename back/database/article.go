@@ -122,11 +122,20 @@ func (a *Article) Populate(ctx context.Context) (*ArticleRes, error) {
 	articleRes.Tones = articleTones
 
 	files, err := FindFiles(ctx, bson.M{"_id": bson.M{"$in": a.Files}})
-	articleRes.Files = make([]string, 0, len(files))
+	sortedFiles := make([]*File, 0, len(files))
+	for _, id := range a.Files {
+		for _, file := range files {
+			if file.ID == id {
+				sortedFiles = append(sortedFiles, file)
+			}
+		}
+	}
+
+	articleRes.Files = make([]string, 0, len(sortedFiles))
 	if err != nil {
 		return nil, err
 	}
-	for _, file := range files {
+	for _, file := range sortedFiles {
 		articleRes.Files = append(articleRes.Files, file.FullName())
 	}
 
