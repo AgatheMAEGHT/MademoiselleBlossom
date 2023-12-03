@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import AdminCatalogTile from '../_components/catalog-tile-admin/catalogTile';
 import { catalog } from '../../../components/types';
+import AdminCatalogTile from '../_components/catalog-tile-admin/catalogTile';
+import { requester } from '../../../components/requester';
 
 import './dried.css';
-import { requester } from '../../../components/requester';
 
 function CatalogAdmin() {
     let navigate = useNavigate();

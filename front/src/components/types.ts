@@ -5,6 +5,15 @@ export type driedFlowerTile = {
     price: string,
 }
 
+export type driedFlowerTileClient = {
+    id: string,
+    name: string,
+    images: string[],
+    price: string,
+    favorite: { _id: string, article: string },
+}
+
+
 /* ==================== *
  *       FROM DB 
 * ==================== */
@@ -78,6 +87,12 @@ export type newArticleDB = {
     tones: string[],
     files: string[],
 }
+
+export type favoriteDB = {
+    _id: string,
+    article: string
+}
+
 /* END OF DB */
 
 export type article = {

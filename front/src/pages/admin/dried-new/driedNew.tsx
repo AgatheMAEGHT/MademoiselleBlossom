@@ -190,6 +190,7 @@ function NewDriedAdmin() {
                 } else {
                     setOptions({ ...options, colors: [...options.colors, { value: res._id, label: res.name }] });
                 }
+                setColor({ name: "", hexa: "#ffffff" });
             } else {
                 console.log(res);
                 alert("Une erreur est survenue lors de la création de la couleur");
@@ -218,6 +219,7 @@ function NewDriedAdmin() {
                 } else {
                     setOptions({ ...options, tones: [...options.tones, { value: res._id, label: res.name }] });
                 }
+                setTone("");
             } else {
                 alert("Une erreur est survenue lors de la création du ton");
             }
@@ -245,6 +247,7 @@ function NewDriedAdmin() {
                 } else {
                     setOptions({ ...options, shapes: [...options.shapes, { value: res._id, label: res.name }] });
                 }
+                setShape("");
             } else {
                 console.log(res);
                 alert("Une erreur est survenue lors de la création de la forme");

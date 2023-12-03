@@ -36,6 +36,10 @@ export function requester<T>(url: string, method: string, body?: any): Promise<T
     })
         .then(res => {
             if (res.status === 401) {
+                let msg = "Vous n'êtes pas connecté."
+                if (token) {
+                    msg = "Votre session a expiré. Veuillez vous reconnecter."
+                }
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 localStorage.removeItem('expire_date');
@@ -45,7 +49,7 @@ export function requester<T>(url: string, method: string, body?: any): Promise<T
                 localStorage.removeItem('firstName');
                 localStorage.removeItem('lastName');
 
-                alert('Session expirée, veuillez vous reconnecter');
+                alert(msg);
             }
             return res.json()
         })

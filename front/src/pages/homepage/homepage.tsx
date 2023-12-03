@@ -15,10 +15,10 @@ function Homepage() {
                 <div id="home-carousel">
                     <div id="home-carousel-dir-buttons-area">
                         <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, 5, tr, setTr)}>
-                            <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} />
+                            <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel images' />
                         </div>
                         <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, 5, tr, setTr)}>
-                            <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' />
+                            <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
                         </div>
                     </div>
                     <div id="home-carousel-list">

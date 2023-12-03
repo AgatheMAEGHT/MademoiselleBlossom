@@ -9,10 +9,6 @@ function AdminCatalogTile(props: driedFlowerTile) {
     let navigate = useNavigate();
 
     let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
-    console.log("image URL : " + imageUrl);
-    for (let i = 0; i < props.images.length; i++) {
-        console.log("image : " + props.images[i]);
-    }
 
     return (
         <div className="dried-tile" key={props.id} onClick={() => navigate("/fleurs-sechees/" + props.name)}>
