@@ -16,7 +16,7 @@ function Header() {
             <div id="header-top">
                 <div id="header-top-buttons">
                     <div>
-                        <img onClick={() => (burgerHeader())} className='header-top-button' id='header-top-button-burger' src='/icons/burger.svg' />
+                        <img onClick={() => (burgerHeader())} className='header-top-button' id='header-top-button-burger' src='/icons/burger.svg' alt='burger menu' />
                     </div>
                     {!logged || logged === "" ?
                         <div id="header-top-buttons-right">

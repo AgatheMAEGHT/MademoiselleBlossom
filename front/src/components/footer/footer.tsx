@@ -1,8 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import logo from '../../Mademoiselle_blossom_fit.png';
-
 import './footer.css';
 
 function Footer() {
