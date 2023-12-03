@@ -1,5 +1,8 @@
 #admin-dried-catalog {
     margin: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 6vw;
 }
 
 #dried-flowers-catalog {

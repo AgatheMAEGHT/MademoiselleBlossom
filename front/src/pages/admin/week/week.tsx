@@ -61,10 +61,10 @@ function WeekAdmin() {
     function postColors() {
         let tmp: string[] = colors.map((elt: { name: string, id: number }) => elt.name.replace("#", ""));
         requester('/admin/week', "POST", { colors: tmp }).then((res: any) => {
-            console.log(res);
             if (res._confirm === "ok") {
                 alert("Les couleurs ont bien été sauvegardées");
             } else {
+                console.log(res);
                 alert("Une erreur est survenue");
             }
         })

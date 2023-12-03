@@ -10,14 +10,14 @@ function Profile() {
     let navigate = useNavigate();
 
     function logout() {
-        localStorage.setItem('logged', "none");
-        localStorage.setItem('access_token', "");
-        localStorage.setItem('expire_date', "");
-        localStorage.setItem('refresh_token', "");
-        localStorage.setItem('email', "");
-        localStorage.setItem('phone', "");
-        localStorage.setItem('firstName', "");
-        localStorage.setItem('lastName', "");
+        localStorage.removeItem('logged');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('expire_date');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('email');
+        localStorage.removeItem('phone');
+        localStorage.removeItem('firstName');
+        localStorage.removeItem('lastName');
         navigate('/');
     }
 

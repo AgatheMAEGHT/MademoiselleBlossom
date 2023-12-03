@@ -250,6 +250,7 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		w.Write(err.ToJson())
 		return
 	}
+	log.Infof("Article '%s' has files: %v", body.Name, body.Files)
 
 	if body.Tones == nil {
 		w.WriteHeader(http.StatusBadRequest)

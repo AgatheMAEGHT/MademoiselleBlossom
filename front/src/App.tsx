@@ -23,9 +23,6 @@ import "./pages/admin/_components/styleAdmin.css"
 import "./components/style.css";
 
 function App() {
-    if (localStorage.getItem("logged") === null) {
-        localStorage.setItem("logged", "none")
-    }
     let logged: string | null = localStorage.getItem("logged");
 
     return (
