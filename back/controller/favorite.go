@@ -121,17 +121,7 @@ func postFavorite(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if favorite.User == primitive.NilObjectID {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Missing user").ToJson())
-		return
-	}
-	errId = utils.IsObjectIdExist(favorite.User, database.UserCollection)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(errId.ToJson())
-		return
-	}
+	favorite.User = user.ID
 
 	_, err = favorite.CreateOne(ctx)
 	if err != nil {
