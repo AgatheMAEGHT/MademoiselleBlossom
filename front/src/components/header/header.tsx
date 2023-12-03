@@ -25,16 +25,29 @@ function Header() {
                         </div>
                         :
                         <div id="header-top-buttons-right">
-                            <p onClick={() => navigate("/mon-compte")} className='header-top-button'>Mon compte</p>
-                            <p onClick={() => navigate("/favoris")} className='header-top-button' id="header-top-button-withicon">
+                            <p onClick={() => navigate("/mon-compte")} className='header-top-button header-top-button-withicon'>
+                                Mon compte
+                                <img
+                                    className='header-top-button-icon'
+                                    src={"/icons/profile.svg"}
+                                    id="header-button-profile"
+                                />
+                            </p>
+                            <p onClick={() => navigate("/favoris")} className='header-top-button header-top-button-withicon'>
                                 Mes favoris
                                 <img
                                     className='header-top-button-icon'
                                     src={"/icons/heart_full.svg"}
-                                    alt="ajouter aux favoris"
-                                    onClick={() => navigate("/favoris")}
-                                /></p>
-                            <p className='header-top-button'>Mon panier</p>
+                                />
+                            </p>
+                            <p onClick={() => navigate("/panier")} className='header-top-button header-top-button-withicon'>
+                                Mon panier
+                                <img
+                                    className='header-top-button-icon'
+                                    src={"/icons/cart.svg"}
+                                    id="header-button-cart"
+                                />
+                            </p>
                         </div>
                     }
                 </div>

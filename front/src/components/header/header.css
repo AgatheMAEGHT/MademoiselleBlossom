@@ -9,7 +9,7 @@
     justify-content: space-between;
 }
 
-#header-top-button-withicon {
+.header-top-button-withicon {
     display: flex;
     gap: 5px;
 }
@@ -20,10 +20,19 @@
     padding-top: 2px;
 }
 
+#header-button-cart {
+    padding-top: 0px;
+}
+
+#header-button-profile {
+    padding-top: 0px;
+}
+
 #header-top-buttons-right {
     display: flex;
     gap: 10px;
     margin-right: 10px;
+    height: 0px;
 }
 
 .header-top-button {

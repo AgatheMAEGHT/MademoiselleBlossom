@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="40 95 420 309" width="395.679" height="302.79" xmlns="http://www.w3.org/2000/svg">
+  <rect style="stroke: #534217; fill: rgb(216, 216, 216); fill-opacity: 0; stroke-linejoin: round; stroke-width: 15px;" x="48.019" y="196.544" width="395.679" height="47.527" rx="6" ry="6"/>
+  <path style="stroke-miterlimit: 1; stroke-linejoin: round; stroke: #534217; fill: rgb(255, 255, 255); fill-opacity: 0; stroke-width: 15px;" d="M 78.788 244.705 L 415.755 244.528 L 382.887 394.911 L 107.659 394.271 L 78.788 244.705 Z"/>
+  <path style="fill: rgb(216, 216, 216); stroke: #534217; stroke-linecap: round; stroke-width: 15px;" d="M 145.349 244.579 L 171.698 392.668"/>
+  <path style="fill: rgb(216, 216, 216); stroke: #534217; stroke-linecap: round; stroke-width: 15px; transform-origin: 161.252px 174.132px;" d="M 346.077 243.718 L 314.371 394.171"/>
+  <path style="fill: rgb(216, 216, 216); stroke: #534217; stroke-linecap: round; stroke-width: 15px; transform-origin: 127.944px 174.769px;" d="M 247.731 246.793 L 246.697 394.373"/>
+  <path style="fill: rgb(216, 216, 216); stroke: #534217; stroke-linecap: round; stroke-width: 15px; transform-origin: 128.204px 185.582px;" d="M 393.418 348.673 L 102.302 348.05"/>
+  <path style="fill: rgb(216, 216, 216); stroke: #534217; stroke-width: 15px; transform-origin: 128.335px 165.035px;" d="M 408.286 296.446 L 88.086 294.697"/>
+  <path style="fill: rgb(216, 216, 216); stroke: #534217; stroke-linecap: round; stroke-width: 15px; transform-origin: 101.227px 109.037px;" d="M 217.57 92.121 L 143.684 211.274"/>
+  <path style="fill: rgb(216, 216, 216); stroke: #534217; stroke-linejoin: round; stroke-linecap: round; stroke-width: 15px; transform-origin: 156.467px 109.224px;" d="M 281.806 92.727 L 354.798 211.632"/>
+</svg>
