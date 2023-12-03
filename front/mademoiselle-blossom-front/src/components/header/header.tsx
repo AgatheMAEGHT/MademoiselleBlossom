@@ -8,7 +8,7 @@ import { burgerHeader } from '../burgerHeader';
 import './header.css';
 
 function Header() {
-    let isLogged: string | null = localStorage.getItem("logged");
+    let logged: string | null = localStorage.getItem("logged");
     let navigate = useNavigate();
 
     return (
@@ -19,7 +19,7 @@ function Header() {
                         <img onClick={() => (burgerHeader())} className='header-top-button' id='header-top-button-burger' src='/icons/burger.svg' />
                     </div>
                     <div id="header-top-buttons-right">
-                        {isLogged === "none" ?
+                        {logged ?
                             <p onClick={()=> navigate("/se-connecter")} className='header-top-button'>Se connecter</p> :
                             <p onClick={() => navigate("/mon-compte")} className='header-top-button'>Mon compte</p>
                         }

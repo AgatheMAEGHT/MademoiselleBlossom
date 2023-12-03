@@ -37,6 +37,7 @@ function Login() {
                         localStorage.setItem('firstName', res2.firstName);
                         localStorage.setItem('lastName', res2.lastName);
                     } else {
+                        console.log(res2);
                         alert("Une erreur est survenue, merci de réessayer ultérieurement");
                     }
                 });
@@ -49,7 +50,10 @@ function Login() {
                     alert('Email ou mot de passe incorrect');
                     return;
                 }
-                alert("Une erreur est survenue, merci de réessayer ultérieurement");
+                else {
+                    console.log(res);
+                    alert("Une erreur est survenue, merci de réessayer ultérieurement");
+                }
             }
         });
     }

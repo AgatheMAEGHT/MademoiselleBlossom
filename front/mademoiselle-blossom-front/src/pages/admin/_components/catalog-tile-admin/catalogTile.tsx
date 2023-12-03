@@ -8,12 +8,19 @@ import '../../../../components/catalog-tile/catalogTile.css';
 function AdminCatalogTile(props: driedFlowerTile) {
     let navigate = useNavigate();
 
+    let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
+    console.log("image URL : " + imageUrl);
+    for (let i = 0; i < props.images.length; i++) {
+        console.log("image : " + props.images[i]);
+    }
+
     return (
         <div className="dried-tile" key={props.id} onClick={() => navigate("/fleurs-sechees/" + props.name)}>
             <div className="dried-tile-img-buttons">
+                <div></div>
                 <div className='dried-tile-img-buttons-cart' title="Modifier l'article">Modifier l'article</div>
             </div>
-            <img className="dried-tile-img" src={props.images[0]} alt={"courone de fleurs séchées " + props.name} />
+            <img className="dried-tile-img" src={imageUrl} alt={"courone de fleurs séchées " + props.name} />
             <div className="dried-tile-name">{props.name}</div>
             <div className="dried-tile-price">{props.price}€</div>
         </div>

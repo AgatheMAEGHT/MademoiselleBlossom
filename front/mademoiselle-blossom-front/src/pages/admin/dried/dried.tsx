@@ -12,7 +12,7 @@ function CatalogAdmin() {
     const [flowers, setFlowers] = React.useState<catalog>([]);
 
     React.useEffect(() => {
-        requester('/article', 'GET').then((res: any) => {
+        requester('/article?populate=true&limit=100', 'GET').then((res: any) => {
             console.log(res);
             setFlowers(res);
         })

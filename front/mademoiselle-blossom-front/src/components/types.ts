@@ -1,5 +1,3 @@
-import { type } from "os"
-
 export type driedFlowerTile = {
     id: string,
     name: string,
@@ -78,7 +76,7 @@ export type newArticleDB = {
     shape: string
     colors: string[],
     tones: string[],
-    files: FileList,
+    files: string[],
 }
 /* END OF DB */
 
@@ -93,6 +91,7 @@ export type article = {
     shape: shapeDB
     colors: colorDB[],
     tones: toneDB[],
+    firstFile: File,
     files: FileList,
 }
 

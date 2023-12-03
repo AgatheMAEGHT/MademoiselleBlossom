@@ -89,48 +89,57 @@ func FindArticles(ctx context.Context, filter bson.M, opts ...*options.FindOptio
 }
 
 func (a *Article) Populate(ctx context.Context) (*ArticleRes, error) {
-	var articleRes ArticleRes
-	articleRes.ID = a.ID
-	articleRes.Name = a.Name
-	articleRes.Description = a.Description
-	articleRes.Price = a.Price
-	articleRes.Stock = a.Stock
-	articleRes.Size = a.Size
+    var articleRes ArticleRes
+    articleRes.ID = a.ID
+    articleRes.Name = a.Name
+    articleRes.Description = a.Description
+    articleRes.Price = a.Price
+    articleRes.Stock = a.Stock
+    articleRes.Size = a.Size
 
-	articleType, err := FindOneArticleType(ctx, bson.M{"_id": a.Type})
-	if err != nil {
-		return nil, err
-	}
-	articleRes.Type = articleType
+    articleType, err := FindOneArticleType(ctx, bson.M{"_id": a.Type})
+    if err != nil {
+        return nil, err
+    }
+    articleRes.Type = articleType
 
-	articleShape, err := FindOneArticleShape(ctx, bson.M{"_id": a.Shape})
-	if err != nil {
-		return nil, err
-	}
-	articleRes.Shape = articleShape
+    articleShape, err := FindOneArticleShape(ctx, bson.M{"_id": a.Shape})
+    if err != nil {
+        return nil, err
+    }
+    articleRes.Shape = articleShape
 
-	articleColors, err := FindArticleColors(ctx, bson.M{"_id": bson.M{"$in": a.Colors}})
-	if err != nil {
-		return nil, err
-	}
-	articleRes.Colors = articleColors
+    articleColors, err := FindArticleColors(ctx, bson.M{"_id": bson.M{"$in": a.Colors}})
+    if err != nil {
+        return nil, err
+    }
+    articleRes.Colors = articleColors
 
-	articleTones, err := FindArticleTones(ctx, bson.M{"_id": bson.M{"$in": a.Tones}})
-	if err != nil {
-		return nil, err
-	}
-	articleRes.Tones = articleTones
+    articleTones, err := FindArticleTones(ctx, bson.M{"_id": bson.M{"$in": a.Tones}})
+    if err != nil {
+        return nil, err
+    }
+    articleRes.Tones = articleTones
 
-	files, err := FindFiles(ctx, bson.M{"_id": bson.M{"$in": a.Files}})
-	articleRes.Files = make([]string, 0, len(files))
-	if err != nil {
-		return nil, err
-	}
-	for _, file := range files {
-		articleRes.Files = append(articleRes.Files, file.FullName())
-	}
+    files, err := FindFiles(ctx, bson.M{"_id": bson.M{"$in": a.Files}})
+    sortedFiles := make([]*File, 0, len(files))
+	for _, id := range a.Files {
+    	for _, file := range files {
+            if file.ID == id {
+                sortedFiles = append(sortedFiles, file)
+            }
+        }
+    }
 
-	return &articleRes, nil
+    articleRes.Files = make([]string, 0, len(sortedFiles))
+    if err != nil {
+        return nil, err
+    }
+    for _, file := range sortedFiles {
+        articleRes.Files = append(articleRes.Files, file.FullName())
+    }
+
+    return &articleRes, nil
 }
 
 func initArticle(ctx context.Context, db *mongo.Database) {
