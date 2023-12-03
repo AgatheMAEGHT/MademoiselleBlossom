@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types []string, tones []string, shapes []string) {
+func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, colors []string, types []string, tones []string, shapes []string) {
 	adminTok := getAdminAccessToken(t)
 
 	// Post File
@@ -123,8 +123,9 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 	result, status = requester("/article/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
-	resArticleID1, ok := result["_id"].(string)
+	resArticleID, ok := result["_id"].(string)
 	assert.True(t, ok)
+	articles = append(articles, resArticleID)
 
 	body = map[string]interface{}{
 		"files":  []string{},
@@ -141,8 +142,9 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 	result, status = requester("/article/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
-	resArticleID2, ok := result["_id"].(string)
+	resArticleID, ok = result["_id"].(string)
 	assert.True(t, ok)
+	articles = append(articles, resArticleID)
 
 	body = map[string]interface{}{
 		"files":  []string{fileID},
@@ -159,12 +161,13 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 	result, status = requester("/article/create", http.MethodPost, body, adminTok)
 	assert.Equal(t, 200, status, result["err"])
 	assert.NotEmpty(t, result["_id"])
-	resArticleID3, ok := result["_id"].(string)
+	resArticleID, ok = result["_id"].(string)
 	assert.True(t, ok)
+	articles = append(articles, resArticleID)
 
 	deferFunc = func() {
 		// Delete articles
-		for _, id := range []string{resArticleID1, resArticleID2, resArticleID3} {
+		for _, id := range articles {
 			result, status = requester(fmt.Sprintf("/article/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
 			assert.Equal(t, 200, status, result["err"])
 		}
@@ -198,11 +201,11 @@ func PostArticleFilter(t *testing.T) (deferFunc func(), colors []string, types [
 		assert.Equal(t, 200, status, result["err"])
 	}
 
-	return deferFunc, colors, types, tones, shapes
+	return deferFunc, articles, colors, types, tones, shapes
 }
 
 func TestFilterArticle(t *testing.T) {
-	deferFunc, colorsID, types, tones, shapes := PostArticleFilter(t)
+	deferFunc, _, colorsID, types, tones, shapes := PostCompleteArticle(t)
 	defer deferFunc()
 
 	// Get articles

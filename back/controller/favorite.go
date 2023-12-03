@@ -125,7 +125,7 @@ func postFavorite(w http.ResponseWriter, r *http.Request, user database.User) {
 
 	_, err = favorite.CreateOne(ctx)
 	if err != nil {
-		if mongo.IsDuplicateKeyError(err) {
+		if err.Error() == "Favorite already exists" {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write(utils.NewResErr("Favorite already exists").ToJson())
 			return

@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -14,25 +15,29 @@ var (
 )
 
 type FavoriteRes struct {
-	ID      primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Article *ArticleRes        `json:"article" bson:"article"`
-	User    primitive.ObjectID `json:"user" bson:"user"`
+	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Article   *ArticleRes        `json:"article" bson:"article"`
+	User      primitive.ObjectID `json:"user" bson:"user"`
+	CreatedAt primitive.DateTime `json:"createdAt" bson:"createdAt"`
 }
 
 type Favorite struct {
-	ID      primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Article primitive.ObjectID `json:"article" bson:"article"`
-	User    primitive.ObjectID `json:"user" bson:"user"`
+	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Article   primitive.ObjectID `json:"article" bson:"article"`
+	User      primitive.ObjectID `json:"user" bson:"user"`
+	CreatedAt primitive.DateTime `json:"createdAt" bson:"createdAt"`
 }
 
 func (a *Favorite) CreateOne(ctx context.Context) (*mongo.InsertOneResult, error) {
-	favorite, err := FindOneFavorite(ctx, bson.M{"article": a.Article, "user": a.User})
+	favorites, err := FindFavorites(ctx, bson.M{"article": a.Article, "user": a.User})
 	if err != nil {
 		return nil, err
 	}
-	if favorite != nil {
-		return nil, fmt.Errorf("favorite already exists")
+	if len(favorites) > 0 {
+		return nil, fmt.Errorf("Favorite already exists")
 	}
+
+	a.CreatedAt = primitive.NewDateTimeFromTime(time.Now())
 
 	res, err := FavoriteCollection.InsertOne(ctx, a)
 	if err != nil {
@@ -88,9 +93,10 @@ func (a *Favorite) Populate(ctx context.Context) (*FavoriteRes, error) {
 	}
 
 	return &FavoriteRes{
-		ID:      a.ID,
-		Article: articleRes,
-		User:    a.User,
+		ID:        a.ID,
+		Article:   articleRes,
+		User:      a.User,
+		CreatedAt: a.CreatedAt,
 	}, nil
 }
 
