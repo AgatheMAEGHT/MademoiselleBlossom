@@ -49,6 +49,21 @@ func getFavorite(w http.ResponseWriter, r *http.Request, user database.User) {
 		query["article"] = id
 	}
 	query["user"] = user.ID
+	if r.Form.Get("user") != "" {
+		if !user.IsAdmin {
+			w.WriteHeader(http.StatusForbidden)
+			w.Write(utils.NewResErr("Forbidden").ToJson())
+			return
+		}
+		id, err := utils.IsStringObjectIdValid(r.Form.Get("user"), database.UserCollection)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(utils.NewResErr("Invalid user").ToJson())
+			return
+		}
+
+		query["user"] = id
+	}
 
 	favorites, err := database.FindFavorites(ctx, query)
 	if err != nil {
