@@ -90,6 +90,10 @@ func StartServer(path string) {
 	server.HandleFunc("/colors-of-the-week/create", middlewareWrapper(postColorsOfTheWeek))
 	server.HandleFunc("/colors-of-the-week/delete", middlewareWrapper(deleteColorsOfTheWeek))
 
+	server.HandleFunc("/favorite", corsWrapper(getFavorite))
+	server.HandleFunc("/favorite/create", middlewareWrapper(postFavorite))
+	server.HandleFunc("/favorite/delete", middlewareWrapper(deleteFavorite))
+
 	fmt.Printf("Listening on '%s'\n", path)
 	http.ListenAndServe(path, server)
 }

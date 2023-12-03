@@ -12,7 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func getFavorite(w http.ResponseWriter, r *http.Request) {
+func getFavorite(w http.ResponseWriter, r *http.Request, user database.User) {
 	ctx := r.Context()
 	log := logrus.WithContext(ctx).WithFields(logrus.Fields{
 		"method": r.Method,
@@ -48,16 +48,7 @@ func getFavorite(w http.ResponseWriter, r *http.Request) {
 
 		query["article"] = id
 	}
-	if r.Form.Get("user") != "" {
-		id, err := utils.IsStringObjectIdValid(r.Form.Get("user"), database.UserCollection)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write(utils.NewResErr("Invalid user").ToJson())
-			return
-		}
-
-		query["user"] = id
-	}
+	query["user"] = user.ID
 
 	favorites, err := database.FindFavorites(ctx, query)
 	if err != nil {
