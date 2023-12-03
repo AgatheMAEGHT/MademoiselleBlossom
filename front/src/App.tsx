@@ -11,6 +11,7 @@ import Contact from './pages/contact/contact';
 import Login from './pages/login/login';
 import CreateAccount from './pages/login/createAccount';
 import Profile from './pages/profile/profile';
+import Favorites from './pages/favorites/favorites';
 
 import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
 import CatalogAdmin from './pages/admin/dried/dried';
@@ -63,6 +64,7 @@ function App() {
                 <Route path='/se-connecter' element={<Login />} />
                 <Route path='/creer-un-compte' element={<CreateAccount />} />
                 <Route path='/mon-compte' element={<Profile />} />
+                <Route path='/favoris' element={<Favorites />} />
             </Routes>
             <Footer />
         </div>

@@ -8,7 +8,6 @@ import { articleDB } from '../../components/types';
 function DriedFlowersItempage() {
 
     let params = useParams();
-    console.log(params.itemName);
 
     let item: articleDB = {
         _id: "",

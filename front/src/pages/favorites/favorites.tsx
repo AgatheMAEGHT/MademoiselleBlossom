@@ -1,47 +1,31 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { articleDB, catalog, favoriteDB } from '../../components/types';
+import { articleDB, favoritePopulatedDB } from '../../components/types';
 import { requester } from '../../components/requester';
 
-import './driedFlowers.css';
+import './favorites.css';
 
-function DriedFlowers() {
+function Favorites() {
     let navigate = useNavigate();
 
-    const [driedFlowers, setDriedFlowers] = React.useState<catalog>([]);
-    const [favorites, setFavorites] = React.useState<favoriteDB[]>([]);
+    const [favorites, setFavorites] = React.useState<favoritePopulatedDB[]>([]);
 
     React.useEffect(() => {
-        let promises: Promise<any>[] = [];
-        promises.push(requester('/article?populate=true', 'GET'));
-        if (localStorage.getItem("access_token")) {
-            promises.push(requester('/favorite', 'GET'));
-        }
-
-        Promise.all(promises).then((res: any) => {
-            if (res) {
-                if (res[0]?.err) {
-                    console.log("error while fetching dried flowers");
-                    return;
-                }
-                setDriedFlowers(res[0] ?? []);
-
-                if (res[1]?.err) {
-                    console.log("error while fetching dried flowers");
-                    return;
-                }
-                setFavorites(res[1] ?? []);
+        requester('/favorite?populate=true', 'GET').then((res: any) => {
+            if (res?.err) {
+                console.log("error while fetching dried flowers");
+                return;
             }
+            setFavorites(res ?? []);
         })
     }, []);
 
-    /* TILE */
     function editIsFavorite(article: string, favorite: string) {
         if (favorite) {
             requester("/favorite/delete?_id=" + favorite, "DELETE").then((res: any) => {
                 if (res) {
-                    setFavorites(prev => prev?.filter((fav: favoriteDB) => fav._id !== favorite));
+                    setFavorites(prev => prev?.filter((fav: favoritePopulatedDB) => fav._id !== favorite));
                 }
             });
             return;
@@ -56,7 +40,7 @@ function DriedFlowers() {
 
     function catalogTile(article: articleDB) {
         let imageUrl: string = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + article.files[0];
-        let favorite: favoriteDB = favorites?.filter((favorite: favoriteDB) => favorite.article === article._id)[0];
+        let favorite: favoritePopulatedDB = favorites?.filter((favorite: favoritePopulatedDB) => favorite.article._id === article._id)[0];
 
         return (
             <div className="dried-tile" key={article._id}>
@@ -83,18 +67,18 @@ function DriedFlowers() {
     }
 
     function displayTiles() {
-        let driedFlowersList: JSX.Element[] = [];
-        for (let i = 0; i < driedFlowers?.length; i += 3) {
+        let favoritesList: JSX.Element[] = [];
+        for (let i = 0; i < favorites?.length; i += 3) {
             let row: JSX.Element[] = [];
             for (let j = 0; j < 3; j++) {
-                if (driedFlowers[i + j]) {
-                    row.push(catalogTile(driedFlowers[i + j]));
+                if (favorites[i + j]) {
+                    row.push(catalogTile(favorites[i + j].article));
                 }
             }
-            driedFlowersList.push(<div key={i} className="dried-flowers-row">{row}</div>);
+            favoritesList.push(<div key={i} className="dried-flowers-row">{row}</div>);
         }
 
-        return driedFlowersList;
+        return favoritesList;
     }
 
     return (
@@ -107,4 +91,4 @@ function DriedFlowers() {
     );
 }
 
-export default DriedFlowers;
+export default Favorites;

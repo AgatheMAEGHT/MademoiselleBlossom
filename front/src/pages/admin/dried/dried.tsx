@@ -13,7 +13,6 @@ function CatalogAdmin() {
 
     React.useEffect(() => {
         requester('/article?populate=true&limit=100', 'GET').then((res: any) => {
-            console.log(res);
             setFlowers(res);
         })
     }, []);

@@ -27,16 +27,40 @@ function CreateAccount() {
             return;
         }
 
-        console.log(process.env.REACT_APP_API_URL);
         requester('/register', 'POST', profile).then((res: any) => {
-            if (res.success) {
-                console.log(res);
-                localStorage.setItem('token', res.token);
+            if (res.access_token) {
+                let d = new Date().setSeconds(new Date().getSeconds() + parseInt(res.expires_in) ?? 0)
+                localStorage.setItem('logged', "client");
+                localStorage.setItem('access_token', res.access_token);
+                localStorage.setItem('expire_date', d.toString());
+                localStorage.setItem('refresh_token', res.refresh_token);
+
+                // Get user infos
+                requester('/who-am-i', 'GET').then((res2: any) => {
+                    console.log(res2.isAdmin);
+                    if (res2.isAdmin !== undefined) {
+                        localStorage.setItem('logged', res2.isAdmin ? "admin" : "client");
+                        localStorage.setItem('email', res2.email);
+                        localStorage.setItem('phone', res2.phone);
+                        localStorage.setItem('firstName', res2.firstName);
+                        localStorage.setItem('lastName', res2.lastName);
+                    } else {
+                        console.log(res2);
+                        alert("Une erreur est survenue, merci de réessayer ultérieurement");
+                    }
+                });
+
                 navigate('/');
+                window.location.reload();
+
             } else {
-                if (res.message === 'Email already exists') {
-                    alert('Cet email est déjà utilisé');
+                if (res.message === 'Wrong email or password') {
+                    alert('Email ou mot de passe incorrect');
                     return;
+                }
+                else {
+                    console.log(res);
+                    alert("Une erreur est survenue, merci de réessayer ultérieurement");
                 }
             }
         });

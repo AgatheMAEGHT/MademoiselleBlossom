@@ -93,6 +93,11 @@ export type favoriteDB = {
     article: string
 }
 
+export type favoritePopulatedDB = {
+    _id: string,
+    article: articleDB
+}
+
 /* END OF DB */
 
 export type article = {
