@@ -2,6 +2,7 @@ package main
 
 import (
 	"MademoiselleBlossom/controller"
+	"MademoiselleBlossom/cron"
 	"MademoiselleBlossom/database"
 	"context"
 	"fmt"
@@ -28,6 +29,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Init cron
+	cron.InitCron()
+	cron.StartCron()
+	log.Info("Cron Started")
 
 	// Start server
 	controller.StartServer(fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT")))

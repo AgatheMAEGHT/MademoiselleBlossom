@@ -34,6 +34,7 @@ func initCollections(ctx context.Context) {
 	initArticle(ctx, db)
 	initColorsOfTheWeek(ctx, db)
 	initFavorite(ctx, db)
+	initTempCart(ctx, db)
 }
 
 func Connect(ctx context.Context, url string) (*mongo.Client, error) {
@@ -55,7 +56,6 @@ func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Info("Connected to database")
 
 	db = client.Database("MademoiselleBlossom")
 
@@ -64,6 +64,7 @@ func Connect(ctx context.Context, url string) (*mongo.Client, error) {
 
 	// Default values
 	defaultValues(ctx)
+	log.Info("Connected to database")
 
 	return client, nil
 }

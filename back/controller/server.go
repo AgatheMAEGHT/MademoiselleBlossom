@@ -94,6 +94,10 @@ func StartServer(path string) {
 	server.HandleFunc("/favorite/create", middlewareWrapper(postFavorite))
 	server.HandleFunc("/favorite/delete", middlewareWrapper(deleteFavorite))
 
+	server.HandleFunc("/temp-cart", middlewareWrapper(getTempCart))
+	server.HandleFunc("/temp-cart/create", middlewareWrapper(postTempCart))
+	server.HandleFunc("/temp-cart/delete", middlewareWrapper(deleteTempCart))
+
 	fmt.Printf("Listening on '%s'\n", path)
 	http.ListenAndServe(path, server)
 }
