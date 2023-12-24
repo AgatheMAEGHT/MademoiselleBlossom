@@ -1,7 +1,9 @@
 package controller_test
 
 import (
+	"MademoiselleBlossom/database"
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -166,4 +168,15 @@ func createTestAccount(t *testing.T, email string) string {
 func deleteAccount(t *testing.T, tok string) {
 	result, status := requester("/user/delete", http.MethodDelete, nil, tok)
 	assert.Equal(t, 200, status, result["err"])
+}
+
+var alreadyInit = false
+
+func initDB(t *testing.T) {
+	if alreadyInit {
+		return
+	}
+	_, err := database.Connect(context.Background(), "mongodb://localhost:27017")
+	assert.NoError(t, err)
+	alreadyInit = true
 }

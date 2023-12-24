@@ -24,7 +24,7 @@ func CleanTempCartTick() {
 	nbOfDeleted := 0
 	nbOfError := 0
 	for _, tempCart := range tempCarts {
-		if tempCart.CreatedAt.Time().Add(database.TempCartExpiration).Before(time.Now()) {
+		if tempCart.CreatedAt.Time().Add(database.TempCartExpiration * time.Second).Before(time.Now()) {
 			_, err := tempCart.DeleteOne(ctx)
 			if err != nil {
 				log.Error(err)

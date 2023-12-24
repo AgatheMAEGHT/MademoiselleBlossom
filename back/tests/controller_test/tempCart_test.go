@@ -4,6 +4,7 @@ import (
 	"MademoiselleBlossom/cron"
 	"MademoiselleBlossom/database"
 	"context"
+	"fmt"
 	"net/http"
 	"testing"
 	"time"
@@ -49,11 +50,19 @@ func TestTempCart(t *testing.T) {
 }
 
 func TestTempCartCron(t *testing.T) {
+	initDB(t)
+
 	ctx := context.Background()
 	article := database.Article{
 		Name:  "test",
 		Stock: 10,
 	}
+
+	defer func() {
+		fmt.Println("Hello World")
+		_, err := database.DeleteOneArticle(ctx, article.ID)
+		assert.NoError(t, err)
+	}()
 
 	_, err := article.CreateOne(ctx)
 	assert.NoError(t, err)
@@ -62,7 +71,7 @@ func TestTempCartCron(t *testing.T) {
 		User:      primitive.NewObjectID(),
 		Articles:  []primitive.ObjectID{article.ID},
 		Quantity:  []int{1},
-		CreatedAt: primitive.NewDateTimeFromTime(time.Now().Add(-database.TempCartExpiration)),
+		CreatedAt: primitive.NewDateTimeFromTime(time.Now().Add(-database.TempCartExpiration * time.Second)),
 	}
 
 	_, err = database.TempCartCollection.InsertOne(ctx, tempCartOld)
@@ -82,7 +91,9 @@ func TestTempCartCron(t *testing.T) {
 	tempCarts, err := database.FindTempCarts(ctx, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(tempCarts))
-	assert.Equal(t, tempCartNew.ID, tempCarts[0].ID)
+	if len(tempCarts) > 0 {
+		assert.Equal(t, tempCartNew.ID, tempCarts[0].ID)
+	}
 
 	_, err = tempCartNew.DeleteOne(ctx)
 	assert.NoError(t, err)
