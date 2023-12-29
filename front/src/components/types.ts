@@ -98,7 +98,9 @@ export type favoritePopulatedDB = {
     article: articleDB
 }
 
-/* END OF DB */
+/* ===================== *
+ *       END OF DB 
+* ====================== */
 
 export type article = {
     _id: string,

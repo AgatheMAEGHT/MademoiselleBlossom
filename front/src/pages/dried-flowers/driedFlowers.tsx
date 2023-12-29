@@ -37,7 +37,7 @@ function DriedFlowers() {
     }, []);
 
     /* TILE */
-    function editIsFavorite(article: string, favorite: string) {
+    function editIsFavorite(articleId: string, favorite: string) {
         if (favorite) {
             requester("/favorite/delete?_id=" + favorite, "DELETE").then((res: any) => {
                 if (res) {
@@ -46,7 +46,7 @@ function DriedFlowers() {
             });
             return;
         } else {
-            requester("/favorite/create", "POST", { article: article }).then((res: any) => {
+            requester("/favorite/create", "POST", { article: articleId }).then((res: any) => {
                 if (res) {
                     setFavorites(prev => [...prev, res]);
                 }
@@ -62,19 +62,31 @@ function DriedFlowers() {
             <div className="dried-tile" key={article._id}>
                 <div className="dried-tile-img-buttons">
                     <img
-                        className='dried-tile-img-buttons-fav'
+                        id='dried-tile-img-buttons-fav'
+                        className='dried-tile-img-button'
                         src={favorite ? "/icons/heart_full.svg" : "/icons/heart.svg"}
                         title='Ajouter aux favoris'
                         alt="ajouter aux favoris"
                         onClick={() => editIsFavorite(article._id, favorite?._id)}
                     />
-                    <div className='dried-tile-img-buttons-cart' title='Ajouter au panier'>Ajouter au panier</div>
+                    <div
+                        id='dried-tile-img-buttons-cart'
+                        className='dried-tile-img-button'
+                        title='Ajouter au panier'
+                    >
+                        <img
+                            className='header-top-button-icon'
+                            src={"/icons/cart.svg"}
+                            id="header-button-cart"
+                        />
+                        Ajouter au panier
+                    </div>
                 </div>
                 <img
                     className="dried-tile-img"
                     src={imageUrl}
                     alt={"courone de fleurs séchées " + article.name}
-                    onClick={() => navigate("/fleurs-sechees/" + article.name)}
+                    onClick={() => { navigate("/fleurs-sechees/" + article.name); console.log("oui") }}
                 />
                 <div className="dried-tile-name">{article.name}</div>
                 <div className="dried-tile-price">{article.price.toString()}€</div>

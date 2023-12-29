@@ -1,8 +1,27 @@
 #item-page {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 50px 0px;
+    gap: 50px;
+}
+
+#item-page-images {
+    display: flex;
+    gap: 10px;
+}
+
+#item-page-images-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-page-images-col {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    margin: 2px;
+    border-radius: 10px;
 }
 
 @media (width <=768px) {}

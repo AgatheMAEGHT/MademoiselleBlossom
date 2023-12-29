@@ -21,31 +21,40 @@
     align-items: flex-start;
 }
 
-.dried-tile-img-buttons-cart {
+#dried-tile-img-buttons-cart {
     display: none;
     cursor: pointer;
     width: 100%;
     padding: 5px 0;
     background-color: rgba(250, 235, 215, 0.849);
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
-.dried-tile-img-buttons:hover .dried-tile-img-buttons-cart {
-    display: initial;
+.dried-tile:hover #dried-tile-img-buttons-cart {
+    display: flex;
 }
 
-.dried-tile-img-buttons-fav {
+#dried-tile-img-buttons-fav {
     padding: 10px;
     width: 2vw;
     cursor: pointer;
     border-image: white 10px solid;
 }
 
+.dried-tile-img-button {
+    z-index: 35;
+}
+
 .dried-tile-img {
+    position: relative;
     width: 15vw;
     min-width: 15vw;
     height: 15vw;
     min-height: 15vw;
     object-fit: cover;
+    z-index: 30;
 }
 
 .dried-tile-name {
@@ -73,14 +82,13 @@
         height: 50vw;
     }
 
-    .dried-tile-img-buttons-fav {
+    #dried-tile-img-buttons-fav {
         width: 5vw;
     }
 
-    .dried-tile-img-buttons-cart {
-        display: initial;
+    #dried-tile-img-buttons-cart {
         width: 100%;
-        font-size: smaller;
+        font-size: 11px;
     }
 
     .dried-tile-img {
