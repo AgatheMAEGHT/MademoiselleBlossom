@@ -14,19 +14,17 @@ function Homepage() {
             <div id="home-top">
                 <div id="home-carousel">
                     <div id="home-carousel-dir-buttons-area">
-                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, 5, tr, setTr)}>
+                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, 3, tr, setTr)}>
                             <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel images' />
                         </div>
-                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, 5, tr, setTr)}>
+                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, 3, tr, setTr)}>
                             <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
                         </div>
                     </div>
                     <div id="home-carousel-list">
-                        <img className='home-carousel-img' src="https://picsum.photos/1000/500" alt="carousel" />
-                        <img className='home-carousel-img' src="https://picsum.photos/1000/501" alt="carousel" />
-                        <img className='home-carousel-img' src="https://picsum.photos/1000/502" alt="carousel" />
-                        <img className='home-carousel-img' src="https://picsum.photos/1000/503" alt="carousel" />
-                        <img className='home-carousel-img' src="https://picsum.photos/1000/504" alt="carousel" />
+                        <img src='/inspirations/deuil/coeur-blanc.jpg' alt="coeur-blanc" className='home-carousel-img' />
+                        <img src='/inspirations/mariage/bouquet-arc-rose.jpg' alt="bouquet-arc-rose" className='home-carousel-img' />
+                        <img src='/inspirations/mariage/bouquet-rose-pale.jpg' alt="bouquet-rose-pale" className='home-carousel-img' />
                     </div>
                 </div>
                 <div id="home-top-buttons-area">
@@ -35,10 +33,14 @@ function Homepage() {
                     <div className='home-top-buttons' onClick={() => navigate("")}>Commande sur mesure</div>
                 </div>
             </div>
-            <p>Ici c'est le texte que Emma va écrire. Je ne sais pas encore ce que c'est mais elle va trouver. En tout cas c'est un super texte. Il contient plein de mots et de lettres. Il parlera probablement de fleurs, de livraison ou de comment trouver Mademoiselle Blossom.</p>
-            <p>Ici c'est le texte que Emma va écrire. Je ne sais pas encore ce que c'est mais elle va trouver. En tout cas c'est un super texte. Il contient plein de mots et de lettres. Il parlera probablement de fleurs, de livraison ou de comment trouver Mademoiselle Blossom.</p>
-            <p>Ici c'est le texte que Emma va écrire. Je ne sais pas encore ce que c'est mais elle va trouver. En tout cas c'est un super texte. Il contient plein de mots et de lettres. Il parlera probablement de fleurs, de livraison ou de comment trouver Mademoiselle Blossom.</p>
-            <p>Ici c'est le texte que Emma va écrire. Je ne sais pas encore ce que c'est mais elle va trouver. En tout cas c'est un super texte. Il contient plein de mots et de lettres. Il parlera probablement de fleurs, de livraison ou de comment trouver Mademoiselle Blossom.</p>
+            <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
+
+            <div className='home-text-and-img'>
+                <img src='/bouquet-seche.jpg' alt="bouquet-arc-rose" className='home-img-tall' />
+                <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
+            </div>
+            <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
+            <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
         </div>
     );
 }

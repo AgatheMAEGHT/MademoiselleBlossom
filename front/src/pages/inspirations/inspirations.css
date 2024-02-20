@@ -1,0 +1,99 @@
+#mariage {
+    margin: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5vw;
+}
+
+.inspiration-image {
+    width: 15vw;
+    height: 15vw;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+}
+
+/* ================== *
+**   Vertical Stack   *
+** ================== */
+.inspirations-vertical-stack-area {
+    display: flex;
+    gap: 2vw;
+}
+
+.inspirations-vertical-stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inspirations-vertical-stack-main {
+    width: 32vw;
+    height: 32vw;
+}
+
+/* ===================== *
+**   Vertical Tripanel   *
+** ===================== */
+.inspirations-vertical-tripanel {
+    display: flex;
+    gap: 2vw;
+}
+
+.inspirations-vertical-tripanel-stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inspiration-vertical-tripanel-tall {
+    width: 15vw;
+    height: 32vw;
+}
+
+
+/* ===================== *
+**   Vertical bipanel   *
+** ===================== */
+.inspirations-vertical-bipanel {
+    display: flex;
+    gap: 2vw;
+}
+
+.inspiration-vertical-bipanel-tall {
+    width: 15vw;
+    height: 25vw;
+}
+
+.inspirations-horizontal-two-images-area {
+    display: flex;
+    gap: 2vw;
+}
+
+.inspirations-horizontal-two-images {
+    width: 23.5vw;
+    height: 23.5vw;
+}
+
+/* ===================== *
+**   Horizontal   *
+** ===================== */
+.inspirations-horizontal-area {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+}
+
+.inspirations-horizontal-line {
+    display: flex;
+    gap: 2vw;
+}
+
+.inspirations-horizontal {
+    width: 49vw;
+    height: 20vw;
+}

@@ -12,6 +12,8 @@ import Login from './pages/login/login';
 import CreateAccount from './pages/login/createAccount';
 import Profile from './pages/profile/profile';
 import Favorites from './pages/favorites/favorites';
+import Mariage from './pages/inspirations/mariage/mariage';
+import Deuil from './pages/inspirations/deuil/deuil';
 
 import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
 import CatalogAdmin from './pages/admin/dried/dried';
@@ -52,8 +54,8 @@ function App() {
                 <Route path='/fleurs-sechees/:itemName' element={<DriedFlowersItempage />} />
                 <Route path='/fleurs-de-la-semaine' element={<Homepage />} />
                 <Route path='/inspirations' element={<Homepage />} />
-                <Route path='/inspirations/mariage' element={<Homepage />} />
-                <Route path='/inspirations/deuil' element={<Homepage />} />
+                <Route path='/inspirations/mariage' element={<Mariage />} />
+                <Route path='/inspirations/deuil' element={<Deuil />} />
                 <Route path='/inspirations/anniversaire' element={<Homepage />} />
                 <Route path='/inspirations/naissance' element={<Homepage />} />
                 <Route path='/contact' element={<Contact />} />

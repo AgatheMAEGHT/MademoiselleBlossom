@@ -1,0 +1,105 @@
+#header-admin {
+    background-color: var(--color-3);
+    color: var(--color-1);
+    min-height: 5vh;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    justify-self: flex-start;
+    align-items: center;
+}
+
+#header-admin-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+
+    width: 100%;
+
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 6px;
+    background-color: var(--color-3);
+    color: var(--color-1);
+    min-height: 5vh;
+}
+
+.admin-header-item {
+    cursor: pointer;
+    text-decoration-color: initial;
+    padding: 10px;
+}
+
+.admin-header-dropdowm {
+    display: none;
+    position: absolute;
+    background-color: var(--color-3);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    min-width: 100px;
+    z-index: 1;
+    overflow: hidden;
+
+    margin-left: -10px;
+    cursor: pointer;
+}
+
+.admin-header-dropdown-item {
+    margin: 0px;
+    padding: 5px 10px;
+    padding-right: 30px;
+    text-decoration-color: initial;
+    width: 100%;
+}
+
+.admin-header-dropdown-item:hover {
+    background-color: var(--color-3-darker);
+}
+
+#header-buttons-mobile-admin {
+    display: none;
+}
+
+@media (width <=768px) {
+    #header-admin-buttons {
+        display: none;
+    }
+
+    #header-buttons-mobile-admin {
+        display: flex;
+        flex-direction: column;
+        padding: 20px 0;
+        height: 100%;
+        background-color: var(--color-3);
+    }
+
+    .header-admin-lines {
+        border: 0px;
+        border-top: var(--color-3-darker) 1px solid;
+        margin-left: 0%;
+        width: 100%;
+    }
+
+    .header-admin-item-small {
+        margin: 0;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .header-admin-item-small:hover {
+        background-color: var(--color-3-darker);
+    }
+
+    .header-admin-dropdown-item {
+        margin: 0 0 0 20px;
+        padding: 3px;
+    }
+
+    .header-admin-dropdown-item:hover {
+        background-color: var(--color-3-darker);
+    }
+
+    .header-admin-item-small-no-page:hover {
+        background-color: initial;
+    }
+}

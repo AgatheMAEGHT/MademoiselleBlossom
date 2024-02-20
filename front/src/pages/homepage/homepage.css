@@ -90,3 +90,17 @@
     font-weight: bold;
     color: var(--color-1);
 }
+
+.home-text-and-img {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 40vw;
+    gap: 2vw;
+    font-size: 18px;
+    text-align: left;
+}
+
+.home-img-tall {
+    width: 15vw;
+}

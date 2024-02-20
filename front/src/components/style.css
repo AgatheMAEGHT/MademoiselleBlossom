@@ -2,6 +2,11 @@
     margin: 5vh;
 }
 
+.link {
+    text-decoration: none;
+    color: inherit;
+}
+
 /* Mandatory Form Elements */
 #form-mandatory-info {
     display: flex;

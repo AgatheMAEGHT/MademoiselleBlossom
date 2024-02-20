@@ -39,9 +39,9 @@ function Profile() {
                     </div>
                 </div>
             </div>
-            <div className='profile-container'>
+            {/*<div className='profile-container'>
                 <h3>Adresse de livraison</h3>
-            </div>
+    </div>*/}
             <button onClick={logout} className='profile-button'>Se déconnecter</button>
         </div>
     );

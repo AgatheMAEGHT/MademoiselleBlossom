@@ -69,7 +69,7 @@ function DriedFlowers() {
                         alt="ajouter aux favoris"
                         onClick={() => editIsFavorite(article._id, favorite?._id)}
                     />
-                    <div
+                    {/*<div
                         id='dried-tile-img-buttons-cart'
                         className='dried-tile-img-button'
                         title='Ajouter au panier'
@@ -80,14 +80,15 @@ function DriedFlowers() {
                             id="header-button-cart"
                         />
                         Ajouter au panier
-                    </div>
+        </div>*/}
                 </div>
-                <img
-                    className="dried-tile-img"
-                    src={imageUrl}
-                    alt={"courone de fleurs séchées " + article.name}
-                    onClick={() => { navigate("/fleurs-sechees/" + article.name); console.log("oui") }}
-                />
+                <a href={"/fleurs-sechees/" + article.name}>
+                    <img
+                        className="dried-tile-img"
+                        src={imageUrl}
+                        alt={"courone de fleurs séchées " + article.name}
+                    />
+                </a>
                 <div className="dried-tile-name">{article.name}</div>
                 <div className="dried-tile-price">{article.price.toString()}€</div>
             </div>

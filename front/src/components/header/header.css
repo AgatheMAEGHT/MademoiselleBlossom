@@ -119,11 +119,13 @@
 
 /*Catalog*/
 #catag:hover #catag-dropdown {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 #inspi:hover #inspi-dropdown {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 .header-dropdown-item {
@@ -144,6 +146,10 @@
 #header-item-event {
     display: flex;
     justify-content: flex-end;
+}
+
+#header-item-event-button {
+    margin: 15px 0px;
 }
 
 .header-item-bold {

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { burgerHeader } from '../burgerHeader';
 
 import './header.css';
-import HeaderAdmin from '../../pages/admin/_components/header/headerAdmin';
+import HeaderAdmin from './header-admin/headerAdmin';
 
 function HeaderButtons() {
     let navigate = useNavigate();
@@ -17,23 +17,23 @@ function HeaderButtons() {
         <div id="header-buttons-area">
             <div id="header-buttons-pc">
                 <div id="header-buttons">
-                    <p className='header-item' onClick={() => { navigate("/fleurs-sechees") }}>Fleurs séchées</p>
-                    <p className='header-item' onClick={() => { navigate("/fleurs-de-la-semaine") }}>Fleurs de la semaine</p>
+                    <a className='header-item link' href="/fleurs-sechees">Fleurs séchées</a>
+                    <a className='header-item link' href="/fleurs-de-la-semaine">Fleurs de la semaine</a>
 
                     <div className='header-item' id="inspi">
-                        <span onClick={() => { navigate("/inspirations") }}>Inspirations</span>
+                        <span>Inspirations</span>
                         <div className="header-dropdowm" id="inspi-dropdown">
-                            <p className='header-dropdown-item' onClick={() => { navigate("/inspirations/mariage") }}>Mariage</p>
-                            <p className='header-dropdown-item' onClick={() => { navigate("/inspirations/deuil") }}>Deuil</p>
-                            <p className='header-dropdown-item' onClick={() => { navigate("/inspirations/anniversaire") }}>Anniversaire</p>
-                            <p className='header-dropdown-item' onClick={() => { navigate("/inspirations/naissance") }}>Naissance</p>
+                            <a className='header-dropdown-item link' href="/inspirations/mariage">Mariage</a>
+                            <a className='header-dropdown-item link' href="/inspirations/deuil">Deuil</a>
+                            {/*<a className='header-dropdown-item link' href="/inspirations/anniversaire">Anniversaire</a>
+                            <a className='header-dropdown-item link' href="/inspirations/naissance">Naissance</a>*/}
                         </div>
                     </div>
                     {evnt && <div id="header-item-event">
                         <p className='header-item-bold'>Évènement</p>
-                        <p className='header-item'>{evntName}</p>
+                        <a className='header-item link' id='header-item-event-button' href={'/' + evntName}>{evntName}</a>
                     </div>}
-                    <p className='header-item' onClick={() => { navigate("/contact") }}>Contactez-moi</p>
+                    <a className='header-item link' href="/contact">Contactez-moi</a>
                 </div>
                 {logged === "admin" && <HeaderAdmin />}
             </div>
@@ -51,8 +51,8 @@ function HeaderButtons() {
                     <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/inspirations") }}>Inspirations</p>
                     <p className='header-dropdown-item' onClick={() => { burgerHeader(); navigate("/inspirations/mariage") }}>Mariage</p>
                     <p className='header-dropdown-item' onClick={() => { burgerHeader(); navigate("/inspirations/deuil") }}>Deuil</p>
-                    <p className='header-dropdown-item' onClick={() => { burgerHeader(); navigate("/inspirations/anniversaire") }}>Anniversaire</p>
-                    <p className='header-dropdown-item' onClick={() => { burgerHeader(); navigate("/inspirations/naissance") }}>Naissance</p>
+                    {/*<p className='header-dropdown-item' onClick={() => { burgerHeader(); navigate("/inspirations/anniversaire") }}>Anniversaire</p>
+                    <p className='header-dropdown-item' onClick={() => { burgerHeader(); navigate("/inspirations/naissance") }}>Naissance</p>*/}
                     <hr className='header-lines' />
                     <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/contact") }}>Contactez-moi</p>
 
