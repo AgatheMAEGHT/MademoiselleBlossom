@@ -39,6 +39,8 @@ function HeaderButtons() {
             </div>
             <div id="header-buttons-mobile">
                 <div id="header-buttons-mobile-area">
+                    <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/") }}>Accueil</p>
+                    <hr className='header-lines' />
                     <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/fleurs-sechees") }}>Fleurs séchées</p>
                     <hr className='header-lines' />
                     <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/fleurs-de-la-semaine") }}>Fleurs de la semaine</p>

@@ -33,14 +33,12 @@ function Homepage() {
                     <div className='home-top-buttons' onClick={() => navigate("")}>Commande sur mesure</div>
                 </div>
             </div>
-            <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
+            <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. </p>
 
             <div className='home-text-and-img'>
                 <img src='/bouquet-seche.jpg' alt="bouquet-arc-rose" className='home-img-tall' />
-                <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
+                <p>Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
             </div>
-            <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
-            <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
         </div>
     );
 }

@@ -6,6 +6,7 @@ import { requester, requesterFile } from '../../../components/requester';
 import { article, newArticleDB, colorDB, shapeDB, toneDB, typeDB, select, newArticleOptions, newColorDB, newToneDB } from '../../../components/types';
 
 import './driedNew.css';
+import Alert, { displayAlert } from '../../../components/alert_TODO/alert';
 
 function NewDriedAdmin() {
     let navigate = useNavigate();
@@ -99,7 +100,7 @@ function NewDriedAdmin() {
     function postFile() {
         // Check if firstFile filled
         if (article.firstFile === undefined || article.firstFile === null || article.firstFile === "" as unknown as File) {
-            alert("Aucune image de couverture n'est sélectionnée");
+            displayAlert('admin-alert-postfile-firstfile')
             return;
         }
 
@@ -118,7 +119,7 @@ function NewDriedAdmin() {
             res.forEach(result => {
                 if (result.err) {
                     console.log(result.err);
-                    alert("Une erreur est survenue lors de l'envoi des images");
+                    displayAlert('admin-alert-postfile-sendfiles');
                     return;
                 }
             });
@@ -131,13 +132,13 @@ function NewDriedAdmin() {
     function postArticle(files: string[]) {
         // Check if all fields are filled
         if (article.name === "" || article.price === "" || article.stock === 0 || article.colors.length === 0 || article.tones.length === 0 || article.shape.name === "" || article.size === 0) {
-            alert("Certains champs obligatoires ne sont pas remplis");
+            displayAlert('form-mandatory');
             return;
         }
 
         // Check if name already taken
         if (nameAlreadyTaken) {
-            alert("Ce nom est déjà pris par une autre création");
+            displayAlert('form-name-alreadytaken');
             return;
         }
 
@@ -163,7 +164,7 @@ function NewDriedAdmin() {
                 navigate('/admin/fleurs-sechees');
             } else {
                 console.log(res);
-                alert("Une erreur est survenue lors de la création de l'article");
+                displayAlert('admin-alert-createarticle');
             }
         });
     }
@@ -171,7 +172,7 @@ function NewDriedAdmin() {
     function postColor() {
         // Check if all fields are filled
         if (color.name === "" || color.hexa === "") {
-            alert("Le nom de la couleur ou la couleur ne sont pas remplis");
+            displayAlert('form-mandatory-color');
             return;
         }
 
@@ -193,7 +194,7 @@ function NewDriedAdmin() {
                 setColor({ name: "", hexa: "#ffffff" });
             } else {
                 console.log(res);
-                alert("Une erreur est survenue lors de la création de la couleur");
+                displayAlert('admin-alert-createcolor');
             }
         });
     }
@@ -201,7 +202,7 @@ function NewDriedAdmin() {
     function postTone() {
         // Check if all fields are filled
         if (tone === "") {
-            alert("Le nom du ton n'est pas rempli");
+            displayAlert('form-mandatory-tone');
             return;
         }
 
@@ -221,7 +222,7 @@ function NewDriedAdmin() {
                 }
                 setTone("");
             } else {
-                alert("Une erreur est survenue lors de la création du ton");
+                displayAlert('admin-alert-createtone');
             }
         });
     }
@@ -229,7 +230,7 @@ function NewDriedAdmin() {
     function postShape() {
         // Check if all fields are filled
         if (shape === "") {
-            alert("Le nom de la forme n'est pas rempli");
+            displayAlert('form-mandatory-shape');
             return;
         }
 
@@ -250,7 +251,7 @@ function NewDriedAdmin() {
                 setShape("");
             } else {
                 console.log(res);
-                alert("Une erreur est survenue lors de la création de la forme");
+                displayAlert('admin-alert-createshape');
             }
         });
     }
@@ -491,6 +492,17 @@ function NewDriedAdmin() {
                 </div>
                 <button className='admin-button' onClick={() => postShape()}>Ajouter la forme</button>
             </div>
+            <Alert message="Aucune image de couverture n'est sélectionnée" id="admin-alert-postfile-firstfile" />
+            <Alert message="Une erreur est survenue lors de l'envoi des images" id="admin-alert-postfile-sendfiles" />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory" />
+            <Alert message="Ce nom est déjà pris par une autre création" id="form-name-alreadytaken" />
+            <Alert message="Une erreur est survenue lors de la création de l'article" id="admin-alert-createarticle" />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-color" />
+            <Alert message="Une erreur est survenue lors de la création de la couleur" id="admin-alert-createcolor" />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-tone" />
+            <Alert message="Une erreur est survenue lors de la création du ton" id="admin-alert-createtone" />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-shape" />
+            <Alert message="Une erreur est survenue lors de la création de la forme" id="admin-alert-createshape" />
         </div>
     );
 }

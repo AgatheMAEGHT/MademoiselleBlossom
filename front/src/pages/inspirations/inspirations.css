@@ -1,4 +1,4 @@
-#mariage {
+#inspiration {
     margin: 100px;
     display: flex;
     flex-direction: column;
@@ -13,6 +13,25 @@
     border-radius: 10px;
     box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.1);
     object-fit: cover;
+}
+
+.inspirations-title {
+    font-size: 4vw;
+    font-family: 'Great Vibes', cursive;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.inspirations-subtitle {
+    font-size: larger;
+    font-weight: normal;
+    margin-top: 0px;
+    text-align: center;
+}
+
+.inspirations-text {
+    width: 60vw;
+    text-align: center;
 }
 
 /* ================== *
@@ -69,6 +88,9 @@
     height: 25vw;
 }
 
+/* ===================== *
+**   Horizontal   *
+** ===================== */
 .inspirations-horizontal-two-images-area {
     display: flex;
     gap: 2vw;
@@ -79,9 +101,6 @@
     height: 23.5vw;
 }
 
-/* ===================== *
-**   Horizontal   *
-** ===================== */
 .inspirations-horizontal-area {
     display: flex;
     flex-direction: column;
@@ -96,4 +115,56 @@
 .inspirations-horizontal {
     width: 49vw;
     height: 20vw;
+}
+
+@media (max-width: 768px) {
+    #inspiration {
+        margin: 50px;
+    }
+
+    .inspiration-image {
+        width: 29vw;
+        height: 29vw;
+    }
+
+    .inspirations-title {
+        font-size: 8vw;
+        margin-top: 0px;
+    }
+
+    .inspirations-subtitle {
+        font-size: large;
+    }
+
+    .inspirations-text {
+        width: 80vw;
+    }
+
+    /* ================== *
+    **   Vertical Stack   *
+    ** ================== */
+    .inspirations-vertical-stack-main {
+        width: 60vw;
+        height: 60vw;
+    }
+
+    .inspiration-vertical-tripanel-tall {
+        width: 30vw;
+        height: 60vw;
+    }
+
+    .inspiration-vertical-bipanel-tall {
+        width: 30vw;
+        height: 50vw;
+    }
+
+    .inspirations-horizontal-two-images {
+        width: 45vw;
+        height: 45vw;
+    }
+
+    .inspirations-horizontal {
+        width: 91vw;
+        height: 40vw;
+    }
 }

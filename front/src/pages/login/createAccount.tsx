@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import './login.css';
 import { requester } from '../../components/requester';
+import Alert, { displayAlert } from '../../components/alert_TODO/alert';
 
 function CreateAccount() {
     let navigate = useNavigate();
@@ -17,13 +18,13 @@ function CreateAccount() {
     });
 
     function createAccount() {
-        if (profile.password !== profile.passwordRepeat) {
-            alert('Les mots de passe ne sont pas identiques');
+        if (profile.firstName === '' || profile.lastName === '' || profile.email === '' || profile.password === '') {
+            displayAlert('create-account-mandatory');
             return;
         }
 
-        if (profile.firstName === '' || profile.lastName === '' || profile.email === '' || profile.password === '') {
-            alert('Veuillez remplir tous les champs obligatoires');
+        if (profile.password !== profile.passwordRepeat) {
+            displayAlert('create-account-identical-passwords')
             return;
         }
 
@@ -46,7 +47,7 @@ function CreateAccount() {
                         localStorage.setItem('lastName', res2.lastName);
                     } else {
                         console.log(res2);
-                        alert("Une erreur est survenue, merci de réessayer ultérieurement");
+                        displayAlert('create-account-error');
                     }
                 });
 
@@ -55,12 +56,12 @@ function CreateAccount() {
 
             } else {
                 if (res.message === 'Wrong email or password') {
-                    alert('Email ou mot de passe incorrect');
+                    displayAlert('create-account-wrong-credentials');
                     return;
                 }
                 else {
                     console.log(res);
-                    alert("Une erreur est survenue, merci de réessayer ultérieurement");
+                    displayAlert('create-account-error');
                 }
             }
         });
@@ -115,6 +116,10 @@ function CreateAccount() {
                 <p>Vous avez déjà un compte ?</p>
                 <button onClick={() => navigate("/se-connecter")} className='login-container-button'>Se connecter</button>
             </div>
+            <Alert id='create-account-identical-passwords' message='Les mots de passe ne sont pas identiques' />
+            <Alert id='create-account-mandatory' message='Les champs prénom, nom, email et mot de passe sont obligatoires' />
+            <Alert id='create-account-error' message='Une erreur est survenue, merci de réessayer ultérieurement' />
+            <Alert id='create-account-wrong-credentials' message='Email ou mot de passe incorrect' />
         </div>
     );
 }

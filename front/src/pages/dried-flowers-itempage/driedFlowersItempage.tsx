@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { articleDB } from '../../components/types';
 import { requester } from '../../components/requester';
-import { translateCarousel } from '../../components/translateCarousel';
+import { columnImagesTranslateCarousel, translateCarousel } from '../../components/translateCarousel';
 
 import './driedFlowersItempage.css';
 
@@ -60,9 +60,9 @@ function DriedFlowersItempage() {
 
     function images() {
         let imagesList: JSX.Element[] = [];
-        item?.files?.forEach(img => {
+        item?.files?.forEach((img, index) => {
             let imageUrl: string = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + img;
-            imagesList.push(<img className='home-carousel-img' src={imageUrl} alt="carousel" />);
+            imagesList.push(<img key={index} className='home-carousel-img' src={imageUrl} alt="carousel" />);
         });
         return imagesList;
     }
@@ -75,9 +75,9 @@ function DriedFlowersItempage() {
         }
 
         for (let i = 0; i < item?.files?.length; i++) {
-            let border: React.CSSProperties = selected === i ? { border: '3px solid var(--color-2-darker2)' } : {padding: '3px'};
+            let border: React.CSSProperties = selected === i ? { border: '3px solid var(--color-2-darker2)' } : { padding: '3px' };
             let imageUrl: string = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + item?.files[i];
-            imagesList.push(<img className='item-page-images-col' src={imageUrl} alt="sélection d'image" style={border} />);
+            imagesList.push(<img key={i} className='item-page-images-col' src={imageUrl} alt="sélection d'image" style={border} onClick={() => columnImagesTranslateCarousel(i, 30, item?.files?.length, tr, setTr)} />);
         }
         return imagesList;
     }
@@ -85,14 +85,15 @@ function DriedFlowersItempage() {
     function editIsFavorite(article: string, favorite: string) {
         if (favorite) {
             requester("/favorite/delete?_id=" + favorite, "DELETE").then((res: any) => {
-                if (res) {
+                if (!res.err) {
                     setFavId("");
                 }
             });
             return;
         } else {
             requester("/favorite/create", "POST", { article: article }).then((res: any) => {
-                if (res) {
+                if (!res.err) {
+                    console.log(res);
                     setFavId(res._id);
                 }
             });
@@ -101,48 +102,50 @@ function DriedFlowersItempage() {
 
     return (
         <div id="item-page">
-            <div id="item-page-images">
-                <div id='item-page-images-col'>
-                    {imagesCol()}
-                </div>
-                <div id="home-carousel">
-                    <div id="home-carousel-dir-buttons-area">
-                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, item?.files?.length, tr, setTr)}>
-                            <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel images' />
+            <div id="item-page-top">
+                <div id="item-page-images">
+                    <div id='item-page-images-col'>
+                        {imagesCol()}
+                    </div>
+                    <div id="home-carousel">
+                        <div id="home-carousel-dir-buttons-area">
+                            <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, item?.files?.length, tr, setTr)}>
+                                <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel images' />
+                            </div>
+                            <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, item?.files?.length, tr, setTr)}>
+                                <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
+                            </div>
                         </div>
-                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, item?.files?.length, tr, setTr)}>
-                            <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
+                        <div id="home-carousel-list">
+                            {images()}
                         </div>
                     </div>
-                    <div id="home-carousel-list">
-                        {images()}
+                </div>
+                <div id="item-page-infos">
+                    <h1 id="item-page-info-name">{item?.name}</h1>
+                    <div id="item-page-info-price">{item?.price}€</div>
+                    <div id="item-page-info-stock">{item?.stock} en stock</div>
+                    <div id="item-page-info-favorite" onClick={() => editIsFavorite(item?._id, favId)}>
+                        <img
+                            id="item-page-info-favorite-icon"
+                            src={(favId === "") ? "/icons/heart.svg" : "/icons/heart_full.svg"}
+                            title='Ajouter aux favoris'
+                            className='header-top-button-icon'
+                            alt="ajouter aux favoris"
+                        ></img>
+                        Ajouter aux favoris
                     </div>
-                </div>
-            </div>
-            <div id="item-page-info">
-                <div className="dried-tile-name">{item?.name}</div>
-                <div id="item-page-info-price">{item?.price}€</div>
-                <div id="item-page-info-description">{item?.description}</div>
-                <div id="item-page-info-stock">{item?.stock} en stock</div>
-                <div id="item-page-info-favorite" onClick={() => editIsFavorite(item?._id, favId)}>
+                    {/*<div id="item-page-info-add-to-cart" onClick={() => navigate("/panier")}>
                     <img
-                        id="item-page-info-favorite-icon"
-                        src={(favId === "") ? "/icons/heart.svg" : "/icons/heart_full.svg"}
-                        title='Ajouter aux favoris'
-                        className='header-top-button-icon'
-                        alt="ajouter aux favoris"
-                    ></img>
-                    Ajouter aux favoris
-                </div>
-                <div id="item-page-info-add-to-cart" onClick={() => navigate("/panier")}>
-                    <img
-                        className='header-top-button-icon'
-                        src={"/icons/cart.svg"}
-                        id="header-button-cart"
+                    className='header-top-button-icon'
+                    src={"/icons/cart.svg"}
+                    id="header-button-cart"
                     />
                     Ajouter au panier
+                </div>*/}
                 </div>
             </div>
+            <div id="item-page-description">{item?.description}</div>
         </div>
     );
 }

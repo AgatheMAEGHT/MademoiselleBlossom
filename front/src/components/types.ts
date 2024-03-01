@@ -135,5 +135,5 @@ export type select = {
 /* Pop UP */
 export type alert = {
     message: string,
-    type: string
+    id: string,
 }

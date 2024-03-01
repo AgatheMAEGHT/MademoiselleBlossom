@@ -62,7 +62,7 @@
     font-size: 27px;
     font-weight: 600;
     margin-top: 0.5vw;
-    font-family: 'Great Vibes', cursive;
+    font-family: var(--font-cursive);
 }
 
 .dried-tile-price {

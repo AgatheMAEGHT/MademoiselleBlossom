@@ -44,7 +44,7 @@
     display: none;
     cursor: pointer;
     position: relative;
-    z-index: 99;
+    z-index: 80;
     background-color: var(--color-1);
     padding: 5px;
     border-radius: 5px;
@@ -75,7 +75,7 @@
 #header-buttons-area {
     position: sticky;
     top: 0px;
-    z-index: 90;
+    z-index: 70;
 }
 
 /* Buttons Big Screen */
@@ -176,7 +176,7 @@
     #header-buttons-pc {
         display: none;
     }
-    
+
     #header-buttons-mobile {
         display: none;
         align-items: flex-start;
@@ -186,10 +186,10 @@
         overflow: hidden;
         position: absolute;
         top: 0;
-        z-index: 99;
+        z-index: 80;
         background-color: rgba(0, 0, 0, 0.432);
     }
-    
+
     /*Client Buttons*/
     #header-buttons-mobile-area {
         padding-top: 50px;

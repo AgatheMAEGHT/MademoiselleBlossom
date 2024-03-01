@@ -9,12 +9,11 @@ function Footer() {
     return (
         <div id="footer">
             <div className='footer-col'>
-                <p className='footer-url' onClick={() => { navigate("/conditions-de-livraisons") }}>Livraisons</p>
-                <p className='footer-url' onClick={() => { navigate("/a-propos") }}>À propos de Mademoiselle Blossom</p>
-                <p className='footer-url' onClick={() => { navigate("/contact") }}>Contactez-moi</p>
+                {/*<p className='footer-url' onClick={() => { navigate("/conditions-de-livraisons") }}>Livraisons</p>*/}
+                <p className='footer-url' onClick={() => { navigate("/contact") }}>À propos de Mademoiselle Blossom</p>
             </div>
             <div className='footer-col'>
-                <p className='footer-url' onClick={() => { navigate("/cgv") }}>Conditions Générales de Ventes</p>
+                {/*<p className='footer-url' onClick={() => { navigate("/cgv") }}>Conditions Générales de Ventes</p>*/}
                 <p className='footer-url' onClick={() => { navigate("/legal") }}>Mentions légales</p>
             </div>
         </div>

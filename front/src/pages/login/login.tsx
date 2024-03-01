@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { requester } from '../../components/requester';
 
 import './login.css';
+import Alert, { displayAlert } from '../../components/alert_TODO/alert';
 
 function Login() {
     let navigate = useNavigate();
@@ -15,7 +16,7 @@ function Login() {
 
     function login() {
         if (profile.email === '' || profile.password === '') {
-            alert('Veuillez remplir tous les champs obligatoires');
+            displayAlert('login-alert-mandatory');
             return;
         }
 
@@ -38,7 +39,7 @@ function Login() {
                         localStorage.setItem('lastName', res2.lastName);
                     } else {
                         console.log(res2);
-                        alert("Une erreur est survenue, merci de réessayer ultérieurement");
+                        displayAlert('login-alert-error');
                     }
                 });
 
@@ -47,12 +48,12 @@ function Login() {
 
             } else {
                 if (res.message === 'Wrong email or password') {
-                    alert('Email ou mot de passe incorrect');
+                    displayAlert('login-wrong-credentials');
                     return;
                 }
                 else {
                     console.log(res);
-                    alert("Une erreur est survenue, merci de réessayer ultérieurement");
+                    displayAlert('login-alert-error');
                 }
             }
         });
@@ -79,6 +80,9 @@ function Login() {
                 <p>Vous n'avez pas de compte ?</p>
                 <button onClick={() => navigate("/creer-un-compte")} className='login-container-button'>Créer un compte</button>
             </div>
+            <Alert message="Veuillez remplir tous les champs obligatoires" id="login-alert-mandatory" />
+            <Alert message="Une erreur est survenue, merci de réessayer ultérieurement" id="login-alert-error" />
+            <Alert message="Email ou mot de passe incorrect" id="login-wrong-credentials" />
         </div>
     );
 }

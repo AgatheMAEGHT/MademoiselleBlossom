@@ -7,8 +7,9 @@ function Mariage() {
     let navigate = useNavigate();
     // Src image in public folder
     return (
-        <div id="mariage">
-            <h1>Mariage</h1>
+        <div id="inspiration">
+            <h1 className='inspirations-title'>Mariage</h1>
+            <h3 className='inspirations-subtitle'>Sublimez votre mariage avec des créations uniques</h3>
             <div className="inspirations-vertical-stack-area">
                 <img src='/inspirations/mariage/coeur1.jpg' alt="coeur1" className='inspiration-image inspirations-vertical-stack-main' />
                 <div className='inspirations-vertical-stack'>
@@ -16,6 +17,8 @@ function Mariage() {
                     <img src='/inspirations/mariage/bouquet-rose-pale.jpg' alt="bouquet-rose-pale" className='inspiration-image' />
                 </div>
             </div>
+
+            <p className='inspirations-text'>La boutique Mademoiselle Blossom vous accompagne dans l'un des moments les plus important de votre vie. Chaque mariage est unique, c'est pour cela que je m'engage à créer des arrangements floraux qui reflètent votre style, votre personnalité et votre histoire.</p>
 
             <div className='inspirations-vertical-tripanel'>
                 <div className='inspirations-vertical-tripanel-stack'>
@@ -38,6 +41,8 @@ function Mariage() {
                 </div>
             </div>
 
+            <p className='inspirations-text'>Les créations florales ne se résument pas qu'à de simples bouquets. Chaque petit détail compte pour créer votre jour parfait, des arches aux compositions de tables en passant par les boutonnières, les couronnes qui habillerons vos têtes et les peignes fleuris, je travaille avec vous pour donner vie à vos visions.</p>
+
             <div className="inspirations-vertical-stack-area">
                 <div className='inspirations-vertical-stack'>
                     <img src='/inspirations/mariage/bouquet-rose-petit.jpg' alt="bouquet-rose-petit" className='inspiration-image' />
@@ -51,6 +56,8 @@ function Mariage() {
                 <img src='/inspirations/mariage/broche-blanche.jpg' alt="broche-blanche" className='inspiration-image' />
                 <img src='/inspirations/mariage/bouquet-rose-blanc.jpg' alt="bouquet-rose-blanc" className='inspiration-image' />
             </div>
+            
+            <p className='inspirations-text'>Pour commencer à planifier votre mariage et vos envies avec un devis personnalisé gratuit, je vous invite à me contacter à votre convenance.</p>
 
             <div className='inspirations-horizontal-area'>
                 <img src='/inspirations/mariage/bouquet-orange.jpg' alt="bouquet-orange" className='inspiration-image inspirations-horizontal' id="bouquet-orange" />
@@ -60,6 +67,7 @@ function Mariage() {
                     <img src='/inspirations/mariage/bouquet-rose-blanc2.jpg' alt="bouquet-rose-blanc2" className='inspiration-image' />
                 </div>
             </div>
+
 
             <div className='inspirations-vertical-bipanel'>
                 <img src='/inspirations/mariage/bouquet-blanc-beige.png' alt="bouquet-blanc-beige" className='inspiration-image inspiration-vertical-bipanel-tall' />

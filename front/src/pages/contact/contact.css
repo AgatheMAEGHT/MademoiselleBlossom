@@ -6,3 +6,43 @@
     text-align: center;
     padding: 5vw 20vw;
 }
+
+#contact-emma {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    margin: 50px 0;
+    gap: 50px;
+    text-align: left;
+}
+
+#contact-emma-img {
+    width: 20vw;
+    border-radius: 2vw;
+}
+
+.contact-info-separation {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: transparent;
+    cursor: default;
+    font-size: 0px;
+}
+
+@media (width <=768px) {
+    #contact-emma {
+        flex-direction: column;
+        margin: 0px;
+        gap: 20px;
+    }
+
+    #contact-emma-img {
+        width: 40vw;
+    }
+
+    #contact-emma-text {
+        font-size: medium;
+    }
+}

@@ -2,6 +2,7 @@ import React from 'react';
 
 import './week.css';
 import { requester } from '../../../components/requester';
+import Alert, { displayAlert } from '../../../components/alert_TODO/alert';
 
 function WeekAdmin() {
 
@@ -62,10 +63,10 @@ function WeekAdmin() {
         let tmp: string[] = colors.map((elt: { name: string, id: number }) => elt.name.replace("#", ""));
         requester('/admin/week', "POST", { colors: tmp }).then((res: any) => {
             if (res._confirm === "ok") {
-                alert("Les couleurs ont bien été sauvegardées");
+                displayAlert("week-colors-saved");
             } else {
                 console.log(res);
-                alert("Une erreur est survenue");
+                displayAlert("week-colors-error");
             }
         })
     }
@@ -83,6 +84,8 @@ function WeekAdmin() {
                 <button className='admin-button' onClick={() => { addColor() }}>Ajouter une couleur</button>
                 <button className='admin-button' onClick={() => { postColors() }}>Sauvegarder les couleurs</button>
             </div>
+            <Alert id="week-colors-saved" message="Les couleurs ont été sauvegardées" />
+            <Alert id="week-colors-error" message="Une erreur est survenue lors de la sauvegarde" />
         </div>
     );
 }

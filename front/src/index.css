@@ -22,6 +22,8 @@ body {
   --color-3: #d40c48;
   --color-3-lighter: #FFDADA;
   --color-3-darker: #94002c;
+
+  --font-cursive: 'Great Vibes';
 }
 
 code {

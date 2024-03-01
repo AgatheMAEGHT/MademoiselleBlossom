@@ -7,8 +7,12 @@ function Deuil() {
     let navigate = useNavigate();
     // Src image in public folder
     return (
-        <div id="mariage">
-            <h1>Deuil</h1>
+        <div id="inspiration">
+            <h1 className='inspirations-title'>Deuil</h1>
+
+            <h3 className='inspirations-subtitle'>Les fleurs sont les mots muets de l'amour, de la compassion et du réconfort.</h3>
+
+            <p className='inspirations-text'>La boutique Mademoiselle Blossom vous accompagne dans ces moments délicats de la vie avec des créations florales adaptées, empreintes de douceur et de réconfort.</p>
 
             <div className='inspirations-horizontal-area'>
                 <img src='/inspirations/deuil/courone-orange.jpg' alt="courone-orange" className='inspiration-image inspirations-horizontal' id="bouquet-orange" />
@@ -19,10 +23,14 @@ function Deuil() {
                 </div>
             </div>
 
+            <p className='inspirations-text'>Je suis à votre écoute pour vous accompagner au mieux dans le choix des fleurs, des créations ainsi que des couleurs en fonction de vos besoins. En ces instants, laissez les fleurs exprimer ce que les mots ne peuvent pas dire.</p>
+
             <div className="inspirations-horizontal-two-images-area">
                 <img src='/inspirations/deuil/coeur-blanc.jpg' alt="coeur-blanc" className='inspiration-image inspirations-horizontal-two-images' />
                 <img src='/inspirations/deuil/courone-blanc.jpg' alt="courone-blanc" className='inspiration-image inspirations-horizontal-two-images' />
             </div>
+
+            <p className='inspirations-text'>Afin que vous puissiez envisager sereinement les arrangements floraux de la cérémonie, je vous invite à me contacter à votre convenance pour un devis personnalisé gratuit.</p>
 
             <div className="inspirations-vertical-stack-area">
                 <img src='/inspirations/deuil/courone-rouge-blanc-nom.jpg' alt="courone-rouge-blanc-nom" className='inspiration-image inspirations-vertical-stack-main' />
