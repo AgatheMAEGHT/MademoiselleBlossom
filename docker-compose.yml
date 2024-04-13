@@ -10,6 +10,7 @@ services:
     depends_on:
       - mongo
     command: reflex -r '\.go$$' -s -- sh -c 'go get ./... && go run main.go'
+
   mongo:
     image: mongo
     restart: always
@@ -20,3 +21,10 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mademoiselleblossom
       MONGO_INITDB_ROOT_PASSWORD: azertyuiop
+
+  front:
+    build: front
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./front/.env
