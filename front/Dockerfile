@@ -1,13 +1,5 @@
-FROM node:16.20.2
-
-WORKDIR /front
-
-COPY yarn.lock package.json ./
-
-RUN yarn install
-
-COPY . .
+FROM node:16.20.2-alpine3.18
 
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+WORKDIR /front
