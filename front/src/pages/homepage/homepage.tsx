@@ -14,17 +14,18 @@ function Homepage() {
             <div id="home-top">
                 <div id="home-carousel">
                     <div id="home-carousel-dir-buttons-area">
-                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, 3, tr, setTr)}>
+                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, 4, tr, setTr)}>
                             <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel images' />
                         </div>
-                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, 3, tr, setTr)}>
+                        <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, 4, tr, setTr)}>
                             <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
                         </div>
                     </div>
                     <div id="home-carousel-list">
-                        <img src='/inspirations/deuil/coeur-blanc.jpg' alt="coeur-blanc" className='home-carousel-img' />
-                        <img src='/inspirations/mariage/bouquet-arc-rose.jpg' alt="bouquet-arc-rose" className='home-carousel-img' />
-                        <img src='/inspirations/mariage/bouquet-rose-pale.jpg' alt="bouquet-rose-pale" className='home-carousel-img' />
+                        <img src='/accueil/accueil_courone.jpg' alt="courone" className='home-carousel-img' />
+                        <img src='/accueil/accueil_rose.jpg' alt="bouquet-rose-pale" className='home-carousel-img' />
+                        <img src='/accueil/accueil_plante.png' alt="bouquet-arc-rose" className='home-carousel-img' />
+                        <img src='/accueil/accueil_rouge.jpg' alt="bouquet-rose-pale" className='home-carousel-img' />
                     </div>
                 </div>
                 <div id="home-top-buttons-area">
@@ -33,11 +34,11 @@ function Homepage() {
                     <div className='home-top-buttons' onClick={() => navigate("")}>Commande sur mesure</div>
                 </div>
             </div>
-            <p>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions. </p>
 
             <div className='home-text-and-img'>
-                <img src='/bouquet-seche.jpg' alt="bouquet-arc-rose" className='home-img-tall' />
-                <p>Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
+                <img src='/bouquet_seche.jpg' alt="bouquet-arc-rose" className='home-img-tall' />
+                <p className='paragraph'>Bienvenue chez Mademoiselle Blossom !<br /><br />
+                    J'ai à cœur d'égayer chaque moment de votre vie à l'aide de création florale unique et personnalisable. Explorer ma sélection en ligne pour trouver l'inspiration et laissez-moi transformer vos envies en réalité fleurie. Faites de chaque jour une occasion spéciale...</p>
             </div>
         </div>
     );

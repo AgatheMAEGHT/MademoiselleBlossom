@@ -10,7 +10,7 @@ function Deuil() {
         <div id="inspiration">
             <h1 className='inspirations-title'>Deuil</h1>
 
-            <h3 className='inspirations-subtitle'>Les fleurs sont les mots muets de l'amour, de la compassion et du réconfort.</h3>
+            <h3 className='inspirations-subtitle'><i>Les fleurs sont les mots muets de l'amour, de la compassion et du réconfort.</i></h3>
 
             <p className='inspirations-text'>La boutique Mademoiselle Blossom vous accompagne dans ces moments délicats de la vie avec des créations florales adaptées, empreintes de douceur et de réconfort.</p>
 

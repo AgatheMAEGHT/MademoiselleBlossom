@@ -9,7 +9,7 @@ function Mariage() {
     return (
         <div id="inspiration">
             <h1 className='inspirations-title'>Mariage</h1>
-            <h3 className='inspirations-subtitle'>Sublimez votre mariage avec des créations uniques</h3>
+            <h3 className='inspirations-subtitle'><i>Sublimez votre mariage avec des créations uniques</i></h3>
             <div className="inspirations-vertical-stack-area">
                 <img src='/inspirations/mariage/coeur1.jpg' alt="coeur1" className='inspiration-image inspirations-vertical-stack-main' />
                 <div className='inspirations-vertical-stack'>
@@ -56,7 +56,7 @@ function Mariage() {
                 <img src='/inspirations/mariage/broche-blanche.jpg' alt="broche-blanche" className='inspiration-image' />
                 <img src='/inspirations/mariage/bouquet-rose-blanc.jpg' alt="bouquet-rose-blanc" className='inspiration-image' />
             </div>
-            
+
             <p className='inspirations-text'>Pour commencer à planifier votre mariage et vos envies avec un devis personnalisé gratuit, je vous invite à me contacter à votre convenance.</p>
 
             <div className='inspirations-horizontal-area'>
