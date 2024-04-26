@@ -1,2 +1,7 @@
 # Mongo gitignore
 data
+
+# Certs
+certificate.crt
+private.key
+
