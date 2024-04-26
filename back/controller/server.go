@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/sirupsen/logrus"
 )
@@ -94,10 +95,31 @@ func StartServer(path string) {
 	server.HandleFunc("/favorite/create", middlewareWrapper(postFavorite))
 	server.HandleFunc("/favorite/delete", middlewareWrapper(deleteFavorite))
 
-	server.HandleFunc("/temp-cart", middlewareWrapper(getTempCart))
-	server.HandleFunc("/temp-cart/create", middlewareWrapper(postTempCart))
-	server.HandleFunc("/temp-cart/delete", middlewareWrapper(deleteTempCart))
+	// server.HandleFunc("/temp-cart", middlewareWrapper(getTempCart))
+	// server.HandleFunc("/temp-cart/create", middlewareWrapper(postTempCart))
+	// server.HandleFunc("/temp-cart/delete", middlewareWrapper(deleteTempCart))
 
 	fmt.Printf("Listening on '%s'\n", path)
-	http.ListenAndServe(path, server)
+
+	if os.Getenv("HTTPS") == "true" {
+		if os.Getenv("SSL_CRT_FILE") == "" || os.Getenv("SSL_KEY_FILE") == "" {
+			logrus.Fatal("SSL_CRT_FILE and SSL_KEY_FILE must be set")
+		}
+		if _, err := os.Stat(os.Getenv("SSL_CRT_FILE")); os.IsNotExist(err) {
+			logrus.Fatal(os.Getenv("SSL_CRT_FILE") + " not found")
+		}
+		if _, err := os.Stat(os.Getenv("SSL_KEY_FILE")); os.IsNotExist(err) {
+			logrus.Fatal(os.Getenv("SSL_KEY_FILE") + " not found")
+		}
+
+		err := http.ListenAndServeTLS(path, os.Getenv("SSL_CRT_FILE"), os.Getenv("SSL_KEY_FILE"), server)
+		if err != nil {
+			logrus.Fatal("ListenAndServe: ", err)
+		}
+	} else {
+		err := http.ListenAndServe(path, server)
+		if err != nil {
+			logrus.Fatal("ListenAndServe: ", err)
+		}
+	}
 }

@@ -26,8 +26,6 @@ services:
     build: front
     volumes:
       - ./front:/front
-      - ./certificate.crt:/front/certificate.crt
-      - ./private.key:/front/private.key
     ports:
       - "80:3000"
       - "443:3000"
