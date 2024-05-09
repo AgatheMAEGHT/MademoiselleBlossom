@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"MademoiselleBlossom/utils"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -21,10 +23,11 @@ func root(w http.ResponseWriter, r *http.Request) {
 func corsWrapper(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS, PUT")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS, PUT, PATCH")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(utils.NewResMsg("Preflight request").ToJson())
 			return
 		}
 

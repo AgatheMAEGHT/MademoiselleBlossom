@@ -27,14 +27,8 @@ func whoAmI(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	b, err := json.MarshalIndent(user, "", "  ")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(utils.NewResErr("Failed to login").ToJson())
-		return
-	}
 	w.WriteHeader(http.StatusOK)
-	w.Write(b)
+	json.NewEncoder(w).Encode(user)
 }
 
 func deleteUser(w http.ResponseWriter, r *http.Request, user database.User) {

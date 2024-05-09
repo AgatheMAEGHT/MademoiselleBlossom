@@ -1,6 +1,6 @@
 export function resfreshToken() {
     if (!localStorage.getItem('refresh_token')) return;
-    if (new Date(localStorage.getItem('expire_date') ?? '').getTime() > new Date().getTime()) return;
+    if (new Date(parseInt(localStorage.getItem('expire_date') ?? '0')).getTime() > new Date().getTime()) return;
 
     let token = localStorage.getItem('refresh_token') ?? '';
     return fetch(process.env.REACT_APP_API_URL + '/refresh', {
@@ -13,12 +13,24 @@ export function resfreshToken() {
         .then(res => res.json())
         .then(res => {
             localStorage.setItem('access_token', res.access_token);
-        })
+            let d = new Date().setSeconds(new Date().getSeconds() + parseInt(res.expires_in) ?? 0);
+            localStorage.setItem('expire_date', d.toString());
+        });
 }
 
 export function requester<T>(url: string, method: string, body?: any): Promise<T> {
-    resfreshToken();
-    console.log("requester1: " + url);
+    if (localStorage.getItem("refresh_token") !== null) {
+        try {
+            resfreshToken();
+        }
+        catch (e) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('expire_date');
+            localStorage.removeItem('logged');
+            localStorage.removeItem('pseudo');
+        }
+    }
 
     let token = localStorage.getItem('access_token') ?? '';
     let headers = {};
@@ -28,38 +40,39 @@ export function requester<T>(url: string, method: string, body?: any): Promise<T
         'Authorization': `Bearer ${token}`
     } : headers = {
         'Content-Type': 'application/json'
-    }
+    };
 
-    console.log("requester2: " + url);
-    console.log(headers);
     return fetch(process.env.REACT_APP_API_URL + url, {
         method,
         headers: headers,
-        body: JSON.stringify(body)
+        body: body ? JSON.stringify(body) : undefined
     })
         .then(res => {
-            console.log("requester3: " + url + res.status);
             if (res.status === 401) {
-                let msg = "Vous n'êtes pas connecté."
-                if (token) {
-                    msg = "Votre session a expiré. Veuillez vous reconnecter."
+                let msg = "Vous n'êtes pas connecté.";
+                if (url === '/login') msg = "Identifiants incorrects.";
+                else if (token) {
+                    msg = "Action non authorisée.";
                 }
+                alert(msg);
+            } else if (res.status === 418) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 localStorage.removeItem('expire_date');
                 localStorage.removeItem('logged');
-                localStorage.removeItem('email');
-                localStorage.removeItem('phone');
-                localStorage.removeItem('firstName');
-                localStorage.removeItem('lastName');
+                localStorage.removeItem('pseudo');
+                alert("Vous avez été déconnecté.");
+            } else if (res.status !== 200) {
+                console.log("Err: " + res.status);
+                res.json().then(res => {
+                    console.log(res);
+                });
 
-                alert(msg);
+                return;
             }
-            return res.json()
-        }).catch((err) => {
-            console.log("requester4: " + url);
-            console.log(err);
-        })
+
+            return res.json();
+        });
 }
 
 export function requesterFile<T>(url: string, method: string, body: ReadableStream<Uint8Array>, contentType?: string): Promise<T> {
@@ -73,7 +86,7 @@ export function requesterFile<T>(url: string, method: string, body: ReadableStre
         'Authorization': `Bearer ${token}`
     } : headers = {
         'Content-Type': 'application/json'
-    }
+    };
 
     let requestStream = new ReadableStream({
         start(controller) {
@@ -87,7 +100,7 @@ export function requesterFile<T>(url: string, method: string, body: ReadableStre
                     }
                     controller.enqueue(value);
                     read();
-                })
+                });
             }
 
             read();
@@ -127,7 +140,7 @@ export function requesterFile<T>(url: string, method: string, body: ReadableStre
 
                     throw new Error('Session expired');
                 }
-                return res.json()
-            })
-    })
+                return res.json();
+            });
+    });
 }

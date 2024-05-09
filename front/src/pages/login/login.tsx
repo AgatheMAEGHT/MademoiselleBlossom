@@ -22,42 +22,30 @@ function Login() {
 
         requester('/login', 'POST', profile).then((res: any) => {
             if (res.access_token) {
-                let d = new Date().setSeconds(new Date().getSeconds() + parseInt(res.expires_in) ?? 0)
+                let d = new Date().setSeconds(new Date().getSeconds() + parseInt(res.expires_in) ?? 0);
                 localStorage.setItem('logged', "client");
                 localStorage.setItem('access_token', res.access_token);
                 localStorage.setItem('expire_date', d.toString());
                 localStorage.setItem('refresh_token', res.refresh_token);
-                console.log("access_token: " + localStorage.getItem('access_token'));
-                console.log("expire_date: " + localStorage.getItem('expire_date'));
-                console.log("refresh_token: " + localStorage.getItem('refresh_token'));
-                console.log("logged: " + localStorage.getItem('logged'));
 
-                console.log("res: " + res);
                 // Get user infos
                 requester('/who-am-i', 'GET').then((res2: any) => {
-                    console.log("res2: " + res2);
-                    if (res2.isAdmin !== undefined) {
+                    if (res2) {
                         localStorage.setItem('logged', res2.isAdmin ? "admin" : "client");
-                        localStorage.setItem('email', res2.email);
-                        localStorage.setItem('phone', res2.phone);
-                        localStorage.setItem('firstName', res2.firstName);
-                        localStorage.setItem('lastName', res2.lastName);
+                        localStorage.setItem('pseudo', res2.pseudo);
+                        localStorage.setItem('user_id', res2._id);
                     } else {
-                        console.log(res2);
                         displayAlert('login-alert-error');
                     }
+                    navigate('/');
+                    window.location.reload();
                 });
-
-                navigate('/');
-                window.location.reload();
-
             } else {
                 if (res.message === 'Wrong email or password') {
                     displayAlert('login-wrong-credentials');
                     return;
                 }
                 else {
-                    console.log(res);
                     displayAlert('login-alert-error');
                 }
             }
