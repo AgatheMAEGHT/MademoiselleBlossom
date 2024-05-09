@@ -32,4 +32,4 @@ services:
       - "3000:3000"
     env_file:
       - ./front/.env
-    command: sh -c 'yarn install && HTTPS=true SSL_CRT_FILE=certificate.crt SSL_KEY_FILE=private.key yarn start'
+    command: sh -c 'yarn install && yarn start'
