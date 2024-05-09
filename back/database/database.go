@@ -37,6 +37,7 @@ func initCollections(ctx context.Context) {
 	initColorsOfTheWeek(ctx, db)
 	initFavorite(ctx, db)
 	initTempCart(ctx, db)
+	initFlowerOfTheWeek(ctx, db)
 }
 
 func Connect(ctx context.Context, url string) (*mongo.Client, error) {

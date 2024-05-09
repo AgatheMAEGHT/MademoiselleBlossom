@@ -99,6 +99,11 @@ func StartServer(path string) {
 	server.HandleFunc("/api/colors-of-the-week/create", middlewareWrapper(postColorsOfTheWeek))
 	server.HandleFunc("/api/colors-of-the-week/delete", middlewareWrapper(deleteColorsOfTheWeek))
 
+	server.HandleFunc("/api/flower-of-the-week", corsWrapper(getFlowerOfTheWeek))
+	server.HandleFunc("/api/flower-of-the-week/create", middlewareWrapper(postFlowerOfTheWeek))
+	server.HandleFunc("/api/flower-of-the-week/update", middlewareWrapper(putFlowerOfTheWeek))
+	server.HandleFunc("/api/flower-of-the-week/delete", middlewareWrapper(deleteFlowerOfTheWeek))
+
 	server.HandleFunc("/api/favorite", middlewareWrapper(getFavorite))
 	server.HandleFunc("/api/favorite/create", middlewareWrapper(postFavorite))
 	server.HandleFunc("/api/favorite/delete", middlewareWrapper(deleteFavorite))
