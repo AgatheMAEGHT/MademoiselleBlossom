@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { articleDB, catalog, favoriteDB } from '../../components/types';
 import { requester } from '../../components/requester';
 
-import './driedFlowers.css';
+import '../../components/catalogs.css';
 
 function DriedFlowers() {
     let navigate = useNavigate();
