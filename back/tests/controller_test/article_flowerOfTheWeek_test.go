@@ -9,7 +9,7 @@ import (
 )
 
 func TestFlowerOfTheWeek(t *testing.T) {
-	deferFunc, articles, _, _, _, _, _ := PostCompleteArticle(t)
+	deferFunc, articles, _, _, _, _ := PostCompleteArticle(t)
 	defer deferFunc()
 
 	testTok := createTestAccount(t, "test@floweroftheweek.com")

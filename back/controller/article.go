@@ -135,14 +135,8 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Form.Get("types") != "" {
-		articleType, err := utils.IsStringListObjectIdValid(r.Form["types"], database.ArticleTypeCollection)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write(err.ToJson())
-			return
-		}
 
-		query["type"] = bson.M{"$in": articleType}
+		query["type"] = bson.M{"$in": r.Form["types"]}
 	}
 
 	if r.Form.Get("species") != "" {
@@ -287,14 +281,9 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if body.Type == primitive.NilObjectID {
+	if body.Type == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing article type").ToJson())
-		return
-	}
-	if err := utils.IsObjectIdExist(body.Type, database.ArticleTypeCollection); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(err.ToJson())
 		return
 	}
 
@@ -407,12 +396,7 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		article.Colors = body.Colors
 	}
 
-	if body.Type != primitive.NilObjectID {
-		if err := utils.IsObjectIdExist(body.Type, database.ArticleTypeCollection); err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write(err.ToJson())
-			return
-		}
+	if body.Type != "" {
 		article.Type = body.Type
 	}
 

@@ -56,11 +56,6 @@ func StartServer(path string) {
 	server.HandleFunc("/api/text-block/update", middlewareWrapper(putTextBlock))
 	server.HandleFunc("/api/text-block/delete", middlewareWrapper(deleteTextBlock))
 
-	server.HandleFunc("/api/article-type", corsWrapper(getArticleType))
-	server.HandleFunc("/api/article-type/create", middlewareWrapper(postArticleType))
-	server.HandleFunc("/api/article-type/update", middlewareWrapper(putArticleType))
-	server.HandleFunc("/api/article-type/delete", middlewareWrapper(deleteArticleType))
-
 	server.HandleFunc("/api/article-color", corsWrapper(getArticleColor))
 	server.HandleFunc("/api/article-color/create", middlewareWrapper(postArticleColor))
 	server.HandleFunc("/api/article-color/update", middlewareWrapper(putArticleColor))

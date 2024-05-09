@@ -24,7 +24,7 @@ type ArticleRes struct {
 	Tones       []*ArticleTone     `json:"tones" bson:"tones"`
 	Size        float64            `json:"size" bson:"size"`
 	Shape       *ArticleShape      `json:"shape" bson:"shape"`
-	Type        *ArticleType       `json:"type" bson:"type"`
+	Type        string            `json:"type" bson:"type"`
 	Colors      []*ArticleColor    `json:"colors" bson:"colors"`
 	CreatedAt   primitive.DateTime `json:"createdAt" bson:"createdAt"`
 	Species     []*ArticleSpecies  `json:"species" bson:"species"`
@@ -40,7 +40,7 @@ type Article struct {
 	Tones       []primitive.ObjectID `json:"tones" bson:"tones"`
 	Size        float64              `json:"size" bson:"size"`
 	Shape       primitive.ObjectID   `json:"shape" bson:"shape"`
-	Type        primitive.ObjectID   `json:"type" bson:"type"`
+	Type        string               `json:"type" bson:"type"`
 	Colors      []primitive.ObjectID `json:"colors" bson:"colors"`
 	CreatedAt   primitive.DateTime   `json:"createdAt" bson:"createdAt"`
 	Species     []primitive.ObjectID `json:"species" bson:"species"`
@@ -99,11 +99,7 @@ func (a *Article) Populate(ctx context.Context) (*ArticleRes, error) {
 	articleRes.Stock = a.Stock
 	articleRes.Size = a.Size
 
-	articleType, err := FindOneArticleType(ctx, bson.M{"_id": a.Type})
-	if err != nil {
-		return nil, err
-	}
-	articleRes.Type = articleType
+	articleRes.Type = a.Type
 
 	articleSpecies, err := FindArticleSpecies(ctx, bson.M{"_id": bson.M{"$in": a.Species}})
 	if err != nil {

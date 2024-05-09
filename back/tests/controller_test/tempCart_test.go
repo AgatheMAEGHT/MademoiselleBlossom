@@ -19,7 +19,7 @@ func TestTempCart(t *testing.T) {
 	defer deleteAccount(t, testTok)
 
 	// Post articles
-	deferFunc, articles, _, _, _, _, _ := PostCompleteArticle(t)
+	deferFunc, articles, _, _, _, _ := PostCompleteArticle(t)
 	defer deferFunc()
 
 	// Post tempCart
