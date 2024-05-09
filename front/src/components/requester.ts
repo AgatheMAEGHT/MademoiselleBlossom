@@ -18,6 +18,7 @@ export function resfreshToken() {
 
 export function requester<T>(url: string, method: string, body?: any): Promise<T> {
     resfreshToken();
+    console.log("requester1: " + url);
 
     let token = localStorage.getItem('access_token') ?? '';
     let headers = {};
@@ -29,12 +30,15 @@ export function requester<T>(url: string, method: string, body?: any): Promise<T
         'Content-Type': 'application/json'
     }
 
+    console.log("requester2: " + url);
+    console.log(headers);
     return fetch(process.env.REACT_APP_API_URL + url, {
         method,
         headers: headers,
         body: JSON.stringify(body)
     })
         .then(res => {
+            console.log("requester3: " + url + res.status);
             if (res.status === 401) {
                 let msg = "Vous n'êtes pas connecté."
                 if (token) {
@@ -52,6 +56,9 @@ export function requester<T>(url: string, method: string, body?: any): Promise<T
                 alert(msg);
             }
             return res.json()
+        }).catch((err) => {
+            console.log("requester4: " + url);
+            console.log(err);
         })
 }
 

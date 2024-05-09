@@ -10,7 +10,7 @@
     height: fit-content;
     background-color: var(--color-2);
     color: var(--color-1);
-    font-size: small;
+    font-size: smaller;
 }
 
 .footer-col {
@@ -22,10 +22,7 @@
     margin: 5px;
     cursor: pointer;
     width: fit-content;
-}
-
-.footer-url:hover {
-    font-weight: 500;
+    font-weight: bold;
 }
 
 @media (width <=768px) {

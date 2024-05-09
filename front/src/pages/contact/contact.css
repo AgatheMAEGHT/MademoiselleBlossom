@@ -22,6 +22,10 @@
     border-radius: 2vw;
 }
 
+.contact-emma-text {
+    font-size: large;
+}
+
 .contact-info-separation {
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -42,7 +46,7 @@
         width: 40vw;
     }
 
-    #contact-emma-text {
+    .contact-emma-text {
         font-size: medium;
     }
 }

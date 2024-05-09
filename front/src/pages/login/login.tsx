@@ -27,10 +27,15 @@ function Login() {
                 localStorage.setItem('access_token', res.access_token);
                 localStorage.setItem('expire_date', d.toString());
                 localStorage.setItem('refresh_token', res.refresh_token);
+                console.log("access_token: " + localStorage.getItem('access_token'));
+                console.log("expire_date: " + localStorage.getItem('expire_date'));
+                console.log("refresh_token: " + localStorage.getItem('refresh_token'));
+                console.log("logged: " + localStorage.getItem('logged'));
 
+                console.log("res: " + res);
                 // Get user infos
                 requester('/who-am-i', 'GET').then((res2: any) => {
-                    console.log(res2.isAdmin);
+                    console.log("res2: " + res2);
                     if (res2.isAdmin !== undefined) {
                         localStorage.setItem('logged', res2.isAdmin ? "admin" : "client");
                         localStorage.setItem('email', res2.email);

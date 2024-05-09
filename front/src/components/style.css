@@ -11,6 +11,11 @@
     font-size: 18px;
 }
 
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
 /* Mandatory Form Elements */
 #form-mandatory-info {
     display: flex;
