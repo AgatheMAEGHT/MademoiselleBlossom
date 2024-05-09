@@ -90,6 +90,7 @@ func (a *File) FullName() string {
 }
 
 func initFile(ctx context.Context, db *mongo.Database) {
+	_ = ctx
 	FileCollection = db.Collection("files")
 
 	if _, err := os.Stat(FileFolder); os.IsNotExist(err) {

@@ -81,5 +81,6 @@ func (a *CarousselHomepageImg) Populate(ctx context.Context) (*CarousselHomepage
 }
 
 func initCarousselHomepageImg(ctx context.Context, db *mongo.Database) {
+	_ = ctx
 	CarousselHomepageImgCollection = db.Collection("carousselHomepageImgs")
 }

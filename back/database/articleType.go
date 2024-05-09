@@ -75,6 +75,7 @@ func defaultArticleTypes(ctx context.Context) {
 	log := logrus.WithContext(ctx)
 	articleTypes := []ArticleType{
 		{Name: "Fleurs séchées"},
+		{Name: "Fleur fraiche"},
 	}
 
 	for _, articleType := range articleTypes {
@@ -82,7 +83,7 @@ func defaultArticleTypes(ctx context.Context) {
 		if err != nil {
 			if mongo.IsDuplicateKeyError(err) {
 				log.Debug("Article Type already exists")
-			} else if err != nil {
+			} else {
 				log.Fatal(err)
 			}
 		}

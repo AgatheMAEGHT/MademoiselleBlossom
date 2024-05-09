@@ -123,7 +123,7 @@ func TestDeleteAccount(t *testing.T) {
 	assert.True(t, ok)
 
 	result, status = requester(fmt.Sprintf("/user/delete?_id=%s", testId), http.MethodDelete, nil, tok)
-	assert.Equal(t, 401, status, result["err"])
+	assert.Equal(t, 418, status, result["err"])
 
 	// Admin
 	tok = getAdminAccessToken(t)

@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, colors []string, types []string, tones []string, shapes []string) {
+func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, colors []string, types []string, tones []string, shapes []string, species []string) {
 	adminTok := getAdminAccessToken(t)
 
 	// Post File
@@ -107,17 +107,35 @@ func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, col
 	assert.NotEmpty(t, result["_id"])
 	types = append(types, result["_id"].(string))
 
+	// Post article species
+	body = map[string]interface{}{
+		"name": "test",
+	}
+	result, status = requester("/article-species/create", http.MethodPost, body, adminTok)
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	species = append(species, result["_id"].(string))
+
+	body = map[string]interface{}{
+		"name": "test2",
+	}
+	result, status = requester("/article-species/create", http.MethodPost, body, adminTok)
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	species = append(species, result["_id"].(string))
+
 	// Post article
 	body = map[string]interface{}{
-		"files":  []string{},
-		"name":   "low",
-		"price":  10,
-		"stock":  10,
-		"tones":  []string{tones[0]},
-		"size":   10,
-		"shape":  shapes[0],
-		"type":   types[0],
-		"colors": []string{colors[0], colors[1]},
+		"files":   []string{},
+		"name":    "low",
+		"price":   10,
+		"stock":   10,
+		"tones":   []string{tones[0]},
+		"size":    10,
+		"shape":   shapes[0],
+		"type":    types[0],
+		"species": []string{species[0]},
+		"colors":  []string{colors[0], colors[1]},
 	}
 
 	result, status = requester("/article/create", http.MethodPost, body, adminTok)
@@ -128,15 +146,16 @@ func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, col
 	articles = append(articles, resArticleID)
 
 	body = map[string]interface{}{
-		"files":  []string{},
-		"name":   "mid",
-		"price":  20,
-		"stock":  20,
-		"tones":  []string{tones[0], tones[1]},
-		"size":   20,
-		"shape":  shapes[0],
-		"type":   types[0],
-		"colors": []string{colors[0]},
+		"files":   []string{},
+		"name":    "mid",
+		"price":   20,
+		"stock":   20,
+		"tones":   []string{tones[0], tones[1]},
+		"size":    20,
+		"shape":   shapes[0],
+		"type":    types[0],
+		"species": []string{species[0], species[1]},
+		"colors":  []string{colors[0]},
 	}
 
 	result, status = requester("/article/create", http.MethodPost, body, adminTok)
@@ -147,15 +166,16 @@ func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, col
 	articles = append(articles, resArticleID)
 
 	body = map[string]interface{}{
-		"files":  []string{fileID},
-		"name":   "high",
-		"price":  30,
-		"stock":  30,
-		"tones":  []string{tones[1]},
-		"size":   30,
-		"shape":  shapes[1],
-		"type":   types[1],
-		"colors": []string{colors[2]},
+		"files":   []string{fileID},
+		"name":    "high",
+		"price":   30,
+		"stock":   30,
+		"tones":   []string{tones[1]},
+		"size":    30,
+		"shape":   shapes[1],
+		"type":    types[1],
+		"species": []string{species[1]},
+		"colors":  []string{colors[2]},
 	}
 
 	result, status = requester("/article/create", http.MethodPost, body, adminTok)
@@ -196,16 +216,22 @@ func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, col
 			assert.Equal(t, 200, status, result["err"])
 		}
 
+		// Delete ArticleSpecies
+		for _, id := range species {
+			result, status = requester(fmt.Sprintf("/article-species/delete?_id=%s", id), http.MethodDelete, nil, adminTok)
+			assert.Equal(t, 200, status, result["err"])
+		}
+
 		// Delete file
 		result, status = requester(fmt.Sprintf("/file/delete/%s.%s", fileID, fileExt), http.MethodDelete, nil, adminTok)
 		assert.Equal(t, 200, status, result["err"])
 	}
 
-	return deferFunc, articles, colors, types, tones, shapes
+	return deferFunc, articles, colors, types, tones, shapes, species
 }
 
 func TestFilterArticle(t *testing.T) {
-	deferFunc, _, colorsID, types, tones, shapes := PostCompleteArticle(t)
+	deferFunc, _, colorsID, types, tones, shapes, species := PostCompleteArticle(t)
 	defer deferFunc()
 
 	// Get articles
@@ -258,6 +284,15 @@ func TestFilterArticle(t *testing.T) {
 	assert.Equal(t, 2, len(resultList))
 
 	resultList, status, resErr = requesterList(fmt.Sprintf("/article?tones=%s&tones=%s", tones[0], tones[1]), http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, resErr)
+	assert.Equal(t, 3, len(resultList))
+
+	// Filter by species
+	resultList, status, resErr = requesterList(fmt.Sprintf("/article?species=%s", species[0]), http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, resErr)
+	assert.Equal(t, 2, len(resultList))
+
+	resultList, status, resErr = requesterList(fmt.Sprintf("/article?species=%s&species=%s", species[0], species[1]), http.MethodGet, nil, "")
 	assert.Equal(t, 200, status, resErr)
 	assert.Equal(t, 3, len(resultList))
 

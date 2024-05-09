@@ -14,7 +14,7 @@ func TestFavorite(t *testing.T) {
 	testTok2 := createTestAccount(t, "test2@favorite.com")
 	defer deleteAccount(t, testTok2)
 
-	deferFunc, articles, _, _, _, _ := PostCompleteArticle(t)
+	deferFunc, articles, _, _, _, _, _ := PostCompleteArticle(t)
 	defer deferFunc()
 
 	// Post favorite

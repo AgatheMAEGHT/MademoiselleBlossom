@@ -83,7 +83,7 @@ func defaultArticleShapes(ctx context.Context) {
 		if err != nil {
 			if mongo.IsDuplicateKeyError(err) {
 				log.Debug("Article Shape already exists")
-			} else if err != nil {
+			} else {
 				log.Fatal(err)
 			}
 		}

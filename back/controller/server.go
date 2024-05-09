@@ -76,6 +76,11 @@ func StartServer(path string) {
 	server.HandleFunc("/api/article-tone/update", middlewareWrapper(putArticleTone))
 	server.HandleFunc("/api/article-tone/delete", middlewareWrapper(deleteArticleTone))
 
+	server.HandleFunc("/api/article-species", corsWrapper(getArticleSpecies))
+	server.HandleFunc("/api/article-species/create", middlewareWrapper(postArticleSpecies))
+	server.HandleFunc("/api/article-species/update", middlewareWrapper(putArticleSpecies))
+	server.HandleFunc("/api/article-species/delete", middlewareWrapper(deleteArticleSpecies))
+
 	server.HandleFunc("/api/file/download/", corsWrapper(downloadFile))
 	server.HandleFunc("/api/file/create", middlewareWrapper(postFile))
 	server.HandleFunc("/api/file/delete/", middlewareWrapper(deleteFile))

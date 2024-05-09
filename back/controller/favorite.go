@@ -115,7 +115,7 @@ func postFavorite(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 	errId := utils.IsObjectIdExist(favorite.Article, database.ArticleCollection)
-	if err != nil {
+	if errId != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(errId.ToJson())
 		return

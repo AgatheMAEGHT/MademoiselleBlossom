@@ -19,6 +19,7 @@ func defaultValues(ctx context.Context) {
 	defaultUsers(ctx)
 	defaultArticleTypes(ctx)
 	defaultArticleShapes(ctx)
+	defaultArticleSpecies(ctx)
 	defaultArticleColors(ctx)
 }
 
@@ -26,6 +27,7 @@ func initCollections(ctx context.Context) {
 	initUser(ctx, db)
 	initArticleType(ctx, db)
 	initArticleShape(ctx, db)
+	initArticleSpecies(ctx, db)
 	initArticleColor(ctx, db)
 	initTextBlock(ctx, db)
 	initArticleTone(ctx, db)

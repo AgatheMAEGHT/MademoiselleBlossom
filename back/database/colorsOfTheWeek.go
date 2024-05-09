@@ -93,5 +93,6 @@ func (a *ColorsOfTheWeek) Populate(ctx context.Context) (*ColorsOfTheWeekRes, er
 }
 
 func initColorsOfTheWeek(ctx context.Context, db *mongo.Database) {
+	_ = ctx
 	ColorsOfTheWeekCollection = db.Collection("colorsOfTheWeeks")
 }

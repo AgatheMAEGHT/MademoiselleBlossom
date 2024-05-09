@@ -145,6 +145,18 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 		query["type"] = bson.M{"$in": articleType}
 	}
 
+	if r.Form.Get("species") != "" {
+		log.Error("species")
+		species, err := utils.IsStringListObjectIdValid(r.Form["species"], database.ArticleSpeciesCollection)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(err.ToJson())
+			return
+		}
+
+		query["species"] = bson.M{"$in": species}
+	}
+
 	if r.Form.Get("shapes") != "" {
 		articleShape, err := utils.IsStringListObjectIdValid(r.Form["shapes"], database.ArticleShapeCollection)
 		if err != nil {
@@ -193,6 +205,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 		for i := range articles {
 			populatedArticles[i], err = articles[i].Populate(ctx)
 			if err != nil {
+				log.WithError(err).Error("Error populating article")
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write(utils.NewResErr("Error populating article").ToJson())
 				return

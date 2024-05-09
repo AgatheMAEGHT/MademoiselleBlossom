@@ -14,7 +14,7 @@ import (
 )
 
 func requesterFile(path string, method string, auth string, fileName string) (map[string]interface{}, int) {
-	url := "http://localhost:8080" + path
+	url := "http://localhost:8080/api" + path
 
 	content := []byte{}
 	contentType := "image/png"
@@ -79,7 +79,7 @@ func requesterFile(path string, method string, auth string, fileName string) (ma
 }
 
 func requesterList(path string, method string, body map[string]interface{}, auth string) ([]map[string]interface{}, int, string) {
-	url := "http://localhost:8080" + path
+	url := "http://localhost:8080/api" + path
 	jsonStr, err := json.Marshal(body)
 	if err != nil {
 		panic(err)

@@ -101,5 +101,6 @@ func (a *Favorite) Populate(ctx context.Context) (*FavoriteRes, error) {
 }
 
 func initFavorite(ctx context.Context, db *mongo.Database) {
+	_ = ctx
 	FavoriteCollection = db.Collection("favorites")
 }
