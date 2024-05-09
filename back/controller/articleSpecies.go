@@ -181,6 +181,33 @@ func deleteArticleSpecies(w http.ResponseWriter, r *http.Request, user database.
 		return
 	}
 
+	// Remove article species from articles
+	articles, err := database.FindArticles(ctx, bson.M{"species": bson.M{"$in": []primitive.ObjectID{id}}})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting articles").ToJson())
+		return
+	}
+
+	for _, article := range articles {
+		Species := []primitive.ObjectID{}
+		for i, tone := range article.Species {
+			log.Info(tone)
+			if tone == id {
+				continue
+			}
+			Species = append(Species, article.Species[i])
+		}
+
+		article.Species = Species
+		_, err = article.UpdateOne(ctx)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error updating article").ToJson())
+			return
+		}
+	}
+
 	res, err := database.DeleteOneArticleSpecies(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

@@ -181,6 +181,33 @@ func deleteArticleTone(w http.ResponseWriter, r *http.Request, user database.Use
 		return
 	}
 
+	// Remove article tone from articles
+	articles, err := database.FindArticles(ctx, bson.M{"tones": bson.M{"$in": []primitive.ObjectID{id}}})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting articles").ToJson())
+		return
+	}
+
+	for _, article := range articles {
+		Tones := []primitive.ObjectID{}
+		for i, tone := range article.Tones {
+			log.Info(tone)
+			if tone == id {
+				continue
+			}
+			Tones = append(Tones, article.Tones[i])
+		}
+
+		article.Tones = Tones
+		_, err = article.UpdateOne(ctx)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error updating article").ToJson())
+			return
+		}
+	}
+
 	res, err := database.DeleteOneArticleTone(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

@@ -4,7 +4,9 @@ import (
 	"MademoiselleBlossom/database"
 	"MademoiselleBlossom/utils"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/sirupsen/logrus"
@@ -460,6 +462,54 @@ func deleteArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Invalid _id").ToJson())
 		return
+	}
+
+	// Delete all files associated with the article
+	article, err := database.FindOneArticle(ctx, bson.M{"_id": id})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting article").ToJson())
+		return
+	}
+
+	for _, fileID := range article.Files {
+		file, err := database.FindOneFile(ctx, bson.M{"_id": fileID})
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error getting file").ToJson())
+			return
+		}
+
+		err = os.Remove(fmt.Sprintf("%s/%s/%s.%s", database.FileFolder, file.Type, file.ID.Hex(), file.Ext))
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error deleting file").ToJson())
+			return
+		}
+
+		_, err = database.DeleteOneFile(ctx, fileID)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error deleting file").ToJson())
+			return
+		}
+	}
+
+	// Delete all favorites associated with the article
+	favorites, err := database.FindFavorites(ctx, bson.M{"article": id})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting favorites").ToJson())
+		return
+	}
+
+	for _, favorite := range favorites {
+		_, err = database.DeleteOneFavorite(ctx, favorite.ID)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error deleting favorite").ToJson())
+			return
+		}
 	}
 
 	res, err := database.DeleteOneArticle(ctx, id)

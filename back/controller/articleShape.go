@@ -181,6 +181,20 @@ func deleteArticleShape(w http.ResponseWriter, r *http.Request, user database.Us
 		return
 	}
 
+	// Check if article shape is used
+	articles, err := database.FindArticles(ctx, bson.M{"shape": id})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting articles").ToJson())
+		return
+	}
+
+	if len(articles) > 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(utils.NewResErr("Article shape is used").ToJson())
+		return
+	}
+
 	res, err := database.DeleteOneArticleShape(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

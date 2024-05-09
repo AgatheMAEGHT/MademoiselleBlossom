@@ -194,6 +194,33 @@ func deleteArticleColor(w http.ResponseWriter, r *http.Request, user database.Us
 		return
 	}
 
+	// Remove article color from articles
+	articles, err := database.FindArticles(ctx, bson.M{"colors": bson.M{"$in": []primitive.ObjectID{id}}})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting articles").ToJson())
+		return
+	}
+
+	for _, article := range articles {
+		Colors := []primitive.ObjectID{}
+		for i, tone := range article.Colors {
+			log.Info(tone)
+			if tone == id {
+				continue
+			}
+			Colors = append(Colors, article.Colors[i])
+		}
+
+		article.Colors = Colors
+		_, err = article.UpdateOne(ctx)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error updating article").ToJson())
+			return
+		}
+	}
+
 	res, err := database.DeleteOneArticleColor(ctx, id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
