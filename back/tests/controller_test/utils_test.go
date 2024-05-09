@@ -112,7 +112,7 @@ func requesterList(path string, method string, body map[string]interface{}, auth
 }
 
 func requester(path string, method string, body map[string]interface{}, auth string) (map[string]interface{}, int) {
-	url := "http://localhost:8080" + path
+	url := "http://localhost:8080/api" + path
 	jsonStr, err := json.Marshal(body)
 	if err != nil {
 		panic(err)
