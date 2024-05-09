@@ -11,7 +11,7 @@ function HeaderAdmin() {
     return (
         <div>
             <div id="header-admin-buttons">
-                <div className='admin-header-item' id="inspi">
+                {/*<div className='admin-header-item' id="inspi">
                     <a href="/admin" className='link'>Statistiques</a>
                 </div>
                 <div className='admin-header-item' id="inspi">
@@ -20,23 +20,11 @@ function HeaderAdmin() {
                         <a className='admin-header-dropdown-item link' href="/admin/commandes/accueil">En attente</a>
                         <a className='admin-header-dropdown-item link' href="/admin/commandes/contact">Envoyés</a>
                     </div>
-                </div>
-                <div className='admin-header-item' id="catag">
-                    <span>Catalogue</span>
-                    <div className="admin-header-dropdowm" id='catag-dropdown'>
-                        <a href="/admin/fleurs-sechees" className='admin-header-dropdown-item link'>Fleurs séchées</a>
-                        <a className='admin-header-dropdown-item link' href="/admin/fleurs-de-la-semaine">Fleurs de la semaine</a>
-                    </div>
-                </div>
-                {/*<div className='admin-header-item' id="inspi">
-                    <span>Inspirations</span>
-                    <div className="admin-header-dropdowm" id="inspi-dropdown">
-                        <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/inspirations/mariage") }}>Mariage</p>
-                        <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/inspirations/deuil") }}>Deuil</p>
-                        <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/inspirations/anniversaire") }}>Anniversaire</p>
-                        <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/inspirations/naissance") }}>Naissance</p>
-                    </div>
     </div>*/}
+
+                <a href="/admin/fleurs-de-la-semaine" className='admin-header-item link'>Fleurs de la semaine</a>
+                <a href="/admin/fleurs-sechees" className='admin-header-item link'>Fleurs séchées</a>
+
                 <div className='admin-header-item' id="inspi">
                     <a href="/admin/evenements" className='link'>Évènements</a>
                     {/*<div className="admin-header-dropdowm" id="inspi-dropdown">
@@ -49,15 +37,6 @@ function HeaderAdmin() {
                         <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/peres") }}>Fête des pères</p>
                         <p className='admin-header-dropdown-item' onClick={() => { navigate("/admin/evenements/grand-meres") }}>Fête des Grand-mères</p>
 </div>*/}
-                </div>
-                <div className='admin-header-item' id="inspi">
-                    <span>Informations</span>
-                    <div className="admin-header-dropdowm" id="inspi-dropdown">
-                        <a className='admin-header-dropdown-item link' href="/admin/informations/accueil">Accueil</a>
-                        <a className='admin-header-dropdown-item link' href="/admin/informations/contact">Contact</a>
-                        <a className='admin-header-dropdown-item link' href="/admin/informations/livraisons">Livraisons</a>
-                        <a className='admin-header-dropdown-item link' href="/admin/informations/a-propos">À propos</a>
-                    </div>
                 </div>
             </div>
 

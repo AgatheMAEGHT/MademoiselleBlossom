@@ -2,11 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
-import { requester, requesterFile } from '../../../components/requester';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, typeDB, select, newArticleOptions, newColorDB, newToneDB } from '../../../components/types';
+import { requester, requesterFile } from '../../../../components/requester';
+import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor } from '../../../../components/types';
+import Alert, { displayAlert } from '../../../../components/alert_TODO/alert';
 
-import './driedNew.css';
-import Alert, { displayAlert } from '../../../components/alert_TODO/alert';
+import '../driedEdit.css';
 
 function NewDriedAdmin() {
     let navigate = useNavigate();
@@ -15,10 +15,7 @@ function NewDriedAdmin() {
     const [nameAlreadyTaken, setNameAlreadyTaken] = React.useState(false);
     const [article, setArticle] = React.useState<article>({
         _id: "",
-        type: {
-            _id: "",
-            name: "",
-        },
+        type: "",
         name: "",
         description: "",
         price: "",
@@ -30,24 +27,28 @@ function NewDriedAdmin() {
         },
         colors: [],
         tones: [],
+        species: [],
         firstFile: "" as unknown as File,
-        files: [] as unknown as FileList,
+        files: [] as unknown as [string | File],
     });
 
     /* Elements Variables */
     const [colorAlreadyTaken, setColorAlreadyTaken] = React.useState(false);
     const [toneAlreadyTaken, setToneAlreadyTaken] = React.useState(false);
     const [shapeAlreadyTaken, setShapeAlreadyTaken] = React.useState(false);
+    const [speciesAlreadyTaken, setSpeciesAlreadyTaken] = React.useState(false);
 
     const [color, setColor] = React.useState({ name: "", hexa: "#ffffff" });
     const [tone, setTone] = React.useState("");
     const [shape, setShape] = React.useState("");
+    const [species, setSpecies] = React.useState("");
 
     /* Options */
     const [options, setOptions] = React.useState<newArticleOptions>({
         colors: [],
         tones: [],
         shapes: [],
+        species: [],
         names: [],
         type: "",
     });
@@ -57,6 +58,7 @@ function NewDriedAdmin() {
             colors: [],
             tones: [],
             shapes: [],
+            species: [],
             names: [],
             type: "",
         }
@@ -65,19 +67,26 @@ function NewDriedAdmin() {
         promises.push(requester('/article-color', 'GET'));
         promises.push(requester('/article-tone', 'GET'));
         promises.push(requester('/article-shape', 'GET'));
-        promises.push(requester('/article-type', 'GET'));
+        promises.push(requester('/article-species', 'GET'));
         promises.push(requester('/article?limit=100', 'GET'));
 
         Promise.all(promises).then((res) => {
-            newOptions.colors = res[0]?.map((elt: colorDB) => ({ value: elt._id, label: elt.name }));
+            newOptions.colors = res[0]?.map((elt: colorDB) => ({ value: elt._id, label: elt.name, hexa: elt.hexa }));
             newOptions.tones = res[1]?.map((elt: toneDB) => ({ value: elt._id, label: elt.name }));
             newOptions.shapes = res[2]?.map((elt: shapeDB) => ({ value: elt._id, label: elt.name }));
-            newOptions.type = res[3]?.filter((elt: typeDB) => (elt.name === "Fleurs séchées"))[0]?._id ?? "";
+            newOptions.species = res[3]?.map((elt: speciesDB) => ({ value: elt._id, label: elt.name }));
             newOptions.names = res[4]?.map((elt: any) => elt.name);
             setOptions(newOptions);
         });
 
     }, []);
+
+    function displayColors() {
+        return article.colors.map((elt: colorDB) => {
+            let color: string = "#" + elt.hexa;
+            return <div key={elt._id} className='admin-form-color' style={{ background: color }}></div>
+        });
+    }
 
     /* Check functions */
     function checkName(e: string) {
@@ -106,13 +115,19 @@ function NewDriedAdmin() {
 
         let promises: Promise<any>[] = [];
 
+        if (typeof (article.firstFile) === 'string') {
+            return;
+        }
         let type: string = "image/" + article.firstFile.name.split('.')[article.firstFile.name.split('.').length - 1];
         promises.push(requesterFile('/file/create', 'POST', article.firstFile.stream(), type));
 
         for (let i = 0; i < article.files.length; i++) {
-            type = "image/" + article.files[i].name.split('.')[article.files[i].name.split('.').length - 1];
-
-            promises.push(requesterFile('/file/create', 'POST', article.files[i].stream(), type));
+            let file = article.files[i];
+            if (typeof (file) === 'string') {
+                return;
+            }
+            type = "image/" + file.name.split('.')[file.name.split('.').length - 1];
+            promises.push(requesterFile('/file/create', 'POST', file.stream(), type));
         }
 
         Promise.all(promises).then((res) => {
@@ -145,7 +160,7 @@ function NewDriedAdmin() {
         // Create new article object to send to the server
         let tmpArticle: newArticleDB = {
             _id: "",
-            type: options.type,
+            type: "dried",
             name: article.name ?? "",
             description: article.description ?? "",
             price: parseFloat(article.price.replace(",", ".")) ?? 0,
@@ -153,6 +168,7 @@ function NewDriedAdmin() {
             size: article.size ?? 0,
             shape: article.shape._id ?? "",
             colors: article.colors.map((elt: colorDB) => elt._id) ?? [],
+            species: article.species.map((elt: speciesDB) => elt._id) ?? [],
             tones: article.tones.map((elt: toneDB) => elt._id) ?? [],
             files: files,
         }
@@ -186,10 +202,11 @@ function NewDriedAdmin() {
         requester('/article-color/create', 'POST', tmpColor).then((res: any) => {
             if (res._id) {
                 if (options.colors === undefined) {
-                    setOptions({ ...options, colors: [{ value: res._id, label: res.name }] });
+                    setOptions({ ...options, colors: [{ value: res._id, label: res.name, hexa: res.hexa }] });
                     return;
                 } else {
-                    setOptions({ ...options, colors: [...options.colors, { value: res._id, label: res.name }] });
+                    console.log(res._id, res.name, res.hexa);
+                    setOptions({ ...options, colors: [...options.colors, { value: res._id, label: res.name, hexa: res.hexa }] });
                 }
                 setColor({ name: "", hexa: "#ffffff" });
             } else {
@@ -256,9 +273,38 @@ function NewDriedAdmin() {
         });
     }
 
+    function postSpecies() {
+        // Check if all fields are filled
+        if (species === "") {
+            displayAlert('form-mandatory-species');
+            return;
+        }
+
+        // Create new species object to send to the server
+        let tmpSpecies: newSpeciesDB = {
+            name: species ?? "",
+        }
+
+        // Create new species
+        requester('/article-species/create', 'POST', tmpSpecies).then((res: any) => {
+            if (res._id) {
+                if (options.tones === undefined) {
+                    setOptions({ ...options, species: [{ value: res._id, label: res.name }] });
+                    return;
+                } else {
+                    setOptions({ ...options, species: [...options.species, { value: res._id, label: res.name }] });
+                }
+                setSpecies("");
+            } else {
+                console.log(res);
+                displayAlert('admin-alert-createspecies');
+            }
+        });
+    }
+
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'> Page Administrateur <br /> Ajouter un article</h1>
+            <h1 className='admin-page-title'>Admin - Ajouter un article séché</h1>
 
             <div className='admin-form'> {/* Article */}
                 <h2>Créer un article</h2>
@@ -325,11 +371,17 @@ function NewDriedAdmin() {
                             isSearchable
                             isClearable
                             options={options.colors}
-                            onChange={(e) => setArticle({ ...article, colors: (e ? e.map((elt: select) => ({ _id: elt.value, name: elt.label, hexa: "" })) : []) })}
+                            onChange={(e) => setArticle({ ...article, colors: (e ? e.map((elt: selectColor) => ({ _id: elt.value, name: elt.label, hexa: elt.hexa })) : []) })}
                             id='admin-form-input-colors'
                         />
                     </div>
                 </div>
+                {(article.colors.length !== 0) && <div className='admin-form-element'> {/* Colors */}
+                    <div></div>
+                    <div id='admin-form-color-list'>
+                        {displayColors()}
+                    </div>
+                </div>}
                 <div className='admin-form-element'> {/* Tones */}
                     <label htmlFor='admin-form-input-tones' className='admin-form-label'>Tons<p className='form-mandatory'>*</p></label>
                     <div className='admin-form-input-select'>
@@ -382,6 +434,26 @@ function NewDriedAdmin() {
                         />
                     </div>
                 </div>
+                <div className='admin-form-element'> {/* Species */}
+                    <label htmlFor='admin-form-input-species' className='admin-form-label'>Espèces de fleurs</label>
+                    <div className='admin-form-input-select'>
+                        <Select
+                            name="species"
+                            styles={{
+                                control: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    borderColor: 'var(--color-2-darker)',
+                                }),
+                            }}
+                            isMulti
+                            isSearchable
+                            isClearable
+                            options={options.species}
+                            onChange={(e) => setArticle({ ...article, species: (e ? e.map((elt: select) => ({ _id: elt.value, name: elt.label })) : []) })}
+                            id='admin-form-input-species'
+                        />
+                    </div>
+                </div>
                 <div className='admin-form-element'> {/* Image 1 */}
                     <label htmlFor='admin-form-input-files' className='admin-form-label'>Image de couverture<p className='form-mandatory'>*</p></label>
                     <input
@@ -396,7 +468,7 @@ function NewDriedAdmin() {
                 <div className='admin-form-element'> {/* Images */}
                     <label htmlFor='admin-form-input-files' className='admin-form-label'>Images secondaires</label>
                     <input
-                        onChange={e => setArticle({ ...article, files: (e.target.files ?? [] as unknown as FileList) })}
+                        onChange={e => setArticle({ ...article, files: ((e.target.files ?? []) as unknown as [File | string]) })}
                         className='admin-form-input'
                         id='admin-form-input-files'
                         type="file"
@@ -408,14 +480,14 @@ function NewDriedAdmin() {
                 <div>   {/* Display Images */}
                     <div>
                         <p>Images sélectionnées</p>
-                        <p className="admin-form-input-info">Pour sélectionner plusieurs images, maintient la touche <i>Maj</i> enfoncée et sélectionne les images de ton choix</p>
+                        <p className="admin-form-input-info">Pour sélectionner plusieurs images, maintient la touche <i>Ctrl</i> enfoncée et sélectionne les images de ton choix</p>
                     </div>
                     <div id='admin-form-images'>
                         {article.firstFile && <div id="admin-form-image-first">
-                            <img className='admin-form-image' src={URL.createObjectURL(article.firstFile)} alt={article.firstFile.name} />
+                            {typeof (article.firstFile) !== "string" && <img className='admin-form-image' src={URL.createObjectURL(article.firstFile)} alt={article.firstFile.name} />}
                             <p className="admin-form-input-info">Image de couverture</p>
                         </div>}
-                        {Array.from(article.files || []).map((elt: File) => <img key={elt.name} className='admin-form-image' src={URL.createObjectURL(elt)} alt={elt.name} />)}
+                        {Array.from(article.files || []).map((elt: File | string) => typeof (elt) !== "string" && <img key={elt.name} className='admin-form-image' src={URL.createObjectURL(elt)} alt={elt.name} />)}
                     </div>
                 </div>
                 <button className='admin-button' onClick={() => postFile()}>Ajouter l'article</button>
@@ -429,7 +501,6 @@ function NewDriedAdmin() {
                 <p className='admin-form-infotext'>Les éléments créés ici seront disponibles pour tous les articles.<br />
                     Ils servent à donner plus d'informations sur les articles et à les trier dans le catalogue.<br />
                 </p>
-
 
                 <h3 className='admin-form-sub-title'>Créer une couleur d'article</h3>
                 <div className='admin-form-element'> {/* Color Name */}
@@ -456,7 +527,6 @@ function NewDriedAdmin() {
                 </div>
                 <button className='admin-button' onClick={() => postColor()} >Ajouter la couleur</button>
 
-
                 <h3 className='admin-form-sub-title'>Créer un ton d'article</h3>
                 <div className='admin-form-element'> {/* Tone Name */}
                     <label htmlFor='admin-form-input-new-tone' className='admin-form-label'>Nom du ton</label>
@@ -474,7 +544,6 @@ function NewDriedAdmin() {
                 </div>
                 <button className='admin-button' onClick={() => postTone()}>Ajouter le ton</button>
 
-
                 <h3 className='admin-form-sub-title'>Créer une forme d'article</h3>
                 <div className='admin-form-element'> {/* Shape Name */}
                     <label htmlFor='admin-form-input-new-shape' className='admin-form-label'>Nom de la forme</label>
@@ -491,6 +560,23 @@ function NewDriedAdmin() {
                     </div>
                 </div>
                 <button className='admin-button' onClick={() => postShape()}>Ajouter la forme</button>
+
+                <h3 className='admin-form-sub-title'>Créer une variété de fleur</h3>
+                <div className='admin-form-element'> {/* Species Name */}
+                    <label htmlFor='admin-form-input-new-species' className='admin-form-label'>Nom de la variété</label>
+                    <div className='admin-form-element-right'>
+                        {speciesAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette variété existe déjà</div>}
+                        <input
+                            value={species}
+                            onChange={e => { setSpecies(e.target.value); checkOptions(e.target.value, options.species, setSpeciesAlreadyTaken) }}
+                            className='admin-form-input admin-form-input-right'
+                            type="text"
+                            name="species"
+                            id="admin-form-input-new-species"
+                        />
+                    </div>
+                </div>
+                <button className='admin-button' onClick={() => postSpecies()}>Ajouter la variété</button>
             </div>
             <Alert message="Aucune image de couverture n'est sélectionnée" id="admin-alert-postfile-firstfile" />
             <Alert message="Une erreur est survenue lors de l'envoi des images" id="admin-alert-postfile-sendfiles" />
@@ -503,6 +589,8 @@ function NewDriedAdmin() {
             <Alert message="Une erreur est survenue lors de la création du ton" id="admin-alert-createtone" />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-shape" />
             <Alert message="Une erreur est survenue lors de la création de la forme" id="admin-alert-createshape" />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-species" />
+            <Alert message="Une erreur est survenue lors de la création de l'espèce" id="admin-alert-createspecies" />
         </div>
     );
 }

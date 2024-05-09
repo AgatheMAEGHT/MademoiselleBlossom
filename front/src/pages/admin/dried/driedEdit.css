@@ -46,7 +46,6 @@
     align-items: center;
 }
 
-
 .admin-form-input {
     width: calc(60% - 22px);
     font-size: 14px;
@@ -78,6 +77,20 @@
 
 #admin-form-input-description {
     min-height: 50px;
+}
+
+#admin-form-color-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.admin-form-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: 1px solid black;
 }
 
 #admin-form-input-files:hover {

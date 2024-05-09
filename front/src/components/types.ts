@@ -1,3 +1,10 @@
+export type freshFlowerTile = {
+    id: string,
+    species: string,
+    color: string,
+    images: string[],
+}
+
 export type driedFlowerTile = {
     id: string,
     name: string,
@@ -49,20 +56,20 @@ export type newShapeDB = {
     name: string,
 }
 
-//Type
-export type typeDB = {
+//Species
+export type speciesDB = {
     _id: string,
     name: string,
 }
 
-export type newTypeDB = {
+export type newSpeciesDB = {
     name: string,
 }
 
 //Article
 export type articleDB = {
     _id: string,
-    type: typeDB,
+    type: string,
     name: string,
     description: string,
     price: number,
@@ -84,6 +91,7 @@ export type newArticleDB = {
     size: number,
     shape: string
     colors: string[],
+    species: string[],
     tones: string[],
     files: string[],
 }
@@ -104,25 +112,27 @@ export type favoritePopulatedDB = {
 
 export type article = {
     _id: string,
-    type: typeDB,
+    type: string,
     name: string,
     description: string,
     price: string,
     stock: number,
     size: number,
-    shape: shapeDB
+    shape: shapeDB,
     colors: colorDB[],
     tones: toneDB[],
-    firstFile: File,
-    files: FileList,
+    species: speciesDB[],
+    firstFile: File | string,
+    files: [File | string],
 }
 
 export type catalog = articleDB[]
 
 export type newArticleOptions = {
-    colors: select[],
+    colors: selectColor[],
     tones: select[],
     shapes: select[],
+    species: select[],
     names: string[],
     type: string,
 }
@@ -130,6 +140,12 @@ export type newArticleOptions = {
 export type select = {
     value: string
     label: string,
+}
+
+export type selectColor = {
+    value: string
+    label: string,
+    hexa: string,
 }
 
 /* Pop UP */

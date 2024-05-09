@@ -57,7 +57,7 @@ function Week() {
 
     return (
         <div id="catalog" className='page'>
-            <h2 className="page-title">Couronnes de Fleurs Séchées</h2>
+            <h2 className="page-title">Fleurs de la semaine</h2>
             <div id="dried-flowers-catalog">
                 {displayTiles()}
             </div>

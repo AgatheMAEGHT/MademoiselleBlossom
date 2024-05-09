@@ -6,8 +6,7 @@ function EventsAdmin() {
 
     return (
         <div id="admin-events" className='admin-page page'>
-            <h1>Bienvenue sur la page admin - évènements</h1>
-            <p>C'est la page sur laquelle tu peux modifier les évènements annuels</p>
+            <h1>Admin - Évènements</h1>
 
             <div id="admin-events-select-area">
                 <p>Évènement à afficher :</p>

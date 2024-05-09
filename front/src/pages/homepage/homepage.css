@@ -25,9 +25,9 @@
 #home-carousel {
     width: 30vw;
     height: 30vw;
+    border-radius: 15px;
     display: flex;
     overflow: hidden;
-    border-radius: 15px;
     position: relative;
     z-index: 1;
 }

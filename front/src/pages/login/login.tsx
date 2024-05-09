@@ -32,7 +32,10 @@ function Login() {
                 requester('/who-am-i', 'GET').then((res2: any) => {
                     if (res2) {
                         localStorage.setItem('logged', res2.isAdmin ? "admin" : "client");
-                        localStorage.setItem('pseudo', res2.pseudo);
+                        localStorage.setItem('firstName', res2.firstName);
+                        localStorage.setItem('lastName', res2.lastName);
+                        localStorage.setItem('email', res2.email);
+                        localStorage.setItem('phone', res2.phone);
                         localStorage.setItem('user_id', res2._id);
                     } else {
                         displayAlert('login-alert-error');

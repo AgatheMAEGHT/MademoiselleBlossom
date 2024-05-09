@@ -10,18 +10,18 @@ function HeaderButtons() {
     let navigate = useNavigate();
     let logged: string | null = localStorage.getItem("logged");
 
-    let evntName: string = "Fête des grand-mères";
-    let evnt: boolean = true;
+    let evntName: string = "Fête des mères";
+    let evnt: boolean = false;
 
     return (
         <div id="header-buttons-area">
             <div id="header-buttons-pc">
                 <div id="header-buttons">
-                    <a className='header-item link' href="/fleurs-sechees">Fleurs séchées</a>
                     <a className='header-item link' href="/fleurs-de-la-semaine">Fleurs de la semaine</a>
+                    <a className='header-item link' href="/fleurs-sechees">Fleurs séchées</a>
 
                     <div className='header-item' id="inspi">
-                        <span>Inspirations</span>
+                        <a className='header-item link' href="/inspirations">Inspirations</a>
                         <div className="header-dropdowm" id="inspi-dropdown">
                             <a className='header-dropdown-item link' href="/inspirations/mariage">Mariage</a>
                             <a className='header-dropdown-item link' href="/inspirations/deuil">Deuil</a>

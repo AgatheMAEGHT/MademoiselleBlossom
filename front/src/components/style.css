@@ -12,8 +12,9 @@
 }
 
 .page-title {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 4vw;
+    font-weight: normal;
+    font-family: 'Great Vibes', cursive;
 }
 
 /* Mandatory Form Elements */

@@ -15,10 +15,7 @@ function DriedFlowersItempage() {
     const [favId, setFavId] = React.useState<string>("");
     const [item, setItem] = React.useState<articleDB>({
         _id: "",
-        type: {
-            _id: "",
-            name: "",
-        },
+        type: "",
         name: "",
         description: "",
         price: 30,

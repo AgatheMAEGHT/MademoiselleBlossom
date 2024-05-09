@@ -7,17 +7,20 @@ import Footer from './components/footer/footer';
 import Homepage from './pages/homepage/homepage';
 import DriedFlowers from './pages/dried-flowers/driedFlowers';
 import DriedFlowersItempage from './pages/dried-flowers-itempage/driedFlowersItempage';
+import Week from './pages/week/week';
+import Inspirations from './pages/inspirations/inspirations';
+import Mariage from './pages/inspirations/mariage/mariage';
+import Deuil from './pages/inspirations/deuil/deuil';
 import Contact from './pages/contact/contact';
 import Login from './pages/login/login';
 import CreateAccount from './pages/login/createAccount';
 import Profile from './pages/profile/profile';
 import Favorites from './pages/favorites/favorites';
-import Mariage from './pages/inspirations/mariage/mariage';
-import Deuil from './pages/inspirations/deuil/deuil';
 
 import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
 import CatalogAdmin from './pages/admin/dried/dried';
-import NewDriedAdmin from './pages/admin/dried-new/driedNew';
+import NewDriedAdmin from './pages/admin/dried/dried-new/driedNew';
+import EditDriedAdmin from './pages/admin/dried/dried-edit/driedEdit';
 import WeekAdmin from './pages/admin/week/week';
 import EventsAdmin from './pages/admin/events/eventsAdmin';
 
@@ -38,6 +41,7 @@ function App() {
                     <Route path='/admin' element={<HomepageAdmin />} />
                     <Route path='/admin/fleurs-sechees' element={<CatalogAdmin />} />
                     <Route path='/admin/fleurs-sechees/nouveau' element={<NewDriedAdmin />} />
+                    <Route path='/admin/fleurs-sechees/:itemName' element={<EditDriedAdmin />} />
                     <Route path='/admin/fleurs-de-la-semaine' element={<WeekAdmin />} />
                     <Route path='/admin/evenements' element={<EventsAdmin />} />
                     <Route path='/admin/inspirations' element={<EventsAdmin />} />
@@ -52,8 +56,8 @@ function App() {
                 <Route path='/catalogue' element={<Homepage />} />
                 <Route path='/fleurs-sechees' element={<DriedFlowers />} />
                 <Route path='/fleurs-sechees/:itemName' element={<DriedFlowersItempage />} />
-                <Route path='/fleurs-de-la-semaine' element={<Homepage />} />
-                <Route path='/inspirations' element={<Homepage />} />
+                <Route path='/fleurs-de-la-semaine' element={<Week />} />
+                <Route path='/inspirations' element={<Inspirations />} />
                 <Route path='/inspirations/mariage' element={<Mariage />} />
                 <Route path='/inspirations/deuil' element={<Deuil />} />
                 <Route path='/inspirations/anniversaire' element={<Homepage />} />

@@ -1,10 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import '../inspirations.css';
 
 function Deuil() {
-    let navigate = useNavigate();
     // Src image in public folder
     return (
         <div id="inspiration">

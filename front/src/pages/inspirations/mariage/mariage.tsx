@@ -1,14 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import '../inspirations.css';
 
 function Mariage() {
-    let navigate = useNavigate();
     // Src image in public folder
     return (
         <div id="inspiration">
-            <h1 className='inspirations-title'>Mariage</h1>
+            <h1 className='page-title'>Mariage</h1>
             <h3 className='inspirations-subtitle'><i>Sublimez votre mariage avec des créations uniques</i></h3>
             <div className="inspirations-vertical-stack-area">
                 <img src='/inspirations/mariage/coeur1.jpg' alt="coeur1" className='inspiration-image inspirations-vertical-stack-main' />
