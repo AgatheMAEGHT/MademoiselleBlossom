@@ -11,6 +11,13 @@ import Week from './pages/week/week';
 import Inspirations from './pages/inspirations/inspirations';
 import Mariage from './pages/inspirations/mariage/mariage';
 import Deuil from './pages/inspirations/deuil/deuil';
+import FeteDesPeres from './pages/events/feteDesPeres/feteDesPeres';
+import FeteDesMeres from './pages/events/feteDesMeres/feteDesMeres';
+import FeteDesGrandsMeres from './pages/events/feteDesGrandsMeres/feteDesGrandsMeres';
+import Toussaint from './pages/events/toussaint/toussaint';
+import Paques from './pages/events/paques/paques';
+import SaintValentin from './pages/events/saint-valentin/saint-valentin';
+import Noel from './pages/events/neol/noel';
 import Contact from './pages/contact/contact';
 import Login from './pages/login/login';
 import CreateAccount from './pages/login/createAccount';
@@ -22,19 +29,13 @@ import CatalogAdmin from './pages/admin/dried/dried';
 import NewDriedAdmin from './pages/admin/dried/dried-new/driedNew';
 import EditDriedAdmin from './pages/admin/dried/dried-edit/driedEdit';
 import WeekAdmin from './pages/admin/week/week';
+import WeekNewAdmin from './pages/admin/week/week-new/weekNew';
+import WeekEditAdmin from './pages/admin/week/week-edit/weekEdit';
 import EventsAdmin from './pages/admin/events/eventsAdmin';
-
-import FeteDesPeres from './pages/events/feteDesPeres/feteDesPeres';
 
 import "./App.css";
 import "./pages/admin/_components/styleAdmin.css";
 import "./components/style.css";
-import FeteDesMeres from './pages/events/feteDesMeres/feteDesMeres';
-import FeteDesGrandsMeres from './pages/events/feteDesGrandsMeres/feteDesGrandsMeres';
-import Toussaint from './pages/events/toussaint/toussaint';
-import Paques from './pages/events/paques/paques';
-import SaintValentin from './pages/events/saint-valentin/saint-valentin';
-import Noel from './pages/events/neol/noel';
 
 function App() {
     let logged: string | null = localStorage.getItem("logged");
@@ -51,12 +52,9 @@ function App() {
                     <Route path='/admin/fleurs-sechees/nouveau' element={<NewDriedAdmin />} />
                     <Route path='/admin/fleurs-sechees/:itemName' element={<EditDriedAdmin />} />
                     <Route path='/admin/fleurs-de-la-semaine' element={<WeekAdmin />} />
+                    <Route path='/admin/fleurs-de-la-semaine/nouveau' element={<WeekNewAdmin />} />
+                    <Route path='/admin/fleurs-de-la-semaine/:itemName' element={<WeekEditAdmin />} />
                     <Route path='/admin/evenements' element={<EventsAdmin />} />
-                    <Route path='/admin/inspirations' element={<EventsAdmin />} />
-                    <Route path='/admin/inspirations/mariage' element={<EventsAdmin />} />
-                    <Route path='/admin/inspirations/deuil' element={<EventsAdmin />} />
-                    <Route path='/admin/inspirations/anniversaire' element={<EventsAdmin />} />
-                    <Route path='/admin/inspirations/naissance' element={<EventsAdmin />} />
                 </>}
 
                 {/* Client */}
@@ -78,7 +76,6 @@ function App() {
                 <Route path='/se-connecter' element={<Login />} />
                 <Route path='/creer-un-compte' element={<CreateAccount />} />
                 <Route path='/mon-compte' element={<Profile />} />
-                <Route path='/favoris' element={<Favorites />} />
                 <Route path='/favoris' element={<Favorites />} />
 
                 <Route path='/Noël' element={<Noel />} />

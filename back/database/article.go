@@ -107,11 +107,13 @@ func (a *Article) Populate(ctx context.Context) (*ArticleRes, error) {
 	}
 	articleRes.Species = articleSpecies
 
-	articleShape, err := FindOneArticleShape(ctx, bson.M{"_id": a.Shape})
-	if err != nil {
-		return nil, err
+	if !a.Shape.IsZero() {
+		articleShape, err := FindOneArticleShape(ctx, bson.M{"_id": a.Shape})
+		if err != nil {
+			return nil, err
+		}
+		articleRes.Shape = articleShape
 	}
-	articleRes.Shape = articleShape
 
 	articleColors, err := FindArticleColors(ctx, bson.M{"_id": bson.M{"$in": a.Colors}})
 	if err != nil {

@@ -134,7 +134,6 @@ export type newArticleOptions = {
     shapes: select[],
     species: select[],
     names: string[],
-    type: string,
 }
 
 export type editArticleOptions = {
@@ -143,7 +142,6 @@ export type editArticleOptions = {
     shapes: select[],
     species: select[],
     names: select[],
-    type: string,
 }
 
 export type select = {

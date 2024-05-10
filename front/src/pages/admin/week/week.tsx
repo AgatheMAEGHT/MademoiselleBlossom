@@ -120,7 +120,7 @@ function WeekAdmin() {
             <h2>Fleurs</h2>
             <h3>Fleurs de la semaine</h3>
             <h3>Toutes les fleurs</h3>
-            <button className='admin-button' onClick={() => navigate("/admin/fleurs-sechees/nouveau")}>Ajouter une fleur</button>
+            <a className='admin-button' href='/admin/fleurs-de-la-semaine/nouveau'>Ajouter une fleur</a>
             <div id="admin-dried-catalog">
                 {displayFreshFlowers()}
             </div>

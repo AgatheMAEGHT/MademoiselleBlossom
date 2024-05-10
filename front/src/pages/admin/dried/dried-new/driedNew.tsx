@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../../components/requester';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor } from '../../../../components/types';
 import Alert, { displayAlert } from '../../../../components/alert_TODO/alert';
+import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor } from '../../../../components/types';
 
 import '../../_components/catalogEdit.css';
 
@@ -50,7 +50,6 @@ function NewDriedAdmin() {
         shapes: [],
         species: [],
         names: [],
-        type: "",
     });
 
     React.useEffect(() => {
@@ -60,7 +59,6 @@ function NewDriedAdmin() {
             shapes: [],
             species: [],
             names: [],
-            type: "",
         }
         let promises: Promise<any>[] = [];
 
@@ -175,7 +173,6 @@ function NewDriedAdmin() {
 
         // Create new article
         requester('/article/create', 'POST', tmpArticle).then((res: any) => {
-            console.log(res);
             if (res._id) {
                 navigate('/admin/fleurs-sechees');
             } else {
@@ -376,7 +373,7 @@ function NewDriedAdmin() {
                         />
                     </div>
                 </div>
-                {(article.colors.length !== 0) && <div className='admin-form-element'> {/* Colors */}
+                {(article.colors.length !== 0) && <div className='admin-form-element'> {/* Display Colors */}
                     <div></div>
                     <div id='admin-form-color-list'>
                         {displayColors()}

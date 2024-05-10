@@ -301,17 +301,14 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
-	if body.Shape == primitive.NilObjectID {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Missing article shape").ToJson())
-		return
+	if body.Shape != primitive.NilObjectID {
+		if err := utils.IsObjectIdExist(body.Shape, database.ArticleShapeCollection); err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(err.ToJson())
+			return
+		}
 	}
-	if err := utils.IsObjectIdExist(body.Shape, database.ArticleShapeCollection); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(err.ToJson())
-		return
-	}
-
+	
 	if body.Price == 0 {
 		log.Infof("Article '%f' has no price", body.Price)
 	}
