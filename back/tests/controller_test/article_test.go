@@ -371,15 +371,16 @@ func TestArticle(t *testing.T) {
 
 	// Post article
 	body = map[string]interface{}{
-		"files":  []string{resFileID},
-		"name":   "test",
-		"price":  10,
-		"stock":  10,
-		"tones":  []string{resArticleToneID},
-		"size":   10,
-		"shape":  resArticleShapeID,
-		"type":   "test",
-		"colors": []string{resColorID},
+		"files":   []string{resFileID},
+		"name":    "test",
+		"price":   10,
+		"stock":   10,
+		"tones":   []string{resArticleToneID},
+		"size":    10,
+		"shape":   resArticleShapeID,
+		"type":    "test",
+		"colors":  []string{resColorID},
+		"species": []string{},
 	}
 	// Not admin
 	result, status = requester("/article/create", http.MethodPost, body, testTok)
@@ -398,15 +399,16 @@ func TestArticle(t *testing.T) {
 
 	// Post 2nd article
 	body = map[string]interface{}{
-		"files":  []string{resFileID2},
-		"name":   "test2",
-		"price":  10,
-		"stock":  10,
-		"tones":  []string{resArticleToneID},
-		"size":   10,
-		"shape":  resArticleShapeID,
-		"type":   "test",
-		"colors": []string{resColorID},
+		"files":   []string{resFileID2},
+		"name":    "test2",
+		"price":   10,
+		"stock":   10,
+		"tones":   []string{resArticleToneID},
+		"size":    10,
+		"shape":   resArticleShapeID,
+		"type":    "test",
+		"colors":  []string{resColorID},
+		"species": []string{},
 	}
 
 	result, status = requester("/article/create", http.MethodPost, body, adminTok)

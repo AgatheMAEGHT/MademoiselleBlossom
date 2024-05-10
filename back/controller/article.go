@@ -324,6 +324,17 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		log.Infof("Article '%f' has no size", body.Size)
 	}
 
+	if body.Species == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(utils.NewResErr("Missing species").ToJson())
+		return
+	}
+	if err := utils.IsListObjectIdExist(body.Species, database.ArticleSpeciesCollection); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(err.ToJson())
+		return
+	}
+
 	_, err = body.CreateOne(ctx)
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {
@@ -470,6 +481,15 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 
 	if body.Size != 0 {
 		article.Size = body.Size
+	}
+
+	if body.Species != nil {
+		if err := utils.IsListObjectIdExist(body.Species, database.ArticleSpeciesCollection); err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(err.ToJson())
+			return
+		}
+		article.Species = body.Species
 	}
 
 	_, err = article.UpdateOne(ctx)
