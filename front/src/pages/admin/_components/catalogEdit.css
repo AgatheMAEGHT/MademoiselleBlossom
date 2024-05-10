@@ -124,6 +124,53 @@
     border-radius: 5px;
 }
 
+#admin-article-delete-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#admin-article-delete-popup {
+    display: none;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 203, 203, 0.938);
+    border: red 1px solid;
+    width: 40vw;
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 10;
+    text-align: center;
+}
+
+.admin-form-image-delete {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.45);
+    border-radius: 5px;
+    z-index: 5;
+    width: 100px;
+    height: 100px;
+}
+
+.admin-form-image-tile:hover .admin-form-image-delete {
+    display: flex;
+}
+
+.admin-form-image-delete-text {
+    border-radius: 5px;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    font-style: italic;
+    margin: 0px;
+}
+
 #admin-form-input-new-color {
     min-width: 60%;
     max-width: 60%;

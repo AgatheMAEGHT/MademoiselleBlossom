@@ -14,7 +14,6 @@ function CatalogAdmin() {
     React.useEffect(() => {
         requester('/article?populate=true&limit=100', 'GET').then((res: any) => {
             setFlowers(res);
-            console.log(res);
         })
     }, []);
 

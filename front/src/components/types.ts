@@ -137,6 +137,15 @@ export type newArticleOptions = {
     type: string,
 }
 
+export type editArticleOptions = {
+    colors: selectColor[],
+    tones: select[],
+    shapes: select[],
+    species: select[],
+    names: select[],
+    type: string,
+}
+
 export type select = {
     value: string
     label: string,

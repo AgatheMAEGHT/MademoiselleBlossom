@@ -3,10 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../../components/requester';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor } from '../../../../components/types';
+import { article, newArticleDB, colorDB, shapeDB, toneDB, select, editArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor } from '../../../../components/types';
 import Alert, { displayAlert } from '../../../../components/alert_TODO/alert';
 
-import '../driedEdit.css';
+import '../../_components/catalogEdit.css';
 
 function EditDriedAdmin() {
     let navigate = useNavigate();
@@ -34,15 +34,53 @@ function EditDriedAdmin() {
     });
 
     React.useEffect(() => {
-        requester(`/article?populate=true&name=${params.itemName}`, 'GET').then((res: any) => {
-            if (res) {
-                console.log(res[0]);
-                if (res?.err) {
+        let newOptions = {
+            colors: [],
+            tones: [],
+            shapes: [],
+            species: [],
+            names: [],
+            type: "",
+        }
+        let promises: Promise<any>[] = [];
+
+        promises.push(requester('/article-color', 'GET'));
+        promises.push(requester('/article-tone', 'GET'));
+        promises.push(requester('/article-shape', 'GET'));
+        promises.push(requester('/article-species', 'GET'));
+        promises.push(requester('/article', 'GET'));
+        promises.push(requester(`/article?populate=true&name=${params.itemName}`, 'GET'));
+
+        Promise.all(promises).then((res) => {
+            newOptions.colors = res[0]?.map((elt: colorDB) => ({ value: elt._id, label: elt.name, hexa: elt.hexa }));
+            newOptions.tones = res[1]?.map((elt: toneDB) => ({ value: elt._id, label: elt.name }));
+            newOptions.shapes = res[2]?.map((elt: shapeDB) => ({ value: elt._id, label: elt.name }));
+            newOptions.species = res[3]?.map((elt: speciesDB) => ({ value: elt._id, label: elt.name }));
+            newOptions.names = res[4]?.map((elt: any) => ({ value: elt._id, label: elt.name }));
+            if (res[5]) {
+                if (res[5]?.err) {
                     console.log("error while fetching dried flowers");
                     return;
                 }
-                setArticle(res[0]);
+                res[5][0].firstFile = (res[5][0].files.length > 0) ? res[5][0].files[0] : "";
+                let files = [];
+                for (let i = 1; i < res[5][0].files.length; i++) {
+                    files.push(res[5][0].files[i]);
+                }
+                res[5][0].files = files;
+                if (res[5][0].colors === undefined || res[5][0].colors === null) {
+                    res[5][0].colors = [];
+                }
+                if (res[5][0].tones === undefined || res[5][0].tones === null) {
+                    res[5][0].tones = [];
+                }
+                if (res[5][0].species === undefined || res[5][0].species === null) {
+                    res[5][0].species = [];
+                }
+
+                setArticle(res[5][0]);
             }
+            setOptions(newOptions);
         });
     }, []);
 
@@ -58,7 +96,7 @@ function EditDriedAdmin() {
     const [species, setSpecies] = React.useState("");
 
     /* Options */
-    const [options, setOptions] = React.useState<newArticleOptions>({
+    const [options, setOptions] = React.useState<editArticleOptions>({
         colors: [],
         tones: [],
         shapes: [],
@@ -66,34 +104,6 @@ function EditDriedAdmin() {
         names: [],
         type: "",
     });
-
-    React.useEffect(() => {
-        let newOptions = {
-            colors: [],
-            tones: [],
-            shapes: [],
-            species: [],
-            names: [],
-            type: "",
-        }
-        let promises: Promise<any>[] = [];
-
-        promises.push(requester('/article-color', 'GET'));
-        promises.push(requester('/article-tone', 'GET'));
-        promises.push(requester('/article-shape', 'GET'));
-        promises.push(requester('/article-species', 'GET'));
-        promises.push(requester('/article?limit=100', 'GET'));
-
-        Promise.all(promises).then((res) => {
-            newOptions.colors = res[0]?.map((elt: colorDB) => ({ value: elt._id, label: elt.name, hexa: elt.hexa }));
-            newOptions.tones = res[1]?.map((elt: toneDB) => ({ value: elt._id, label: elt.name }));
-            newOptions.shapes = res[2]?.map((elt: shapeDB) => ({ value: elt._id, label: elt.name }));
-            newOptions.species = res[3]?.map((elt: speciesDB) => ({ value: elt._id, label: elt.name }));
-            newOptions.names = res[4]?.map((elt: any) => elt.name);
-            setOptions(newOptions);
-        });
-
-    }, []);
 
     function displayColors() {
         return article.colors.map((elt: colorDB) => {
@@ -104,7 +114,8 @@ function EditDriedAdmin() {
 
     /* Check functions */
     function checkName(e: string) {
-        if (options.names?.includes(e)) {
+        let name: select = options.names?.filter((elt: select) => elt.label === e)[0];
+        if (name && name?.value !== article._id) {
             setNameAlreadyTaken(true);
         } else {
             setNameAlreadyTaken(false);
@@ -119,6 +130,30 @@ function EditDriedAdmin() {
         }
     }
 
+    /* File functions */
+    function addFiles(files: [File | string]) {
+        let newFiles = article.files;
+        for (let i = 0; i < files.length; i++) {
+            newFiles.push(files[i]);
+        }
+        setArticle({ ...article, files: newFiles });
+    }
+
+    function removeFile(index: number) {
+        let newFiles = article.files;
+        newFiles.splice(index, 1);
+        setArticle({ ...article, files: newFiles });
+    }
+
+    function displayFile(key: string, src: string, alt: string, index: number) {
+        return <div className='admin-form-image-tile'>
+            <div className='admin-form-image-delete' onClick={() => removeFile(index)}>
+                <p className='admin-form-image-delete-text'>Supprimer</p>
+            </div>
+            <img key={key} className='admin-form-image' src={src} alt={alt} />
+        </div>
+    }
+
     /* Submit functions */
     function postFile() {
         // Check if firstFile filled
@@ -128,15 +163,20 @@ function EditDriedAdmin() {
         }
 
         let promises: Promise<any>[] = [];
+        let images: string[] = [];
 
         if (typeof article.firstFile !== "string") {
             let type: string = "image/" + article.firstFile.name.split('.')[article.firstFile.name.split('.').length - 1];
             promises.push(requesterFile('/file/create', 'POST', article.firstFile.stream(), type));
+            images.push("");
+        } else {
+            images.push(article.firstFile.split('.')[0]);
         }
 
         for (let i = 0; i < article.files.length; i++) {
             let file = article.files[i];
             if (typeof file === "string") {
+                images.push(file.split('.')[0]);
                 continue;
             }
             let type: string = "image/" + file.name.split('.')[file.name.split('.').length - 1];
@@ -151,15 +191,19 @@ function EditDriedAdmin() {
                     return;
                 }
             });
-
-            let images: string[] = res.map((elt: any) => elt._id);
-            postArticle(images);
+            if (typeof article.firstFile !== "string") {
+                images[0] = res[0]._id.toString();
+                res.map((elt: any, key) => (key !== 0) && images.push(elt._id.toString()));
+            } else {
+                res.map((elt: any) => images.push(elt._id.toString()));
+            }
+            editArticle(images);
         });
     }
 
-    function postArticle(files: string[]) {
+    function editArticle(files: string[]) {
         // Check if all fields are filled
-        if (article.name === "" || article.price === "" || article.stock === 0 || article.colors.length === 0 || article.tones.length === 0 || article.shape.name === "" || article.size === 0) {
+        if (article.name === "" || article.price === "" || article.stock === 0 || article.colors.length === 0 || article.tones.length === 0 || article.shape.name === "" || article.size === 0 || files.length === 0) {
             displayAlert('form-mandatory');
             return;
         }
@@ -172,28 +216,30 @@ function EditDriedAdmin() {
 
         // Create new article object to send to the server
         let tmpArticle: newArticleDB = {
-            _id: "",
+            _id: article._id,
             type: "dried",
-            name: article.name ?? "",
+            name: article.name,
             description: article.description ?? "",
-            price: parseFloat(article.price.replace(",", ".")) ?? 0,
-            stock: article.stock ?? 0,
-            size: article.size ?? 0,
-            shape: article.shape._id ?? "",
+            price: parseFloat(article.price.toString().replace(",", ".")) ?? 0,
+            stock: article.stock,
+            size: article.size,
+            shape: article.shape._id,
             colors: article.colors.map((elt: colorDB) => elt._id) ?? [],
             species: article.species.map((elt: speciesDB) => elt._id) ?? [],
             tones: article.tones.map((elt: toneDB) => elt._id) ?? [],
             files: files,
         }
 
+        console.log(tmpArticle);
+        console.log(article);
         // Create new article
-        requester('/article/create', 'POST', tmpArticle).then((res: any) => {
+        requester('/article/update', 'PUT', tmpArticle).then((res: any) => {
             console.log(res);
             if (res._id) {
                 navigate('/admin/fleurs-sechees');
             } else {
                 console.log(res);
-                displayAlert('admin-alert-createarticle');
+                displayAlert('admin-alert-editarticle');
             }
         });
     }
@@ -315,12 +361,45 @@ function EditDriedAdmin() {
         });
     }
 
+    function deleteArticle() {
+
+        requester(`/article/delete?_id=${article._id}`, 'DELETE').then(() => {
+            navigate('/admin/fleurs-sechees');
+        });
+    }
+
+    function confirmDelete() {
+        let popup = document.getElementById("admin-article-delete-popup");
+        if (popup) {
+            popup.style.display = "flex";
+        }
+    }
+
+    function cancelDelete() {
+        let popup = document.getElementById("admin-article-delete-popup");
+        if (popup) {
+            popup.style.display = "none";
+        }
+    }
+
+    /* Display */
+    if (article._id === "") {
+        return (<div></div>);
+    }
+
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'>Admin - Ajouter un article séché</h1>
-
+            <h1 className='admin-page-title'>Admin - Modifier un article</h1>
+            <div id="admin-article-delete-area">
+                <button className='admin-button admin-delete-button' onClick={() => confirmDelete()}>Supprimer l'article</button>
+                <div id="admin-article-delete-popup">
+                    <p>Veux-tu vraiment supprimer cet article ?</p>
+                    <button className='admin-button admin-delete-button' onClick={() => deleteArticle()}>Oui</button>
+                    <button className='admin-button' onClick={() => cancelDelete()}>Non</button>
+                </div>
+            </div>
             <div className='admin-form'> {/* Article */}
-                <h2>Créer un article</h2>
+                <h2>Modifier {article.name}</h2>
                 <div className='admin-form-element'> {/* Name */}
                     <label htmlFor='admin-form-input-name' className='admin-form-label'>Nom<p className='form-mandatory'>*</p></label>
                     <div className='admin-form-element-right'>
@@ -383,6 +462,7 @@ function EditDriedAdmin() {
                             isMulti
                             isSearchable
                             isClearable
+                            defaultValue={article.colors.map((elt: colorDB) => ({ label: elt.name, value: elt._id, hexa: elt.hexa })) ?? []}
                             options={options.colors}
                             onChange={(e) => setArticle({ ...article, colors: (e ? e.map((elt: selectColor) => ({ _id: elt.value, name: elt.label, hexa: elt.hexa })) : []) })}
                             id='admin-form-input-colors'
@@ -409,6 +489,7 @@ function EditDriedAdmin() {
                             isMulti
                             isSearchable
                             isClearable
+                            defaultValue={article.tones.map((elt: toneDB) => ({ label: elt.name, value: elt._id })) ?? []}
                             options={options.tones}
                             onChange={(e) => setArticle({ ...article, tones: (e ? e.map((elt: select) => ({ _id: elt.value, name: elt.label })) : []) })}
                             id='admin-form-input-tones'
@@ -441,6 +522,7 @@ function EditDriedAdmin() {
                             }}
                             isSearchable
                             isClearable
+                            defaultValue={{ label: article.shape.name, value: article.shape._id }}
                             options={options.shapes}
                             onChange={(elt) => setArticle({ ...article, shape: (elt ? ({ _id: elt.value, name: elt.label }) : { _id: "", name: "" }) })}
                             id='admin-form-input-shapes'
@@ -461,6 +543,7 @@ function EditDriedAdmin() {
                             isMulti
                             isSearchable
                             isClearable
+                            defaultValue={article.species.map((elt: speciesDB) => ({ label: elt.name, value: elt._id })) ?? []}
                             options={options.species}
                             onChange={(e) => setArticle({ ...article, species: (e ? e.map((elt: select) => ({ _id: elt.value, name: elt.label })) : []) })}
                             id='admin-form-input-species'
@@ -468,20 +551,23 @@ function EditDriedAdmin() {
                     </div>
                 </div>
                 <div className='admin-form-element'> {/* Image 1 */}
-                    <label htmlFor='admin-form-input-files' className='admin-form-label'>Image de couverture<p className='form-mandatory'>*</p></label>
+                    <label className='admin-form-label'>Image de couverture<p className='form-mandatory'>*</p></label>
                     <input
                         onChange={e => setArticle({ ...article, firstFile: (e.target.files ?? [] as unknown as FileList)[0] })} // TODO: check if it works
                         className='admin-form-input'
-                        id='admin-form-input-files'
+                        id='admin-form-input-file'
                         type="file"
                         name="images"
                         accept='image/*'
+                        placeholder="Remplacer l\'image de couverture"
+                        defaultValue={typeof (article.firstFile) === "string" ? "" : article.firstFile.name}
                     />
                 </div>
+                <p className="admin-form-input-info">L'image de couverture déjà sauvegardée n'apparait pas ici mais dans la liste <b>Images sélctionnées</b>.</p>
                 <div className='admin-form-element'> {/* Images */}
-                    <label htmlFor='admin-form-input-files' className='admin-form-label'>Images secondaires</label>
+                    <label className='admin-form-label'>Images secondaires</label>
                     <input
-                        onChange={e => setArticle({ ...article, files: ((e.target.files ?? []) as unknown as [File | string]) })}
+                        onChange={e => addFiles((e.target.files ?? []) as unknown as [File | string])}
                         className='admin-form-input'
                         id='admin-form-input-files'
                         type="file"
@@ -490,20 +576,28 @@ function EditDriedAdmin() {
                         accept='image/*'
                     />
                 </div>
-                <div>   {/* Display Images */}
-                    <div>
-                        <p>Images sélectionnées</p>
-                        <p className="admin-form-input-info">Pour sélectionner plusieurs images, maintient la touche <i>Ctrl</i> enfoncée et sélectionne les images de ton choix</p>
-                    </div>
+                <p className="admin-form-input-info">Les images déjà sauvegardées n'apparaissent pas ici mais dans la liste <b>Images sélctionnées</b>.</p>
+                <p className="admin-form-input-info">Pour sélectionner plusieurs images en même temps, maintient la touche <i>Ctrl</i> enfoncée et sélectionne les images de ton choix.</p>
+                <div className='admin-form-element'>
+                    <p>Images sélectionnées</p>
+                    <div></div>
+                </div>
+                <div> {/* Display Images */}
                     <div id='admin-form-images'>
                         {article.firstFile && <div id="admin-form-image-first">
-                            {(typeof (article.firstFile) !== "string") && <img className='admin-form-image' src={URL.createObjectURL(article.firstFile)} alt={article.firstFile.name} />}
+                            {(typeof (article.firstFile) !== "string") ?
+                                <img key={article.firstFile.name} className='admin-form-image' src={URL.createObjectURL(article.firstFile)} alt={article.firstFile.name} /> :
+                                <img key={article.firstFile} className='admin-form-image' src={(process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + article.firstFile} alt={article.firstFile} />
+                            }
                             <p className="admin-form-input-info">Image de couverture</p>
                         </div>}
-                        {Array.from(article.files || []).map((elt: File | string) => (typeof (elt) !== "string") && <img key={elt.name} className='admin-form-image' src={URL.createObjectURL(elt)} alt={elt.name} />)}
+                        {Array.from(article.files || []).map((elt: File | string, index) => (typeof (elt) !== "string") ?
+                            displayFile(elt.name, URL.createObjectURL(elt), elt.name, index) :
+                            displayFile(elt, (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + elt, elt, index))
+                        }
                     </div>
                 </div>
-                <button className='admin-button' onClick={() => postFile()}>Ajouter l'article</button>
+                <button className='admin-button' onClick={() => postFile()}>Modifier l'article</button>
                 <div id="form-mandatory-info">
                     <p className='form-mandatory'>*</p>
                     <p id="form-mandatory-text">Champs obligatoires</p>
@@ -595,7 +689,7 @@ function EditDriedAdmin() {
             <Alert message="Une erreur est survenue lors de l'envoi des images" id="admin-alert-postfile-sendfiles" />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory" />
             <Alert message="Ce nom est déjà pris par une autre création" id="form-name-alreadytaken" />
-            <Alert message="Une erreur est survenue lors de la création de l'article" id="admin-alert-createarticle" />
+            <Alert message="Une erreur est survenue lors de la modification de l'article" id="admin-alert-editarticle" />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-color" />
             <Alert message="Une erreur est survenue lors de la création de la couleur" id="admin-alert-createcolor" />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-tone" />

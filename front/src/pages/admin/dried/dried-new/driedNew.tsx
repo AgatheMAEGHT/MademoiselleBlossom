@@ -6,7 +6,7 @@ import { requester, requesterFile } from '../../../../components/requester';
 import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor } from '../../../../components/types';
 import Alert, { displayAlert } from '../../../../components/alert_TODO/alert';
 
-import '../driedEdit.css';
+import '../../_components/catalogEdit.css';
 
 function NewDriedAdmin() {
     let navigate = useNavigate();
@@ -163,7 +163,7 @@ function NewDriedAdmin() {
             type: "dried",
             name: article.name ?? "",
             description: article.description ?? "",
-            price: parseFloat(article.price.replace(",", ".")) ?? 0,
+            price: parseFloat(article.price.toString().replace(",", ".")) ?? 0,
             stock: article.stock ?? 0,
             size: article.size ?? 0,
             shape: article.shape._id ?? "",
