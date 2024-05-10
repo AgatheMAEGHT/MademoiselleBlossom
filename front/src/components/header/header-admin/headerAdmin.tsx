@@ -8,6 +8,13 @@ import './headerAdmin.css';
 function HeaderAdmin() {
     let navigate = useNavigate();
 
+    // Remove burger menu when resize
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            burgerHeader(true);
+        }
+    });
+
     return (
         <div>
             <div id="header-admin-buttons">

@@ -11,6 +11,13 @@ function Header() {
     let logged: string | null = localStorage.getItem("logged");
     let navigate = useNavigate();
 
+    // Remove burger menu when resize
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            burgerHeader(true);
+        }
+    });
+
     return (
         <div id="header">
             <div id="header-top">
@@ -53,7 +60,7 @@ function Header() {
                 </div>
                 <div id="header-logo-area">
                     <a href='/'>
-                        <img src={logo} id="header-logo" className='header-item' alt="logo" onClick={() => { navigate("/") }} />
+                        <img src={logo} id="header-logo" className='header-item' alt="logo" onClick={() => { navigate("/"); }} />
                     </a>
                     <p id="header-name">Mademoiselle Blossom</p>
                 </div>
