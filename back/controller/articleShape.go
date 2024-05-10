@@ -153,7 +153,7 @@ func deleteArticleShape(w http.ResponseWriter, r *http.Request, user database.Us
 		"method": r.Method,
 		"path":   r.URL.Path,
 	})
-	log.Info("postArticleShape")
+	log.Info("deleteArticleShape")
 
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)

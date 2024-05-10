@@ -103,6 +103,9 @@ func StartServer(path string) {
 	server.HandleFunc("/api/favorite/create", middlewareWrapper(postFavorite))
 	server.HandleFunc("/api/favorite/delete", middlewareWrapper(deleteFavorite))
 
+	server.HandleFunc("/api/current-event", corsWrapper(getCurrentEvent))
+	server.HandleFunc("/api/current-event/create", middlewareWrapper(postCurrentEvent))
+
 	// server.HandleFunc("/api/temp-cart", middlewareWrapper(getTempCart))
 	// server.HandleFunc("/api/temp-cart/create", middlewareWrapper(postTempCart))
 	// server.HandleFunc("/api/temp-cart/delete", middlewareWrapper(deleteTempCart))

@@ -20,6 +20,7 @@ func defaultValues(ctx context.Context) {
 	defaultArticleShapes(ctx)
 	defaultArticleSpecies(ctx)
 	defaultArticleColors(ctx)
+	defaultCurrentEvents(ctx)
 }
 
 func initCollections(ctx context.Context) {
@@ -36,6 +37,7 @@ func initCollections(ctx context.Context) {
 	initFavorite(ctx, db)
 	initTempCart(ctx, db)
 	initFlowerOfTheWeek(ctx, db)
+	initCurrentEvent(ctx, db)
 }
 
 func Connect(ctx context.Context, url string) (*mongo.Client, error) {
