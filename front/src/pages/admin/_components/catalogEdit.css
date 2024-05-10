@@ -180,3 +180,14 @@
     background-color: transparent;
     padding: 0px;
 }
+
+@media (max-width: 768px) {
+    .admin-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 85vw;
+    }
+}
