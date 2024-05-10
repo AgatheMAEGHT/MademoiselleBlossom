@@ -201,7 +201,7 @@ func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, col
 
 		// Delete file
 		result, status = requester(fmt.Sprintf("/file/delete/%s.%s", fileID, fileExt), http.MethodDelete, nil, adminTok)
-		assert.Equal(t, 200, status, result["err"])
+		assert.Equal(t, 400, status, result["err"])
 	}
 
 	return deferFunc, articles, colors, tones, shapes, species
@@ -301,7 +301,21 @@ func TestArticle(t *testing.T) {
 	defer func() {
 		// Delete file
 		result, status = requester(fmt.Sprintf("/file/delete/%s.%s", resFileID, resExt), http.MethodDelete, nil, adminTok)
-		assert.Equal(t, 200, status, result["err"])
+		assert.Equal(t, 400, status, result["err"])
+	}()
+
+	result, status = requesterFile("/file/create", http.MethodPost, adminTok, "screenTest.png")
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	resFileID2, ok := result["_id"].(string)
+	assert.True(t, ok)
+	resExt, ok = result["ext"].(string)
+	assert.True(t, ok)
+
+	defer func() {
+		// Delete file
+		result, status = requester(fmt.Sprintf("/file/delete/%s.%s", resFileID2, resExt), http.MethodDelete, nil, adminTok)
+		assert.Equal(t, 400, status, result["err"])
 	}()
 
 	// Post article shape
@@ -384,7 +398,7 @@ func TestArticle(t *testing.T) {
 
 	// Post 2nd article
 	body = map[string]interface{}{
-		"files":  []string{resFileID},
+		"files":  []string{resFileID2},
 		"name":   "test2",
 		"price":  10,
 		"stock":  10,

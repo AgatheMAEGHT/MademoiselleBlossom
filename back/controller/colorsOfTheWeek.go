@@ -98,15 +98,6 @@ func postColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database.U
 		return
 	}
 
-	if color.Files == nil {
-		err := utils.IsListObjectIdExist(color.Files, database.FileCollection)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			w.Write(err.ToJson())
-			return
-		}
-	}
-
 	_, err = color.CreateOne(ctx)
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {

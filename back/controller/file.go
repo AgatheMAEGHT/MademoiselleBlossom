@@ -169,6 +169,34 @@ func deleteFile(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
+	// Remove file from article
+	articles, err := database.FindArticles(ctx, bson.M{"files": fileID})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error finding articles").ToJson())
+		return
+	}
+
+	for _, article := range articles {
+		files := []primitive.ObjectID{}
+		for i, file := range article.Files {
+			if file == fileID {
+				continue
+			}
+			files = append(files, article.Files[i])
+		}
+
+		article.Files = files
+		_, err = article.UpdateOne(ctx)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error updating article").ToJson())
+			return
+		}
+	}
+
+	// 
+
 	_, err = database.DeleteOneFile(ctx, fileID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

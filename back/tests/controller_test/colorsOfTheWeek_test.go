@@ -18,30 +18,12 @@ func TestColorsOfTheWeek(t *testing.T) {
 	assert.Equal(t, 200, status, err)
 	nbColorsOfTheWeek := len(resultList)
 
-	// Post File
-	// Admin
-	result, status := requesterFile("/file/create", http.MethodPost, adminTok, "screenTest.png")
-	assert.Equal(t, 200, status, result["err"])
-	assert.NotEmpty(t, result["_id"])
-	resFileID, ok := result["_id"].(string)
-	assert.True(t, ok)
-	resExt, ok := result["ext"].(string)
-	assert.True(t, ok)
-
-	defer func() {
-		// Delete file
-		// Admin
-		result, status = requester(fmt.Sprintf("/file/delete/%s.%s", resFileID, resExt), http.MethodDelete, nil, adminTok)
-		assert.Equal(t, 200, status, result["err"])
-	}()
-
 	// Create color of the week
 	colorOfTheWeek := map[string]interface{}{
 		"hexas": []string{"test", "test2"},
-		"files": []string{resFileID},
 	}
 	// Not admin
-	result, status = requester("/colors-of-the-week/create", http.MethodPost, colorOfTheWeek, testTok)
+	result, status := requester("/colors-of-the-week/create", http.MethodPost, colorOfTheWeek, testTok)
 	assert.Equal(t, 401, status, result["err"])
 
 	// Admin

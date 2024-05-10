@@ -24,7 +24,10 @@ services:
 
   front:
     build: front
+    volumes:
+      - ./front:/front
     ports:
       - "3000:3000"
     env_file:
       - ./front/.env
+    command: sh -c 'yarn install && yarn start'

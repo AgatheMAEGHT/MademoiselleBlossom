@@ -475,6 +475,7 @@ func deleteArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 	for _, fileID := range article.Files {
 		file, err := database.FindOneFile(ctx, bson.M{"_id": fileID})
 		if err != nil {
+			log.WithError(err).Error("Error getting file")
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write(utils.NewResErr("Error getting file").ToJson())
 			return

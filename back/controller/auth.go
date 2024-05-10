@@ -269,6 +269,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 		FirstName: mapBody["firstName"],
 		LastName:  mapBody["lastName"],
 		Password:  mapBody["password"],
+		Phone:     mapBody["phone"],
 	}
 
 	_, err = user.CreateOne(r.Context())

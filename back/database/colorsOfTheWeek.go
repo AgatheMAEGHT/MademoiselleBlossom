@@ -17,14 +17,12 @@ var (
 type ColorsOfTheWeekRes struct {
 	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	Hexas     []string           `json:"hexas" bson:"hexas"`
-	Files     []string           `json:"files" bson:"files"`
 	CreatedAt primitive.DateTime `json:"createdAt" bson:"createdAt"`
 }
 
 type ColorsOfTheWeek struct {
 	ID        primitive.ObjectID   `json:"_id" bson:"_id,omitempty"`
 	Hexas     []string             `json:"hexas" bson:"hexas"`
-	Files     []primitive.ObjectID `json:"files" bson:"files"`
 	CreatedAt primitive.DateTime   `json:"createdAt" bson:"createdAt"`
 }
 
@@ -76,16 +74,6 @@ func (a *ColorsOfTheWeek) Populate(ctx context.Context) (*ColorsOfTheWeekRes, er
 	var colorsOfTheWeekRes ColorsOfTheWeekRes
 	colorsOfTheWeekRes.ID = a.ID
 	colorsOfTheWeekRes.Hexas = a.Hexas
-	colorsOfTheWeekRes.Files = make([]string, len(a.Files))
-	files, err := FindFiles(ctx, bson.M{"_id": bson.M{"$in": a.Files}})
-
-	colorsOfTheWeekRes.Files = make([]string, 0, len(files))
-	if err != nil {
-		return nil, err
-	}
-	for _, file := range files {
-		colorsOfTheWeekRes.Files = append(colorsOfTheWeekRes.Files, file.FullName())
-	}
 
 	colorsOfTheWeekRes.CreatedAt = a.CreatedAt
 

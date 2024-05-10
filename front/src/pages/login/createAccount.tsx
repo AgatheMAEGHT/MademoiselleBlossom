@@ -49,11 +49,9 @@ function CreateAccount() {
                         console.log(res2);
                         displayAlert('create-account-error');
                     }
+                    navigate('/');
+                    window.location.reload();
                 });
-
-                navigate('/');
-                window.location.reload();
-
             } else {
                 if (res.message === 'Wrong email or password') {
                     displayAlert('create-account-wrong-credentials');

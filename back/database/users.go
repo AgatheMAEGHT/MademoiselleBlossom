@@ -118,10 +118,12 @@ func defaultUsers(ctx context.Context) {
 	}
 	for _, admin := range admins {
 		_, err := admin.CreateOne(ctx)
-		if mongo.IsDuplicateKeyError(err) {
-			log.Debug("User already exists")
-		} else {
-			log.Fatal(err)
+		if err != nil {
+			if mongo.IsDuplicateKeyError(err) {
+				log.Debug("User already exists")
+			} else {
+				log.Fatal(err)
+			}
 		}
 	}
 }
