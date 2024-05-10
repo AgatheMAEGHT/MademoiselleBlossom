@@ -24,6 +24,12 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	})
 	log.Info("getArticle")
 
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
+		return
+	}
+
 	err := r.ParseForm()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -225,6 +231,12 @@ func postArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 	})
 	log.Info("postArticle")
 
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
+		return
+	}
+
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write(utils.NewResErr("Unauthorized").ToJson())
@@ -334,7 +346,13 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		"method": r.Method,
 		"path":   r.URL.Path,
 	})
-	log.Info("postArticle")
+	log.Info("putArticle")
+
+	if r.Method != http.MethodPut {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
+		return
+	}
 
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -377,6 +395,41 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 			w.Write(err.ToJson())
 			return
 		}
+
+		// If the article does not refer to the same files as the body, delete the old files
+		for _, fileID := range article.Files {
+			isFileInList := false
+			for _, newFileID := range body.Files {
+				if fileID.Hex() == newFileID.Hex() {
+					isFileInList = true
+					break
+				}
+			}
+			if !isFileInList {
+				file, err := database.FindOneFile(ctx, bson.M{"_id": fileID})
+				if err != nil {
+					log.WithError(err).Error("Error getting file")
+					w.WriteHeader(http.StatusInternalServerError)
+					w.Write(utils.NewResErr("Error getting file").ToJson())
+					return
+				}
+
+				err = os.Remove(fmt.Sprintf("%s/%s/%s.%s", database.FileFolder, file.Type, file.ID.Hex(), file.Ext))
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					w.Write(utils.NewResErr("Error deleting file").ToJson())
+					return
+				}
+
+				_, err = database.DeleteOneFile(ctx, fileID)
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					w.Write(utils.NewResErr("Error deleting file").ToJson())
+					return
+				}
+			}
+		}
+
 		article.Files = body.Files
 	}
 
@@ -436,7 +489,13 @@ func deleteArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		"method": r.Method,
 		"path":   r.URL.Path,
 	})
-	log.Info("postArticle")
+	log.Info("deleteArticle")
+
+	if r.Method != http.MethodDelete {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
+		return
+	}
 
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)
