@@ -601,10 +601,10 @@ func deleteArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 
 	if res.DeletedCount == 0 {
 		w.WriteHeader(http.StatusNotFound)
-		w.Write(utils.NewResErr("Article type not found").ToJson())
+		w.Write(utils.NewResErr("Article not found").ToJson())
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(utils.NewResMsg("Article type deleted").ToJson())
+	w.Write(utils.NewResMsg("Article deleted").ToJson())
 }

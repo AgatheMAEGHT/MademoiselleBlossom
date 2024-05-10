@@ -41,15 +41,15 @@ function HeaderAdmin() {
             </div>
 
             <div id="header-buttons-mobile-admin">
-                <p className='header-admin-item-small' onClick={() => { burgerHeader(); navigate("/admin") }}>Statistiques</p>
+                {/* <p className='header-admin-item-small' onClick={() => { burgerHeader(); navigate("/admin") }}>Statistiques</p>
                 <hr className='header-admin-lines' />
                 <p className='header-admin-item-small header-admin-item-small-no-page'>Commandes</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/commandes/accueil") }}>En attente</p>
-                <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/commandes/contact") }}>Envoyés</p>
-                <hr className='header-admin-lines' />
+                <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/commandes/contact") }}>Envoyés</p> */}
+                {/* <hr className='header-admin-lines' /> */}
                 <p className='header-admin-item-small header-admin-item-small-no-page'>Catalogue</p>
-                <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/fleurs-sechees") }}>Fleurs séchées</p>
-                <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/fleurs-de-la-semaine") }}>Fleurs de la semaine</p>
+                <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/fleurs-sechees"); }}>Fleurs séchées</p>
+                <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/fleurs-de-la-semaine"); }}>Fleurs de la semaine</p>
                 <hr className='header-admin-lines' />
                 {/*<p className='header-admin-item-small header-admin-item-small-no-page'>Inspirations</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/inspirations/mariage") }}>Mariage</p>
@@ -57,7 +57,7 @@ function HeaderAdmin() {
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/inspirations/anniversaire") }}>Anniversaire</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/inspirations/naissance") }}>Naissance</p>
 <hr className='header-admin-lines' />*/}
-                <p className='header-admin-item-small header-admin-item-small-no-page'>Évènements</p>
+                <p className='header-admin-item-small header-admin-item-small-no-page' onClick={() => { burgerHeader(); navigate("/admin/evenements"); }}>Évènements</p>
                 {/*<p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/evenements") }}>Gérer les évènements</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/evenements/noel") }}>Noël</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/evenements/st-valentin") }}>Saint Valentin</p>
@@ -67,11 +67,11 @@ function HeaderAdmin() {
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/evenements/peres") }}>Fête des pères</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/evenements/grand-meres") }}>Fête des Grand-mères</p>
 <hr className='header-admin-lines' />*/}
-                <p className='header-admin-item-small header-admin-item-small-no-page'>Informations</p>
+                {/* <p className='header-admin-item-small header-admin-item-small-no-page'>Informations</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/informations/accueil") }}>Accueil</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/informations/contact") }}>Contact</p>
                 <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/informations/livraisons") }}>Livraisons</p>
-                <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/informations/a-propos") }}>À propos</p>
+                <p className='header-admin-dropdown-item' onClick={() => { burgerHeader(); navigate("/admin/informations/a-propos") }}>À propos</p> */}
             </div>
         </div>
     );

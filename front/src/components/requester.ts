@@ -3,6 +3,7 @@ export function resfreshToken() {
     if (new Date(parseInt(localStorage.getItem('expire_date') ?? '0')).getTime() > new Date().getTime()) return;
 
     let token = localStorage.getItem('refresh_token') ?? '';
+    console.log(token);
     return fetch(process.env.REACT_APP_API_URL + '/refresh', {
         method: 'POST',
         headers: {
@@ -10,7 +11,25 @@ export function resfreshToken() {
         },
         body: JSON.stringify({ refresh_token: token })
     })
-        .then(res => res.json())
+        .then(res => {
+            if (res.status !== 200) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('expire_date');
+                localStorage.removeItem('logged');
+                localStorage.removeItem('pseudo');
+                alert("Vous avez été déconnecté.");
+            } else if (res.status !== 200) {
+                console.log("Err: " + res.status);
+                res.json().then(res => {
+                    console.log(res);
+                });
+
+                return;
+            }
+
+            return res.json();
+        })
         .then(res => {
             localStorage.setItem('access_token', res.access_token);
             let d = new Date().setSeconds(new Date().getSeconds() + parseInt(res.expires_in) ?? 0);
