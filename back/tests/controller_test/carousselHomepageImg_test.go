@@ -13,6 +13,11 @@ func TestCarousselHomepageImg(t *testing.T) {
 	defer deleteAccount(t, testTok)
 	adminTok := getAdminAccessToken(t)
 
+	// get default number of carousselHomepageImg
+	resultList, status, resErr := requesterList("/caroussel-homepage-img", http.MethodGet, nil, "")
+	assert.Equal(t, 200, status, resErr)
+	nbCarousselHomepageImg := len(resultList)
+
 	// Post file
 	// Admin
 	result, status := requesterFile("/file/create", http.MethodPost, adminTok, "screenTest.png")
@@ -20,15 +25,12 @@ func TestCarousselHomepageImg(t *testing.T) {
 	assert.NotEmpty(t, result["_id"])
 	resFileID, ok := result["_id"].(string)
 	assert.True(t, ok)
-	resExt, ok := result["ext"].(string)
-	assert.True(t, ok)
 
-	defer func() {
-		// Delete file
-		// Admin
-		result, status = requester(fmt.Sprintf("/file/delete/%s.%s", resFileID, resExt), http.MethodDelete, nil, adminTok)
-		assert.Equal(t, 200, status, result["err"])
-	}()
+	result, status = requesterFile("/file/create", http.MethodPost, adminTok, "screenTest.png")
+	assert.Equal(t, 200, status, result["err"])
+	assert.NotEmpty(t, result["_id"])
+	resFileID2, ok := result["_id"].(string)
+	assert.True(t, ok)
 
 	// Post carousselHomepageImg
 	body := map[string]interface{}{
@@ -52,7 +54,7 @@ func TestCarousselHomepageImg(t *testing.T) {
 
 	// Post 2nd carousselHomepageImg
 	body = map[string]interface{}{
-		"file":    resFileID,
+		"file":    resFileID2,
 		"altName": "test2",
 	}
 	result, status = requester("/caroussel-homepage-img/create", http.MethodPost, body, adminTok)
@@ -69,9 +71,9 @@ func TestCarousselHomepageImg(t *testing.T) {
 	}()
 
 	// Get carousselHomepageImgs
-	resultList, status, resErr := requesterList("/caroussel-homepage-img", http.MethodGet, nil, testTok)
+	resultList, status, resErr = requesterList("/caroussel-homepage-img", http.MethodGet, nil, testTok)
 	assert.Equal(t, 200, status, resErr)
-	assert.Equal(t, 2, len(resultList))
+	assert.Equal(t, 2+nbCarousselHomepageImg, len(resultList))
 	assert.NotEmpty(t, resultList[0]["_id"])
 
 	// Get carousselHomepageImg

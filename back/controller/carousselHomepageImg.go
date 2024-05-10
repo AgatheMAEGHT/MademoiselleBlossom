@@ -4,7 +4,9 @@ import (
 	"MademoiselleBlossom/database"
 	"MademoiselleBlossom/utils"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
@@ -226,6 +228,36 @@ func deleteCarousselHomepageImg(w http.ResponseWriter, r *http.Request, user dat
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Invalid _id").ToJson())
+		return
+	}
+
+	// Delete all files associated with the carousselHomepageImg
+	caroussel, err := database.FindOneCarousselHomepageImg(ctx, bson.M{"_id": id})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting caroussel homepage img").ToJson())
+		return
+	}
+
+	file, err := database.FindOneFile(ctx, bson.M{"_id": caroussel.File})
+	if err != nil {
+		log.WithError(err).Error("Error getting file")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error getting file").ToJson())
+		return
+	}
+
+	err = os.Remove(fmt.Sprintf("%s/%s/%s.%s", database.FileFolder, file.Type, file.ID.Hex(), file.Ext))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error deleting file").ToJson())
+		return
+	}
+
+	_, err = database.DeleteOneFile(ctx, caroussel.File)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error deleting file").ToJson())
 		return
 	}
 
