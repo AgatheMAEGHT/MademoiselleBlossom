@@ -195,7 +195,22 @@ func deleteFile(w http.ResponseWriter, r *http.Request, user database.User) {
 		}
 	}
 
-	// 
+	// Remove file from CarousselHomepageImg
+	carousselHomepageImgs, err := database.FindCarousselHomepageImgs(ctx, bson.M{"file": fileID})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error finding caroussel homepage imgs").ToJson())
+		return
+	}
+
+	for _, carousselHomepageImg := range carousselHomepageImgs {
+		_, err = database.DeleteOneCarousselHomepageImg(ctx, carousselHomepageImg.ID)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error deleting caroussel homepage img").ToJson())
+			return
+		}
+	}
 
 	_, err = database.DeleteOneFile(ctx, fileID)
 	if err != nil {
