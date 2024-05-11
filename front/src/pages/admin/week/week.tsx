@@ -9,10 +9,8 @@ import { AdminFreshCatalogTile } from '../_components/catalog-tile-admin/catalog
 import './week.css';
 
 function WeekAdmin() {
-    let navigate = useNavigate();
-
     // Color gradient
-    const [colors, setSolors] = React.useState<{ name: string, id: number }[]>([]);
+    const [colors, setColors] = React.useState<{ name: string, id: number }[]>([]);
 
     function displayColorsOfGradient(): JSX.Element {
         let elements: JSX.Element[] = [];
@@ -33,7 +31,7 @@ function WeekAdmin() {
     }
 
     function editColorOfGradient(name: string, id: number) {
-        setSolors(colors.map(color => color.id === id ? { name: name, id: id } : color))
+        setColors(colors.map(color => color.id === id ? { name: name, id: id } : color))
     }
 
     function removeColorFromGradient(id: number) {
@@ -42,11 +40,11 @@ function WeekAdmin() {
             newColor[i].id--;
         }
 
-        setSolors(newColor);
+        setColors(newColor);
     }
 
     function addColorToGradient() {
-        setSolors(prev => [...prev, { name: "#ffffff", id: colors.length }]);
+        setColors(prev => [...prev, { name: "#ffffff", id: colors.length }]);
     }
 
     function createGradient(): string {
@@ -67,8 +65,8 @@ function WeekAdmin() {
 
     function postGradient() {
         let tmp: string[] = colors.map((elt: { name: string, id: number }) => elt.name.replace("#", ""));
-        requester('/admin/week', "POST", { colors: tmp }).then((res: any) => {
-            if (res._confirm === "ok") {
+        requester('/colors-of-the-week/create', "POST", { hexas: tmp }).then((res: any) => {
+            if (res?._id) {
                 displayAlert("week-colors-saved");
             } else {
                 console.log(res);
@@ -79,22 +77,31 @@ function WeekAdmin() {
 
     // Flowers
     const [flowers, setFlowers] = React.useState<catalog>([]);
+    const [weekFlowers, setWeekFlowers] = React.useState<catalog>([]);
 
     React.useEffect(() => {
-        requester('/article?populate=true&limit=100&types=fresh', 'GET').then((res: any) => {
-            setFlowers(res);
-        })
+        let promises: Promise<any>[] = [];
+
+        promises.push(requester('/article?populate=true&types=fresh', 'GET'));
+        promises.push(requester('/article?populate=true&types=week', 'GET'));
+        promises.push(requester('/colors-of-the-week', 'GET'));
+
+        Promise.all(promises).then((res) => {
+            setFlowers(res[0].sort((a: any, b: any) => a.name.localeCompare(b.name)));
+            setWeekFlowers(res[1].sort((a: any, b: any) => a.name.localeCompare(b.name)));
+            setColors(res[2] ? res[2][0]?.hexas?.map((elt: any, i: number) => { return { name: "#" + elt, id: i } }) : []);
+        });
     }, []);
 
-    function displayFreshFlowers() {
+    function displayFreshFlowers(list: catalog) {
         let driedFlowersList: JSX.Element[] = [];
-        for (let i = 0; i < flowers?.length; i += 3) {
+        for (let i = 0; i < list?.length; i += 3) {
             let row: JSX.Element[] = [];
-            row.push(<AdminFreshCatalogTile key={flowers[i]._id} name={flowers[i].name} species={flowers[i].species[0].name} images={flowers[i].files} id={flowers[i]._id} color={flowers[i].colors[0].name} />);
-            if (flowers[i + 1]) {
-                row.push(<AdminFreshCatalogTile key={flowers[i + 1]._id} name={flowers[i + 1].name} species={flowers[i + 1].species[0].name} images={flowers[i + 1].files} id={flowers[i + 1]._id} color='' />);
-                if (flowers[i + 2]) {
-                    row.push(<AdminFreshCatalogTile key={flowers[i + 2]._id} name={flowers[i + 2].name} species={flowers[i + 2].species[0].name} images={flowers[i + 2].files} id={flowers[i + 2]._id} color='' />);
+            row.push(<AdminFreshCatalogTile key={list[i]._id} name={list[i].name} images={list[i].files} article={list[i]} id={list[i]._id} />);
+            if (list[i + 1]) {
+                row.push(<AdminFreshCatalogTile key={list[i + 1]._id} name={list[i + 1].name} images={list[i + 1].files} article={list[i + 1]} id={list[i + 1]._id} />);
+                if (list[i + 2]) {
+                    row.push(<AdminFreshCatalogTile key={list[i + 2]._id} name={list[i + 2].name} images={list[i + 2].files} article={list[i + 2]} id={list[i + 2]._id} />);
                 }
             }
             driedFlowersList.push(<div key={i} className="dried-flowers-row">{row}</div>);
@@ -119,10 +126,13 @@ function WeekAdmin() {
 
             <h2>Fleurs</h2>
             <h3>Fleurs de la semaine</h3>
-            <h3>Toutes les fleurs</h3>
+            <div className="admin-fresh-catalog">
+                {displayFreshFlowers(weekFlowers)}
+            </div>
+            <h3>Toutes les fleurs fraiches</h3>
             <a className='admin-button' href='/admin/fleurs-de-la-semaine/nouveau'>Ajouter une fleur</a>
-            <div id="admin-dried-catalog">
-                {displayFreshFlowers()}
+            <div className="admin-fresh-catalog">
+                {displayFreshFlowers(flowers)}
             </div>
         </div>
     );

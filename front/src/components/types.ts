@@ -1,9 +1,8 @@
 export type freshFlowerTile = {
     id: string,
     name: string,
-    species: string,
-    color: string,
     images: string[],
+    article: articleDB,
 }
 
 export type driedFlowerTile = {

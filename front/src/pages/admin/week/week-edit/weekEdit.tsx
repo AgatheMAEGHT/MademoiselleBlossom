@@ -137,7 +137,7 @@ function WeekEditAdmin() {
         let image: string = "";
 
         if (typeof article.firstFile !== "string") {
-            let type: string = "image/" + article.firstFile.name.split('.')[article.firstFile.name.split('.').length - 1];
+            let type: string = "image/" + article.firstFile.name.split('.')[1];
             promises.push(requesterFile('/file/create', 'POST', article.firstFile.stream(), type));
         } else {
             image = article.firstFile.split('.')[0];

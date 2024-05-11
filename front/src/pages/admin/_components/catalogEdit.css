@@ -124,6 +124,10 @@
     border-radius: 5px;
 }
 
+.admin-fresh-catalog {
+    margin-top: 20px;
+}
+
 #admin-article-delete-area {
     display: flex;
     flex-direction: column;
@@ -179,6 +183,17 @@
     border: none;
     background-color: transparent;
     padding: 0px;
+}
+
+.admin-fresh-tile-button {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: small;
+    text-align: center;
+    padding: 10px 0px;
+    font-weight: bold;
+    font-style: italic;
 }
 
 @media (max-width: 768px) {
