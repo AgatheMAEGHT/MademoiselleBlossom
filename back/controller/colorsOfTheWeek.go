@@ -98,6 +98,14 @@ func postColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database.U
 		return
 	}
 
+	// Delete all colors of the week
+	_, err = database.DeleteManyColorsOfTheWeek(ctx, bson.M{})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error deleting colors of the week").ToJson())
+		return
+	}
+
 	_, err = color.CreateOne(ctx)
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {

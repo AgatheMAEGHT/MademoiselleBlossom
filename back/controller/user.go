@@ -122,6 +122,12 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 		return
 	}
 
+	if !utils.IsPasswordStrong(mapBody["newPassword"]) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(utils.NewResErr("Password too weak").ToJson())
+		return
+	}
+
 	userToUpdate := user
 	if r.Form.Get("_id") != "" {
 		if !user.IsAdmin {
@@ -152,7 +158,7 @@ func changePassword(w http.ResponseWriter, r *http.Request, user database.User) 
 
 	err = userToUpdate.ComparePassword(mapBody["oldPassword"])
 	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
+		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Wrong password").ToJson())
 		return
 	}

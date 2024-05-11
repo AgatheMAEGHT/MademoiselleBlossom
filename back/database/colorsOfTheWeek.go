@@ -21,9 +21,9 @@ type ColorsOfTheWeekRes struct {
 }
 
 type ColorsOfTheWeek struct {
-	ID        primitive.ObjectID   `json:"_id" bson:"_id,omitempty"`
-	Hexas     []string             `json:"hexas" bson:"hexas"`
-	CreatedAt primitive.DateTime   `json:"createdAt" bson:"createdAt"`
+	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Hexas     []string           `json:"hexas" bson:"hexas"`
+	CreatedAt primitive.DateTime `json:"createdAt" bson:"createdAt"`
 }
 
 func (a *ColorsOfTheWeek) CreateOne(ctx context.Context) (*mongo.InsertOneResult, error) {
@@ -43,6 +43,10 @@ func (a *ColorsOfTheWeek) UpdateOne(ctx context.Context) (*mongo.UpdateResult, e
 
 func DeleteOneColorsOfTheWeek(ctx context.Context, id primitive.ObjectID) (*mongo.DeleteResult, error) {
 	return ColorsOfTheWeekCollection.DeleteOne(ctx, bson.M{"_id": id})
+}
+
+func DeleteManyColorsOfTheWeek(ctx context.Context, filter bson.M) (*mongo.DeleteResult, error) {
+	return ColorsOfTheWeekCollection.DeleteMany(ctx, filter)
 }
 
 func FindOneColorsOfTheWeek(ctx context.Context, filter bson.M) (*ColorsOfTheWeek, error) {

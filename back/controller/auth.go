@@ -264,6 +264,13 @@ func register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check if password is strong
+	if !utils.IsPasswordStrong(mapBody["password"]) {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(utils.NewResErr("Password is not strong enough").ToJson())
+		return
+	}
+
 	user := database.User{
 		Email:     mapBody["email"],
 		FirstName: mapBody["firstName"],
