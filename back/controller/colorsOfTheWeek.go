@@ -21,6 +21,12 @@ func getColorsOfTheWeek(w http.ResponseWriter, r *http.Request) {
 	})
 	log.Info("getColorsOfTheWeek")
 
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
+		return
+	}
+
 	err := r.ParseForm()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -78,6 +84,12 @@ func postColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database.U
 	})
 	log.Info("postColorsOfTheWeek")
 
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
+		return
+	}
+
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write(utils.NewResErr("Unauthorized").ToJson())
@@ -129,6 +141,12 @@ func deleteColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database
 		"path":   r.URL.Path,
 	})
 	log.Info("deleteColorsOfTheWeek")
+
+	if r.Method != http.MethodDelete {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write(utils.NewResErr("Method not allowed").ToJson())
+		return
+	}
 
 	if !user.IsAdmin {
 		w.WriteHeader(http.StatusUnauthorized)
