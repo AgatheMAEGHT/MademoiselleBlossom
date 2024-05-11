@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './login.css';
 import { requester } from '../../components/requester';
 import Alert, { displayAlert } from '../../components/alert_TODO/alert';
+import { alertStatus } from '../../components/types';
 
 function CreateAccount() {
     let navigate = useNavigate();
@@ -24,13 +25,13 @@ function CreateAccount() {
         }
 
         if (profile.password !== profile.passwordRepeat) {
-            displayAlert('create-account-identical-passwords')
+            displayAlert('create-account-identical-passwords');
             return;
         }
 
         requester('/register', 'POST', profile).then((res: any) => {
             if (res.access_token) {
-                let d = new Date().setSeconds(new Date().getSeconds() + parseInt(res.expires_in) ?? 0)
+                let d = new Date().setSeconds(new Date().getSeconds() + parseInt(res.expires_in) ?? 0);
                 localStorage.setItem('logged', "client");
                 localStorage.setItem('access_token', res.access_token);
                 localStorage.setItem('expire_date', d.toString());
@@ -114,10 +115,10 @@ function CreateAccount() {
                 <p>Vous avez déjà un compte ?</p>
                 <button onClick={() => navigate("/se-connecter")} className='login-container-button'>Se connecter</button>
             </div>
-            <Alert id='create-account-identical-passwords' message='Les mots de passe ne sont pas identiques' />
-            <Alert id='create-account-mandatory' message='Les champs prénom, nom, email et mot de passe sont obligatoires' />
-            <Alert id='create-account-error' message='Une erreur est survenue, merci de réessayer ultérieurement' />
-            <Alert id='create-account-wrong-credentials' message='Email ou mot de passe incorrect' />
+            <Alert id='create-account-identical-passwords' message='Les mots de passe ne sont pas identiques' status={alertStatus.error} />
+            <Alert id='create-account-mandatory' message='Les champs prénom, nom, email et mot de passe sont obligatoires' status={alertStatus.error} />
+            <Alert id='create-account-error' message='Une erreur est survenue, merci de réessayer ultérieurement' status={alertStatus.error} />
+            <Alert id='create-account-wrong-credentials' message='Email ou mot de passe incorrect' status={alertStatus.error} />
         </div>
     );
 }
