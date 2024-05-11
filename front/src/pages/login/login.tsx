@@ -6,6 +6,7 @@ import { requester } from '../../components/requester';
 
 import './login.css';
 import Alert, { displayAlert } from '../../components/alert_TODO/alert';
+import { alertStatus } from '../../components/types';
 
 function Login() {
     let navigate = useNavigate();
@@ -44,7 +45,7 @@ function Login() {
                     window.location.reload();
                 });
             } else {
-                if (res.message === 'Wrong email or password') {
+                if (res.err === 'Wrong email or password') {
                     displayAlert('login-wrong-credentials');
                     return;
                 }
@@ -76,9 +77,9 @@ function Login() {
                 <p>Vous n'avez pas de compte ?</p>
                 <button onClick={() => navigate("/creer-un-compte")} className='login-container-button'>Créer un compte</button>
             </div>
-            <Alert message="Veuillez remplir tous les champs obligatoires" id="login-alert-mandatory" />
-            <Alert message="Une erreur est survenue, merci de réessayer ultérieurement" id="login-alert-error" />
-            <Alert message="Email ou mot de passe incorrect" id="login-wrong-credentials" />
+            <Alert message="Veuillez remplir tous les champs obligatoires" id="login-alert-mandatory" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue, merci de réessayer ultérieurement" id="login-alert-error" status={alertStatus.error} />
+            <Alert message="Email ou mot de passe incorrect" id="login-wrong-credentials" status={alertStatus.error} />
         </div>
     );
 }

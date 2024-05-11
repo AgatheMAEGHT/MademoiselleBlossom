@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { catalog } from '../../../components/types';
+import { alertStatus, catalog } from '../../../components/types';
 import { requester } from '../../../components/requester';
 import Alert, { displayAlert } from '../../../components/alert_TODO/alert';
 import { AdminFreshCatalogTile } from '../_components/catalog-tile-admin/catalogTile';
@@ -10,7 +10,7 @@ import './week.css';
 
 function WeekAdmin() {
     // Color gradient
-    const [colors, setColors] = React.useState<{ name: string, id: number }[]>([]);
+    const [colors, setColors] = React.useState<{ name: string, id: number; }[]>([]);
 
     function displayColorsOfGradient(): JSX.Element {
         let elements: JSX.Element[] = [];
@@ -19,23 +19,23 @@ function WeekAdmin() {
             elements.push(
                 <div className='admin-week-colors-color' key={i}>
                     <div style={{ backgroundColor: colors[i].name }}></div>
-                    <input type='color' value={colors[i].name} onChange={(e) => { editColorOfGradient(e.target.value, i) }} className='admin-week-colors-display' />
-                    <button className='admin-week-colors-delete' onClick={() => { removeColorFromGradient(i) }}>Supprimer la couleur</button>
+                    <input type='color' value={colors[i].name} onChange={(e) => { editColorOfGradient(e.target.value, i); }} className='admin-week-colors-display' />
+                    <button className='admin-week-colors-delete' onClick={() => { removeColorFromGradient(i); }}>Supprimer la couleur</button>
                 </div>
-            )
+            );
         }
 
         return <div id="admin-week-colors-list">
             {elements.length > 0 ? elements : <p><i>Aucune couleur ajoutée</i></p>}
-        </div>
+        </div>;
     }
 
     function editColorOfGradient(name: string, id: number) {
-        setColors(colors.map(color => color.id === id ? { name: name, id: id } : color))
+        setColors(colors.map(color => color.id === id ? { name: name, id: id } : color));
     }
 
     function removeColorFromGradient(id: number) {
-        let newColor: { name: string, id: number }[] = colors.filter((_, i) => i !== id);
+        let newColor: { name: string, id: number; }[] = colors.filter((_, i) => i !== id);
         for (let i = id; i < newColor.length; i++) {
             newColor[i].id--;
         }
@@ -64,7 +64,7 @@ function WeekAdmin() {
     }
 
     function postGradient() {
-        let tmp: string[] = colors.map((elt: { name: string, id: number }) => elt.name.replace("#", ""));
+        let tmp: string[] = colors.map((elt: { name: string, id: number; }) => elt.name.replace("#", ""));
         requester('/colors-of-the-week/create', "POST", { hexas: tmp }).then((res: any) => {
             if (res?._id) {
                 displayAlert("week-colors-saved");
@@ -72,7 +72,7 @@ function WeekAdmin() {
                 console.log(res);
                 displayAlert("week-colors-error");
             }
-        })
+        });
     }
 
     // Flowers
@@ -89,7 +89,7 @@ function WeekAdmin() {
         Promise.all(promises).then((res) => {
             setFlowers(res[0].sort((a: any, b: any) => a.name.localeCompare(b.name)));
             setWeekFlowers(res[1].sort((a: any, b: any) => a.name.localeCompare(b.name)));
-            setColors(res[2] ? res[2][0]?.hexas?.map((elt: any, i: number) => { return { name: "#" + elt, id: i } }) : []);
+            setColors(res[2] ? res[2][0]?.hexas?.map((elt: any, i: number) => { return { name: "#" + elt, id: i }; }) : []);
         });
     }, []);
 
@@ -119,10 +119,10 @@ function WeekAdmin() {
             <div id="admin-week-gradient" style={{ background: createGradient() }}></div>
 
             {displayColorsOfGradient()}
-            <button className='admin-button' onClick={() => { addColorToGradient() }}>Ajouter une couleur</button>
-            <button className='admin-button' onClick={() => { postGradient() }}>Sauvegarder les couleurs</button>
-            <Alert id="week-colors-saved" message="Les couleurs ont été sauvegardées" />
-            <Alert id="week-colors-error" message="Une erreur est survenue lors de la sauvegarde" />
+            <button className='admin-button' onClick={() => { addColorToGradient(); }}>Ajouter une couleur</button>
+            <button className='admin-button' onClick={() => { postGradient(); }}>Sauvegarder les couleurs</button>
+            <Alert id="week-colors-saved" message="Les couleurs ont été sauvegardées" status={alertStatus.error} />
+            <Alert id="week-colors-error" message="Une erreur est survenue lors de la sauvegarde" status={alertStatus.error} />
 
             <h2>Fleurs</h2>
             <h3>Fleurs de la semaine</h3>

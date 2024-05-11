@@ -3,22 +3,22 @@ export type freshFlowerTile = {
     name: string,
     images: string[],
     article: articleDB,
-}
+};
 
 export type driedFlowerTile = {
     id: string,
     name: string,
     images: string[],
     price: string,
-}
+};
 
 export type driedFlowerTileClient = {
     id: string,
     name: string,
     images: string[],
     price: string,
-    favorite: { _id: string, article: string },
-}
+    favorite: { _id: string, article: string; },
+};
 
 
 /* ==================== *
@@ -28,43 +28,43 @@ export type driedFlowerTileClient = {
 export type colorDB = {
     _id: string,
     name: string,
-    hexa: string
-}
+    hexa: string;
+};
 
 export type newColorDB = {
     name: string,
-    hexa: string
-}
+    hexa: string;
+};
 
 //Tone
 export type toneDB = {
     _id: string,
     name: string,
-}
+};
 
 export type newToneDB = {
     name: string,
-}
+};
 
 //Shape
 export type shapeDB = {
     _id: string,
     name: string,
-}
+};
 
 export type newShapeDB = {
     name: string,
-}
+};
 
 //Species
 export type speciesDB = {
     _id: string,
     name: string,
-}
+};
 
 export type newSpeciesDB = {
     name: string,
-}
+};
 
 //Article
 export type articleDB = {
@@ -75,12 +75,12 @@ export type articleDB = {
     price: number,
     stock: number,
     size: number,
-    shape: shapeDB
+    shape: shapeDB;
     colors: colorDB[],
     tones: toneDB[],
     species: speciesDB[],
     files: string[],
-}
+};
 
 export type newArticleDB = {
     _id: string,
@@ -90,22 +90,22 @@ export type newArticleDB = {
     price: number,
     stock: number,
     size: number,
-    shape: string
+    shape: string;
     colors: string[],
     species: string[],
     tones: string[],
     files: string[],
-}
+};
 
 export type favoriteDB = {
     _id: string,
-    article: string
-}
+    article: string;
+};
 
 export type favoritePopulatedDB = {
     _id: string,
-    article: articleDB
-}
+    article: articleDB;
+};
 
 /* ===================== *
  *       END OF DB 
@@ -125,9 +125,9 @@ export type article = {
     species: speciesDB[],
     firstFile: File | string,
     files: [File | string],
-}
+};
 
-export type catalog = articleDB[]
+export type catalog = articleDB[];
 
 export type newArticleOptions = {
     colors: selectColor[],
@@ -135,7 +135,7 @@ export type newArticleOptions = {
     shapes: select[],
     species: select[],
     names: string[],
-}
+};
 
 export type editArticleOptions = {
     colors: selectColor[],
@@ -143,21 +143,29 @@ export type editArticleOptions = {
     shapes: select[],
     species: select[],
     names: select[],
-}
+};
 
 export type select = {
-    value: string
+    value: string;
     label: string,
-}
+};
 
 export type selectColor = {
-    value: string
+    value: string;
     label: string,
     hexa: string,
-}
+};
 
 /* Pop UP */
+export enum alertStatus {
+    success = "success",
+    error = "error",
+    warning = "warning",
+    info = "info",
+};
+
 export type alert = {
     message: string,
+    status: alertStatus,
     id: string,
-}
+};

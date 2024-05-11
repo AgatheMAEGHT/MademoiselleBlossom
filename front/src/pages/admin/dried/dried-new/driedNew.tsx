@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../../components/requester';
 import Alert, { displayAlert } from '../../../../components/alert_TODO/alert';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor } from '../../../../components/types';
+import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../../components/types';
 
 import '../../_components/catalogEdit.css';
 
@@ -59,7 +59,7 @@ function NewDriedAdmin() {
             shapes: [],
             species: [],
             names: [],
-        }
+        };
         let promises: Promise<any>[] = [];
 
         promises.push(requester('/article-color', 'GET'));
@@ -82,7 +82,7 @@ function NewDriedAdmin() {
     function displayColors() {
         return article.colors.map((elt: colorDB) => {
             let color: string = "#" + elt.hexa;
-            return <div key={elt._id} className='admin-form-color' style={{ background: color }}></div>
+            return <div key={elt._id} className='admin-form-color' style={{ background: color }}></div>;
         });
     }
 
@@ -107,7 +107,7 @@ function NewDriedAdmin() {
     function postFile() {
         // Check if firstFile filled
         if (article.firstFile === undefined || article.firstFile === null || article.firstFile === "" as unknown as File) {
-            displayAlert('admin-alert-postfile-firstfile')
+            displayAlert('admin-alert-postfile-firstfile');
             return;
         }
 
@@ -169,7 +169,7 @@ function NewDriedAdmin() {
             species: article.species.map((elt: speciesDB) => elt._id) ?? [],
             tones: article.tones.map((elt: toneDB) => elt._id) ?? [],
             files: files,
-        }
+        };
 
         // Create new article
         requester('/article/create', 'POST', tmpArticle).then((res: any) => {
@@ -193,7 +193,7 @@ function NewDriedAdmin() {
         let tmpColor: newColorDB = {
             name: color.name ?? "",
             hexa: color.hexa.replace("#", "") ?? "",
-        }
+        };
 
         // Create new color
         requester('/article-color/create', 'POST', tmpColor).then((res: any) => {
@@ -223,7 +223,7 @@ function NewDriedAdmin() {
         // Create new tone object to send to the server
         let tmpTone: newToneDB = {
             name: tone ?? "",
-        }
+        };
 
         // Create new tone
         requester('/article-tone/create', 'POST', tmpTone).then((res: any) => {
@@ -251,7 +251,7 @@ function NewDriedAdmin() {
         // Create new shape object to send to the server
         let tmpShape: newToneDB = {
             name: shape ?? "",
-        }
+        };
 
         // Create new shape
         requester('/article-shape/create', 'POST', tmpShape).then((res: any) => {
@@ -280,7 +280,7 @@ function NewDriedAdmin() {
         // Create new species object to send to the server
         let tmpSpecies: newSpeciesDB = {
             name: species ?? "",
-        }
+        };
 
         // Create new species
         requester('/article-species/create', 'POST', tmpSpecies).then((res: any) => {
@@ -311,7 +311,7 @@ function NewDriedAdmin() {
                         {nameAlreadyTaken && <div id="admin-form-element-alreadytaken">Ce nom est déjà pris par une autre création</div>}
                         <input
                             value={article.name}
-                            onChange={e => { setArticle({ ...article, name: e.target.value }); checkName(e.target.value) }}
+                            onChange={e => { setArticle({ ...article, name: e.target.value }); checkName(e.target.value); }}
                             className='admin-form-input admin-form-input-right'
                             id="admin-form-input-name"
                             type="text"
@@ -506,7 +506,7 @@ function NewDriedAdmin() {
                         {colorAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette couleur existe déjà</div>}
                         <input
                             value={color.name}
-                            onChange={e => { setColor({ ...color, name: e.target.value }); checkOptions(e.target.value, options.colors, setColorAlreadyTaken) }}
+                            onChange={e => { setColor({ ...color, name: e.target.value }); checkOptions(e.target.value, options.colors, setColorAlreadyTaken); }}
                             className='admin-form-input admin-form-input-right'
                             type="text"
                             name="colorName"
@@ -531,7 +531,7 @@ function NewDriedAdmin() {
                         {toneAlreadyTaken && <div id="admin-form-element-alreadytaken">Ce ton existe déjà</div>}
                         <input
                             value={tone}
-                            onChange={e => { setTone(e.target.value); checkOptions(e.target.value, options.tones, setToneAlreadyTaken) }}
+                            onChange={e => { setTone(e.target.value); checkOptions(e.target.value, options.tones, setToneAlreadyTaken); }}
                             className='admin-form-input admin-form-input-right'
                             type="text"
                             name="tone"
@@ -548,7 +548,7 @@ function NewDriedAdmin() {
                         {shapeAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette forme existe déjà</div>}
                         <input
                             value={shape}
-                            onChange={e => { setShape(e.target.value); checkOptions(e.target.value, options.shapes, setShapeAlreadyTaken) }}
+                            onChange={e => { setShape(e.target.value); checkOptions(e.target.value, options.shapes, setShapeAlreadyTaken); }}
                             className='admin-form-input admin-form-input-right'
                             type="text"
                             name="shape"
@@ -565,7 +565,7 @@ function NewDriedAdmin() {
                         {speciesAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette variété existe déjà</div>}
                         <input
                             value={species}
-                            onChange={e => { setSpecies(e.target.value); checkOptions(e.target.value, options.species, setSpeciesAlreadyTaken) }}
+                            onChange={e => { setSpecies(e.target.value); checkOptions(e.target.value, options.species, setSpeciesAlreadyTaken); }}
                             className='admin-form-input admin-form-input-right'
                             type="text"
                             name="species"
@@ -575,19 +575,19 @@ function NewDriedAdmin() {
                 </div>
                 <button className='admin-button' onClick={() => postSpecies()}>Ajouter la variété</button>
             </div>
-            <Alert message="Aucune image de couverture n'est sélectionnée" id="admin-alert-postfile-firstfile" />
-            <Alert message="Une erreur est survenue lors de l'envoi des images" id="admin-alert-postfile-sendfiles" />
-            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory" />
-            <Alert message="Ce nom est déjà pris par une autre création" id="form-name-alreadytaken" />
-            <Alert message="Une erreur est survenue lors de la création de l'article" id="admin-alert-createarticle" />
-            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-color" />
-            <Alert message="Une erreur est survenue lors de la création de la couleur" id="admin-alert-createcolor" />
-            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-tone" />
-            <Alert message="Une erreur est survenue lors de la création du ton" id="admin-alert-createtone" />
-            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-shape" />
-            <Alert message="Une erreur est survenue lors de la création de la forme" id="admin-alert-createshape" />
-            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-species" />
-            <Alert message="Une erreur est survenue lors de la création de l'espèce" id="admin-alert-createspecies" />
+            <Alert message="Aucune image de couverture n'est sélectionnée" id="admin-alert-postfile-firstfile" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de l'envoi des images" id="admin-alert-postfile-sendfiles" status={alertStatus.error} />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory" status={alertStatus.error} />
+            <Alert message="Ce nom est déjà pris par une autre création" id="form-name-alreadytaken" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la création de l'article" id="admin-alert-createarticle" status={alertStatus.error} />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-color" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la création de la couleur" id="admin-alert-createcolor" status={alertStatus.error} />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-tone" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la création du ton" id="admin-alert-createtone" status={alertStatus.error} />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-shape" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la création de la forme" id="admin-alert-createshape" status={alertStatus.error} />
+            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-species" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la création de l'espèce" id="admin-alert-createspecies" status={alertStatus.error} />
         </div>
     );
 }

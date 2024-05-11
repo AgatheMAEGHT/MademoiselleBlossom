@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import './profile.css';
 import { requester } from '../../components/requester';
+import Alert, { displayAlert } from '../../components/alert_TODO/alert';
+import { alertStatus } from '../../components/types';
 
 function Profile() {
     let navigate = useNavigate();
@@ -15,22 +17,24 @@ function Profile() {
 
     function changePassword() {
         if (passwordChange.oldPassword === '' || passwordChange.newPassword === '' || passwordChange.newPasswordRepeat === '') {
-            alert('Veuillez remplir tous les champs');
+            displayAlert('login-alert-mandatory');
             return;
         }
 
         if (passwordChange.newPassword !== passwordChange.newPasswordRepeat) {
-            alert('Les mots de passe ne correspondent pas');
+            displayAlert('login-alert-identical-passwords');
             return;
         }
 
         // Change password
         requester('/user/password', 'PUT', passwordChange).then((res: any) => {
             console.log(res);
-            if (res.msg !== undefined && res.msg === 'User password changed') {
-                alert('Mot de passe changé');
+            if (res.err !== undefined && res.err === 'Password too weak') {
+                displayAlert('weak-password');
+            } else if (res.msg !== undefined && res.msg === 'User password changed') {
+                displayAlert('password-changed');
             } else {
-                alert('Erreur lors du changement de mot de passe');
+                displayAlert('login-wrong-credentials');
             }
         });
     }
@@ -97,6 +101,11 @@ function Profile() {
                 <h3>Adresse de livraison</h3>
     </div>*/}
             <button onClick={logout} className='profile-button'>Se déconnecter</button>
+            <Alert message="Mot de passe incorrect" id="login-wrong-credentials" status={alertStatus.error} />
+            <Alert message="Le mot de passe doit contenir au moins 8 caractères dont au moins une lettre et un chiffre" id="weak-password" status={alertStatus.error} />
+            <Alert message="Mot de passe changé" id="password-changed" status={alertStatus.success} />
+            <Alert message="Veuillez remplir tous les champs" id="login-alert-mandatory" status={alertStatus.warning} />
+            <Alert message="Les mots de passe ne correspondent pas" id="login-alert-identical-passwords" status={alertStatus.error} />
         </div>
     );
 }
