@@ -344,12 +344,11 @@ function NewDriedAdmin() {
                 </div>
                 <div className='admin-form-element'> {/* Description */}
                     <label htmlFor='admin-form-input-description' className='admin-form-label'>Description</label>
-                    <input
+                    <textarea
                         value={article.description}
                         onChange={e => setArticle({ ...article, description: e.target.value })}
-                        className='admin-form-input'
+                        className='admin-form-input admin-form-description'
                         id="admin-form-input-description"
-                        type="text"
                         name="description"
                     />
                 </div>

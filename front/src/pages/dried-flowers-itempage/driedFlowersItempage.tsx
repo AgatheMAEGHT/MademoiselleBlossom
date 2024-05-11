@@ -44,6 +44,7 @@ function DriedFlowersItempage() {
                     return;
                 }
                 setItem(res[0][0]);
+                console.log(res[0][0]);
 
                 if (res[1]?.err) {
                     console.log("error while fetching dried flowers");
@@ -97,6 +98,10 @@ function DriedFlowersItempage() {
         }
     }
 
+    function displayDescription() {
+        return item.description.split("\n").map((line, index) => <p key={index}>{line}</p>);
+    }
+
     return (
         <div id="item-page">
             <div id="item-page-top">
@@ -142,7 +147,7 @@ function DriedFlowersItempage() {
                 </div>*/}
                 </div>
             </div>
-            <div id="item-page-description">{item?.description}</div>
+            <div id="item-page-description">{displayDescription()}</div>
         </div>
     );
 }

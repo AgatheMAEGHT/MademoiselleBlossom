@@ -55,6 +55,10 @@
     padding: 10px;
 }
 
+.admin-form-description {
+    white-space: pre-wrap;
+}
+
 .admin-form-input-right {
     width: calc(100% - 22px);
 }
