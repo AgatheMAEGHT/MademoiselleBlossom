@@ -112,7 +112,7 @@ function DriedFlowers() {
 
     return (
         <div id="catalog" className='page'>
-            <h2 id="dried-title">Couronnes de Fleurs Séchées</h2>
+            <h2 className="page-title">Fleurs Séchées</h2>
             <div id="dried-flowers-catalog">
                 {displayTiles()}
             </div>
