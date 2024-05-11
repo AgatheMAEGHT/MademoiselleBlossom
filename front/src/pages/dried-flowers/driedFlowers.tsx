@@ -111,7 +111,7 @@ function DriedFlowers() {
     }
 
     return (
-        <div id="catalog" className='page'>
+        <div className='page catalog'>
             <h2 className="page-title">Fleurs Séchées</h2>
             <div id="dried-flowers-catalog">
                 {displayTiles()}

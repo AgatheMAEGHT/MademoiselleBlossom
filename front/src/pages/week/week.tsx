@@ -6,12 +6,13 @@ import { requester } from '../../components/requester';
 import '../../components/catalogs.css';
 
 function Week() {
-
-    const [weekFlowers, setWeekFlowers] = React.useState<catalog>([]);
+    const [driedFlowers, setDriedFlowers] = React.useState<catalog>([]);
+    const [colors, setColors] = React.useState<{ name: string, id: number }[]>([]);
 
     React.useEffect(() => {
         let promises: Promise<any>[] = [];
-        promises.push(requester('/week?populate=true', 'GET'));
+        promises.push(requester('/article?populate=true&types=week', 'GET'));
+        promises.push(requester('/colors-of-the-week', 'GET'));
 
         Promise.all(promises).then((res: any) => {
             if (res) {
@@ -19,10 +20,28 @@ function Week() {
                     console.log("error while fetching dried flowers");
                     return;
                 }
-                setWeekFlowers(res[0] ?? []);
+                setDriedFlowers(res[0] ?? []);
+
+                setColors(res[1] ? res[1][0]?.hexas?.map((elt: any, i: number) => { return { name: "#" + elt, id: i } }) : []);
             }
         })
     }, []);
+
+    function createGradient(): string {
+        if (colors.length === 0) {
+            return "white";
+        } else if (colors.length === 1) {
+            return colors[0].name;
+        }
+
+        let gradient = "linear-gradient(to right, ";
+        for (let i = 0; i < colors.length; i++) {
+            gradient += colors[i].name + (i !== colors.length - 1 ? ", " : "");
+        }
+        gradient += ")";
+
+        return gradient;
+    }
 
     /* TILE */
     function catalogTile(article: articleDB) {
@@ -30,11 +49,13 @@ function Week() {
 
         return (
             <div className="dried-tile" key={article._id}>
-                <img
-                    className="dried-tile-img"
-                    src={imageUrl}
-                    alt={"courone de fleurs séchées " + article.name}
-                />
+                <a href={"/fleurs-sechees/" + article.name}>
+                    <img
+                        className="dried-tile-img"
+                        src={imageUrl}
+                        alt={"courone de fleurs séchées " + article.name}
+                    />
+                </a>
                 <div className="dried-tile-name">{article.name}</div>
             </div>
         );
@@ -42,11 +63,11 @@ function Week() {
 
     function displayTiles() {
         let driedFlowersList: JSX.Element[] = [];
-        for (let i = 0; i < weekFlowers?.length; i += 3) {
+        for (let i = 0; i < driedFlowers?.length; i += 3) {
             let row: JSX.Element[] = [];
             for (let j = 0; j < 3; j++) {
-                if (weekFlowers[i + j]) {
-                    row.push(catalogTile(weekFlowers[i + j]));
+                if (driedFlowers[i + j]) {
+                    row.push(catalogTile(driedFlowers[i + j]));
                 }
             }
             driedFlowersList.push(<div key={i} className="dried-flowers-row">{row}</div>);
@@ -56,8 +77,9 @@ function Week() {
     }
 
     return (
-        <div id="catalog" className='page'>
+        <div className="page catalog">
             <h2 className="page-title">Fleurs de la Semaine</h2>
+            <div id="week-gradient" style={{ background: createGradient() }}></div>
             <div id="dried-flowers-catalog">
                 {displayTiles()}
             </div>
