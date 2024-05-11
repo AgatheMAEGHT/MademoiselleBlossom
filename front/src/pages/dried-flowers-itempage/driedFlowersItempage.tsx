@@ -27,12 +27,13 @@ function DriedFlowersItempage() {
         },
         colors: [],
         tones: [],
+        species: [],
         files: [],
     });
 
     React.useEffect(() => {
         let promises: Promise<any>[] = [];
-        promises.push(requester(`/article?populate=true&name=${params.itemName}`, 'GET'));
+        promises.push(requester(`/article?populate=true&name=${params.itemName?.replaceAll("_", " ")}`, 'GET'));
         if (localStorage.getItem("access_token")) {
             promises.push(requester('/favorite', 'GET'));
         }

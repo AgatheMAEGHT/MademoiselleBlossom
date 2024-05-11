@@ -382,6 +382,7 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
+	log.Infof("Updating article '%v'", body)
 	article, err := database.FindOneArticle(ctx, bson.M{"_id": body.ID})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -393,9 +394,7 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		article.Name = body.Name
 	}
 
-	if body.Description != "" {
-		article.Description = body.Description
-	}
+	article.Description = body.Description
 
 	if body.Files != nil {
 		if err := utils.IsListObjectIdExist(body.Files, database.FileCollection); err != nil {
@@ -459,9 +458,7 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		article.Colors = body.Colors
 	}
 
-	if body.Type != "" {
-		article.Type = body.Type
-	}
+	article.Type = body.Type
 
 	if body.Shape != primitive.NilObjectID {
 		if err := utils.IsObjectIdExist(body.Shape, database.ArticleShapeCollection); err != nil {
@@ -472,13 +469,11 @@ func putArticle(w http.ResponseWriter, r *http.Request, user database.User) {
 		article.Shape = body.Shape
 	}
 
-	if body.Price != 0 {
-		article.Price = body.Price
-	}
+	article.Price = body.Price
 
-	if body.Size != 0 {
-		article.Size = body.Size
-	}
+	article.Stock = body.Stock
+
+	article.Size = body.Size
 
 	if body.Species != nil {
 		if err := utils.IsListObjectIdExist(body.Species, database.ArticleSpeciesCollection); err != nil {

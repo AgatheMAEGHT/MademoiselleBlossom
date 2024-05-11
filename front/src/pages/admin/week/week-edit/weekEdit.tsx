@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../../components/requester';
 import Alert, { displayAlert } from '../../../../components/alert_TODO/alert';
-import { article, newArticleDB, colorDB, toneDB, select, newColorDB, newToneDB, speciesDB, newSpeciesDB, editArticleOptions } from '../../../../components/types';
+import { article, newArticleDB, colorDB, toneDB, select, newColorDB, newToneDB, speciesDB, newSpeciesDB, editArticleOptions, selectColor } from '../../../../components/types';
 
 import '../../_components/catalogEdit.css';
 
@@ -64,7 +64,7 @@ function WeekEditAdmin() {
         promises.push(requester('/article-tone', 'GET'));
         promises.push(requester('/article-species', 'GET'));
         promises.push(requester('/article?limit=100', 'GET'));
-        promises.push(requester(`/article?populate=true&name=${params.itemName}`, 'GET'));
+        promises.push(requester(`/article?populate=true&name=${params.itemName?.replaceAll("_", " ")}`, 'GET'));
 
         Promise.all(promises).then((res) => {
             newOptions.colors = res[0]?.map((elt: colorDB) => ({ value: elt._id, label: elt.name, hexa: elt.hexa }));
@@ -175,10 +175,10 @@ function WeekEditAdmin() {
         let tmpArticle: newArticleDB = {
             _id: article._id,
             type: "fresh",
-            name: article.species[0]?.name + " " + article.colors[0]?.name,
+            name: article.species[0]?.name + " " + article.colors.map((elt: colorDB) => elt.name).join(" "),
             description: article.description ?? "",
             price: 0,
-            stock: 0,
+            stock: article.stock,
             size: 0,
             shape: "",
             colors: article.colors.map((elt: colorDB) => elt._id),
@@ -186,6 +186,8 @@ function WeekEditAdmin() {
             tones: article.tones.map((elt: toneDB) => elt._id),
             files: files,
         }
+
+        console.log(tmpArticle);
 
         // Create new article
         requester('/article/update', 'PUT', tmpArticle).then((res: any) => {
@@ -322,7 +324,7 @@ function WeekEditAdmin() {
                 </div>
             </div>
             <div className='admin-form'> {/* Article */}
-                <h2>Modifier une fleur - {(article.species[0]?.name ?? "") + " " + (article.colors[0]?.name ?? "")}</h2>
+                <h2>Modifier une fleur - {(article.species[0]?.name ?? "") + " " + (article.colors.map((elt: colorDB) => elt.name).join(" "))}</h2>
                 {nameAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette fleur existe déjà</div>}
                 <div className='admin-form-element'> {/* Species */}
                     <label htmlFor='admin-form-input-species' className='admin-form-label'>Espèce<p className='form-mandatory'>*</p></label>
@@ -360,7 +362,7 @@ function WeekEditAdmin() {
                             isClearable
                             defaultValue={article.colors.map((elt: colorDB) => ({ label: elt.name, value: elt._id, hexa: elt.hexa })) ?? []}
                             options={options.colors}
-                            onChange={(e) => { setArticle({ ...article, colors: (e ? [{ _id: e[0].value, name: e[0].label, hexa: e[0].hexa }] : []) }); checkName() }}
+                            onChange={(e) => setArticle({ ...article, colors: (e ? e.map((elt: selectColor) => ({ _id: elt.value, name: elt.label, hexa: elt.hexa })) : []) })}
                             id='admin-form-input-colors'
                         />
                     </div>
@@ -391,6 +393,18 @@ function WeekEditAdmin() {
                             id='admin-form-input-tones'
                         />
                     </div>
+                </div>
+                <div className='admin-form-element'> {/* Stock */}
+                    <label htmlFor='admin-form-input-stock' className='admin-form-label'>Stock</label >
+                    <input
+                        min="0"
+                        value={article.stock}
+                        onChange={e => setArticle({ ...article, stock: parseInt(e.target.value) })}
+                        className='admin-form-input'
+                        id="admin-form-input-stock"
+                        type="number"
+                        name="stock"
+                    />
                 </div>
                 <div className='admin-form-element'> {/* Description */}
                     <label htmlFor='admin-form-input-description' className='admin-form-label'>Description</label>

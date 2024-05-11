@@ -3,6 +3,7 @@
     height: fit-content;
     overflow: hidden;
     position: relative;
+    cursor: pointer;
 
     border-radius: 15px;
     background-color: var(--color-2-lighter);

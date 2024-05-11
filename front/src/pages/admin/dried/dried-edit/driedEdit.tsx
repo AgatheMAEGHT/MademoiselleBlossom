@@ -67,7 +67,7 @@ function EditDriedAdmin() {
         promises.push(requester('/article-shape', 'GET'));
         promises.push(requester('/article-species', 'GET'));
         promises.push(requester('/article', 'GET'));
-        promises.push(requester(`/article?populate=true&name=${params.itemName}`, 'GET'));
+        promises.push(requester(`/article?populate=true&name=${params.itemName?.replaceAll("_", " ")}`, 'GET'));
 
         Promise.all(promises).then((res) => {
             newOptions.colors = res[0]?.map((elt: colorDB) => ({ value: elt._id, label: elt.name, hexa: elt.hexa }));

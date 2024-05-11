@@ -1,5 +1,6 @@
 export type freshFlowerTile = {
     id: string,
+    name: string,
     species: string,
     color: string,
     images: string[],
@@ -78,6 +79,7 @@ export type articleDB = {
     shape: shapeDB
     colors: colorDB[],
     tones: toneDB[],
+    species: speciesDB[],
     files: string[],
 }
 

@@ -327,6 +327,18 @@ function WeekNewAdmin() {
                         />
                     </div>
                 </div>
+                <div className='admin-form-element'> {/* Stock */}
+                    <label htmlFor='admin-form-input-stock' className='admin-form-label'>Stock<p className='form-mandatory'>*</p></label >
+                    <input
+                        min="0"
+                        value={article.stock}
+                        onChange={e => setArticle({ ...article, stock: parseInt(e.target.value) })}
+                        className='admin-form-input'
+                        id="admin-form-input-stock"
+                        type="number"
+                        name="stock"
+                    />
+                </div>
                 <div className='admin-form-element'> {/* Description */}
                     <label htmlFor='admin-form-input-description' className='admin-form-label'>Description</label>
                     <input

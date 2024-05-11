@@ -11,11 +11,7 @@ export function AdminDriedCatalogTile(props: driedFlowerTile) {
     let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
 
     return (
-        <div className="dried-tile" key={props.id} onClick={() => navigate(props.name)}>
-            <div className="dried-tile-img-buttons">
-                <div></div>
-                <div className='dried-tile-img-buttons-cart' title="Modifier l'article">Modifier l'article</div>
-            </div>
+        <div className="dried-tile" key={props.id} onClick={() => navigate(props.name.replaceAll(" ", "_"))}>
             <img className="dried-tile-img" src={imageUrl} alt={"courone de fleurs séchées " + props.name} />
             <div className="dried-tile-name">{props.name}</div>
             <div className="dried-tile-price">{props.price}€</div>
@@ -29,12 +25,9 @@ export function AdminFreshCatalogTile(props: freshFlowerTile) {
     let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
 
     return (
-        <div className="dried-tile" key={props.id} onClick={() => navigate(props.species + props.color)}>
-            <div className="dried-tile-img-buttons">
-                <div></div>
-                <div className='dried-tile-img-buttons-cart' title="Modifier l'article">Modifier l'article</div>
-            </div>
+        <div className="dried-tile" key={props.id} onClick={() => navigate(props.name.replaceAll(" ", "_"))}>
             <img className="dried-tile-img" src={imageUrl} alt={props.species + "fraiche"} />
+            <div className="dried-tile-name">{props.name}</div>
         </div>
     );
 }

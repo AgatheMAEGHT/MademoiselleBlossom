@@ -90,11 +90,11 @@ function WeekAdmin() {
         let driedFlowersList: JSX.Element[] = [];
         for (let i = 0; i < flowers?.length; i += 3) {
             let row: JSX.Element[] = [];
-            row.push(<AdminFreshCatalogTile key={flowers[i]._id} species={flowers[i].name} images={flowers[i].files} id={flowers[i]._id} color={flowers[i].colors[0].name} />);
+            row.push(<AdminFreshCatalogTile key={flowers[i]._id} name={flowers[i].name} species={flowers[i].species[0].name} images={flowers[i].files} id={flowers[i]._id} color={flowers[i].colors[0].name} />);
             if (flowers[i + 1]) {
-                row.push(<AdminFreshCatalogTile key={flowers[i + 1]._id} species={flowers[i + 1].name} images={flowers[i + 1].files} id={flowers[i + 1]._id} color='' />);
+                row.push(<AdminFreshCatalogTile key={flowers[i + 1]._id} name={flowers[i + 1].name} species={flowers[i + 1].species[0].name} images={flowers[i + 1].files} id={flowers[i + 1]._id} color='' />);
                 if (flowers[i + 2]) {
-                    row.push(<AdminFreshCatalogTile key={flowers[i + 2]._id} species={flowers[i + 2].name} images={flowers[i + 2].files} id={flowers[i + 2]._id} color='' />);
+                    row.push(<AdminFreshCatalogTile key={flowers[i + 2]._id} name={flowers[i + 2].name} species={flowers[i + 2].species[0].name} images={flowers[i + 2].files} id={flowers[i + 2]._id} color='' />);
                 }
             }
             driedFlowersList.push(<div key={i} className="dried-flowers-row">{row}</div>);
