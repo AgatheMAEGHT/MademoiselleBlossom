@@ -104,7 +104,7 @@ func postColorsOfTheWeek(w http.ResponseWriter, r *http.Request, user database.U
 		return
 	}
 
-	if color.Hexas == nil || len(color.Hexas) == 0 {
+	if color.Hexas == nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Missing hexa").ToJson())
 		return
