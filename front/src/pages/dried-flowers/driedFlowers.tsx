@@ -14,7 +14,7 @@ function DriedFlowers() {
 
     React.useEffect(() => {
         let promises: Promise<any>[] = [];
-        promises.push(requester('/article?populate=true', 'GET'));
+        promises.push(requester('/article?populate=true&types=dried', 'GET'));
         if (localStorage.getItem("access_token")) {
             promises.push(requester('/favorite', 'GET'));
         }

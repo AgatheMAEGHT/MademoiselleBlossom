@@ -81,7 +81,7 @@ function WeekAdmin() {
     const [flowers, setFlowers] = React.useState<catalog>([]);
 
     React.useEffect(() => {
-        requester('/article?populate=true&limit=100', 'GET').then((res: any) => {
+        requester('/article?populate=true&limit=100&types=fresh', 'GET').then((res: any) => {
             setFlowers(res);
         })
     }, []);
