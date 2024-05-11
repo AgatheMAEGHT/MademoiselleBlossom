@@ -5,7 +5,7 @@ import './inspirations.css';
 function Inspirations() {
 
     return (
-        <div id="catalog" className='page'>
+        <div className="page catalog">
             <h2 className="page-title">Inspirations</h2>
             <div id="inspirations-menu">
                 <a className='inspirations-tile' href='/inspirations/mariage'>

@@ -155,6 +155,33 @@
 }
 
 @media (max-width: 768px) {
+    /* Menu */
+    #inspirations-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 3vw;
+    }
+
+    .inspirations-tile {
+        width: 70vw;
+        height: 70vw;
+    }
+
+    .inspirations-tileback {
+        width: 70vw;
+        height: 70vw;
+    }
+
+    .inspiration-tileimage {
+        width: 70vw;
+        height: 70vw;
+    }
+
+    .inspirations-tilename{
+        font-size: 10vw;
+    }
+
+    /* Pages */
     #inspiration {
         margin: 50px;
     }

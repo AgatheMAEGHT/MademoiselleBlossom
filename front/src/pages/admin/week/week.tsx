@@ -121,7 +121,7 @@ function WeekAdmin() {
             {displayColorsOfGradient()}
             <button className='admin-button' onClick={() => { addColorToGradient(); }}>Ajouter une couleur</button>
             <button className='admin-button' onClick={() => { postGradient(); }}>Sauvegarder les couleurs</button>
-            <Alert id="week-colors-saved" message="Les couleurs ont été sauvegardées" status={alertStatus.error} />
+            <Alert id="week-colors-saved" message="Les couleurs ont été sauvegardées" status={alertStatus.success} />
             <Alert id="week-colors-error" message="Une erreur est survenue lors de la sauvegarde" status={alertStatus.error} />
 
             <h2>Fleurs</h2>

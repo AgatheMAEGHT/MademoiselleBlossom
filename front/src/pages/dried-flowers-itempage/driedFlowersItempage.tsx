@@ -9,7 +9,6 @@ import './driedFlowersItempage.css';
 
 function DriedFlowersItempage() {
     let params = useParams();
-    let navigate = useNavigate();
 
     const [tr, setTr] = React.useState<number>(0);
     const [favId, setFavId] = React.useState<string>("");
@@ -106,14 +105,14 @@ function DriedFlowersItempage() {
                         {imagesCol()}
                     </div>
                     <div id="home-carousel">
-                        <div id="home-carousel-dir-buttons-area">
+                        {(item.files.length > 1) && <div id="home-carousel-dir-buttons-area">
                             <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, item?.files?.length, tr, setTr)}>
                                 <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel images' />
                             </div>
                             <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, item?.files?.length, tr, setTr)}>
                                 <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
                             </div>
-                        </div>
+                        </div>}
                         <div id="home-carousel-list">
                             {images()}
                         </div>
