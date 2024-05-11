@@ -51,8 +51,8 @@ function HeaderButtons() {
                     <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/fleurs-sechees"); }}>Fleurs séchées</p>
                     <hr className='header-lines' />
                     <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/fleurs-de-la-semaine"); }}>Fleurs de la semaine</p>
+                    {(evntName !== '') && <hr className='header-lines' />}
                     {(evntName !== '') && <div id="header-item-event-small">
-                        <hr className='header-lines' />
                         <p className='header-item-small'>{evntName}</p>
                         <p className='header-item-bold'>Évènement</p>
                     </div>}

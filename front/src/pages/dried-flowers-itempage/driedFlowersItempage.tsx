@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { articleDB } from '../../components/types';
 import { requester } from '../../components/requester';
@@ -11,6 +11,7 @@ function DriedFlowersItempage() {
     let params = useParams();
 
     const [tr, setTr] = React.useState<number>(0);
+    const [trBig, setTrBig] = React.useState<number>(0);
     const [favId, setFavId] = React.useState<string>("");
     const [item, setItem] = React.useState<articleDB>({
         _id: "",
@@ -44,7 +45,6 @@ function DriedFlowersItempage() {
                     return;
                 }
                 setItem(res[0][0]);
-                console.log(res[0][0]);
 
                 if (res[1]?.err) {
                     console.log("error while fetching dried flowers");
@@ -52,15 +52,38 @@ function DriedFlowersItempage() {
                 }
                 setFavId(res[1]?.filter((fav: any) => fav.article === res[0][0]?._id)[0]?._id ?? "");
             }
-        })
-
+        });
+        // eslint-disable-next-line
     }, []);
+
+    function displayBigImage(display: boolean) {
+        if (display) {
+            document.getElementById("big-carousel")?.setAttribute("style", "display: flex");
+            document.getElementById("big-carousel-area")?.setAttribute("style", "display: flex");
+            if (window.innerHeight < window.innerWidth) {
+                document.getElementById("item-page")?.setAttribute("style", "height: 30vh; overflow-y: hidden");
+            }
+        } else {
+            document.getElementById("big-carousel")?.setAttribute("style", "display: none");
+            document.getElementById("big-carousel-area")?.setAttribute("style", "display: none");
+            document.getElementById("item-page")?.setAttribute("style", "height: fit-content; overflow-y: initial");
+        }
+    }
 
     function images() {
         let imagesList: JSX.Element[] = [];
         item?.files?.forEach((img, index) => {
             let imageUrl: string = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + img;
             imagesList.push(<img key={index} className='home-carousel-img' src={imageUrl} alt="carousel" />);
+        });
+        return imagesList;
+    }
+
+    function bigImages() {
+        let imagesList: JSX.Element[] = [];
+        item?.files?.forEach((img, index) => {
+            let imageUrl: string = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + img;
+            imagesList.push(<img key={index} className='item-page-carousel-img' src={imageUrl} alt="carousel" />);
         });
         return imagesList;
     }
@@ -75,7 +98,7 @@ function DriedFlowersItempage() {
         for (let i = 0; i < item?.files?.length; i++) {
             let border: React.CSSProperties = selected === i ? { border: '3px solid var(--color-2-darker2)' } : { padding: '3px' };
             let imageUrl: string = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + item?.files[i];
-            imagesList.push(<img key={i} className='item-page-images-col' src={imageUrl} alt="sélection d'image" style={border} onClick={() => columnImagesTranslateCarousel(i, 30, item?.files?.length, tr, setTr)} />);
+            imagesList.push(<img key={i} className='item-page-images-col' src={imageUrl} alt={item.name} style={border} onClick={() => columnImagesTranslateCarousel(i, 30, item?.files?.length, tr, setTr, "item-page-carousel-list")} />);
         }
         return imagesList;
     }
@@ -91,7 +114,6 @@ function DriedFlowersItempage() {
         } else {
             requester("/favorite/create", "POST", { article: article }).then((res: any) => {
                 if (!res.err) {
-                    console.log(res);
                     setFavId(res._id);
                 }
             });
@@ -111,14 +133,16 @@ function DriedFlowersItempage() {
                     </div>
                     <div id="home-carousel">
                         {(item.files.length > 1) && <div id="home-carousel-dir-buttons-area">
-                            <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(1, 30, item?.files?.length, tr, setTr)}>
-                                <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel images' />
+                            <div className='home-carousel-dir-buttons' onClick={() => { translateCarousel(1, 80, item?.files?.length, trBig, setTrBig, "item-page-carousel-list-big", true); translateCarousel(1, 30, item?.files?.length, tr, setTr, "item-page-carousel-list") }}>
+                                <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel' />
                             </div>
-                            <div className='home-carousel-dir-buttons' onClick={() => translateCarousel(-1, 30, item?.files?.length, tr, setTr)}>
+                            <div id="item-page-carousel-display-big" onClick={() => displayBigImage(true)}>
+                            </div>
+                            <div className='home-carousel-dir-buttons' onClick={() => { translateCarousel(-1, 80, item?.files?.length, trBig, setTrBig, "item-page-carousel-list-big", true); translateCarousel(-1, 30, item?.files?.length, tr, setTr, "item-page-carousel-list") }}>
                                 <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
                             </div>
                         </div>}
-                        <div id="home-carousel-list">
+                        <div id="item-page-carousel-list">
                             {images()}
                         </div>
                     </div>
@@ -148,6 +172,20 @@ function DriedFlowersItempage() {
                 </div>
             </div>
             <div id="item-page-description">{displayDescription()}</div>
+            <div id="big-carousel-area" onClick={() => displayBigImage(false)}></div>
+            <div id="big-carousel">
+                {(item.files.length > 1) && <div id="item-page-big-carousel-dir-buttons-area">
+                    <div className='item-page-big-dir-buttons' onClick={() => { translateCarousel(1, 80, item?.files?.length, trBig, setTrBig, "item-page-carousel-list-big", true); translateCarousel(1, 30, item?.files?.length, tr, setTr, "item-page-carousel-list") }}>
+                        <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel' />
+                    </div>
+                    <div className='item-page-big-dir-buttons' onClick={() => { translateCarousel(-1, 80, item?.files?.length, trBig, setTrBig, "item-page-carousel-list-big", true); translateCarousel(-1, 30, item?.files?.length, tr, setTr, "item-page-carousel-list") }}>
+                        <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
+                    </div>
+                </div>}
+                <div id="item-page-carousel-list-big">
+                    {bigImages()}
+                </div>
+            </div>
         </div>
     );
 }

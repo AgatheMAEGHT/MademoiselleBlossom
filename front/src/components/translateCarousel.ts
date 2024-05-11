@@ -1,6 +1,6 @@
 
-export function translateCarousel(direction: number, width: number, imgNumber: number, previousTr: number, setTr: React.Dispatch<React.SetStateAction<number>>) {
-    if (getWindowSize() < 768) {
+export function translateCarousel(direction: number, width: number, imgNumber: number, previousTr: number, setTr: React.Dispatch<React.SetStateAction<number>>, id: string, float?: boolean) {
+    if (getWindowSize() < 768 && !float) {
         width = 60;
     }
 
@@ -13,13 +13,19 @@ export function translateCarousel(direction: number, width: number, imgNumber: n
     }
 
     setTr(newTr);
-    document.getElementById('home-carousel-list')?.setAttribute("style", "transform: translate(" + newTr + "vw)");
+    if (float) {
+        let dir = window.innerHeight < window.innerWidth ? "vh" : "vw";
+        document.getElementById(id)?.setAttribute("style", "transform: translate(" + newTr + dir + ")");
+    } else {
+        document.getElementById(id)?.setAttribute("style", "transform: translate(" + newTr + "vw)");
+    }
 }
 
-export function columnImagesTranslateCarousel(index: number, width: number, imgNumber: number, previousTr: number, setTr: React.Dispatch<React.SetStateAction<number>>) {
+export function columnImagesTranslateCarousel(index: number, width: number, imgNumber: number, previousTr: number, setTr: React.Dispatch<React.SetStateAction<number>>, id: string) {
     if (getWindowSize() < 768) {
         width = 60;
     }
+
     let prevImg = Math.abs(Math.floor(previousTr / width));
     let direction: number;
     let diff: number = Math.abs(prevImg - index);
@@ -40,10 +46,10 @@ export function columnImagesTranslateCarousel(index: number, width: number, imgN
     }
 
     setTr(newTr);
-    document.getElementById('home-carousel-list')?.setAttribute("style", "transform: translate(" + newTr + "vw)");
+    document.getElementById(id)?.setAttribute("style", "transform: translate(" + newTr + "vw)");
 }
 
 function getWindowSize() {
-    const { innerWidth, innerHeight } = window;
+    const { innerWidth } = window;
     return innerWidth;
 }
