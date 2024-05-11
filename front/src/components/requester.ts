@@ -67,13 +67,8 @@ export function requester<T>(url: string, method: string, body?: any): Promise<T
         body: body ? JSON.stringify(body) : undefined
     })
         .then(res => {
-            if (res.status === 401) {
-                let msg = "Vous n'êtes pas connecté.";
-                if (url === '/login') msg = "Identifiants incorrects.";
-                else if (token) {
-                    msg = "Action non authorisée.";
-                }
-                alert(msg);
+            if (res.status === 401 && token) {
+                alert("Action non authorisée.");
             } else if (res.status === 418) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
@@ -83,11 +78,6 @@ export function requester<T>(url: string, method: string, body?: any): Promise<T
                 alert("Vous avez été déconnecté.");
             } else if (res.status !== 200) {
                 console.log("Err: " + res.status);
-                res.json().then(res => {
-                    console.log(res);
-                });
-
-                return;
             }
 
             return res.json();
