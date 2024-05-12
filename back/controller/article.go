@@ -171,7 +171,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	queryOptions := options.Find()
-	queryOptions.SetLimit(10)
+	queryOptions.SetLimit(1000)
 	if r.Form.Get("limit") != "" {
 		limit, err := strconv.Atoi(r.Form.Get("limit"))
 		if err != nil || limit < 0 || limit > 100 {
