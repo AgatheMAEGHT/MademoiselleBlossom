@@ -14,8 +14,11 @@ function Contact() {
             </div>
             <div>
                 <p className='contact-emma-text'><b>Retrouvez moi sur les marchés</b></p>
-                <p className='contact-emma-text' style={{ textAlign: "left" }}>- Clermont-l'Hérault le mercredi<br />
-                    - Gignac le jeudi</p>
+                <ul>
+                    <li className='contact-emma-marche'> Jeudi : J'alterne une semaine sur deux, entre Paulhan et Pouzols.</li>
+                    <li className='contact-emma-marche'> Vendredi : Une fois sur deux, vous me trouverez au marché de Saint-Jean-de-Fos, sinon je serai à Nébian.</li>
+                    <li className='contact-emma-marche'> Samedi : Je suis présente au marché de Gignac.</li>
+                </ul>
             </div>
             <p className='contact-emma-text'><br/>Je vous invite à me contacter pour un devis personnalisé gratuit.</p>
         </div>
