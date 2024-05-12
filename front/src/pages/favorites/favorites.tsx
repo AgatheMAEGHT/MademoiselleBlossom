@@ -56,7 +56,7 @@ function Favorites() {
                     <img
                         className="dried-tile-img"
                         src={imageUrl}
-                        alt={"courone de fleurs séchées " + article.name}
+                        alt={"couronne de fleurs séchées " + article.name}
                     />
                 </a>
                 <div className="dried-tile-name">{article.name}</div>

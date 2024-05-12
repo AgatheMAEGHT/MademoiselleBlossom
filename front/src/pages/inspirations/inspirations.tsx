@@ -18,7 +18,7 @@ function Inspirations() {
                     <div className='inspirations-tileback'>
                         <h1 className='inspirations-tilename'>Deuil</h1>
                     </div>
-                    <img src='/inspirations/deuil/courone-rouge-blanc-nom.jpg' alt="courone-rouge-blanc-nom" className='inspiration-tileimage'></img>
+                    <img src='/inspirations/deuil/couronne-rouge-blanc-nom.jpg' alt="couronne-rouge-blanc-nom" className='inspiration-tileimage'></img>
                 </a>
             </div>
         </div>

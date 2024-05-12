@@ -12,7 +12,7 @@ export function AdminDriedCatalogTile(props: driedFlowerTile) {
 
     return (
         <a className="dried-tile" key={props.id} href={"fleurs-sechees/" + props.name.replaceAll(" ", "_")}>
-            <img className="dried-tile-img" src={imageUrl} alt={"courone de fleurs séchées " + props.name} />
+            <img className="dried-tile-img" src={imageUrl} alt={"couronne de fleurs séchées " + props.name} />
             <div className="dried-tile-name">{props.name}</div>
             <div className="dried-tile-price">{props.price}€</div>
         </a>

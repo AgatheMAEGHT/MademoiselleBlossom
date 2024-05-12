@@ -37,6 +37,7 @@ import EventsAdmin from './pages/admin/events/eventsAdmin';
 import "./App.css";
 import "./pages/admin/_components/styleAdmin.css";
 import "./components/style.css";
+import CouronnePersonnalisable from './pages/dried-flowers-itempage/couronnePersonnalisable';
 
 function App() {
     let logged: string | null = localStorage.getItem("logged");
@@ -62,6 +63,7 @@ function App() {
                 <Route path='/' element={<Homepage />} />
                 <Route path='/catalogue' element={<Homepage />} />
                 <Route path='/fleurs-sechees' element={<DriedFlowers />} />
+                <Route path='/fleurs-sechees/couronne-personnalisable' element={<CouronnePersonnalisable />} />
                 <Route path='/fleurs-sechees/:itemName' element={<DriedFlowersItempage />} />
                 <Route path='/fleurs-de-la-semaine' element={<Week />} />
                 <Route path='/inspirations' element={<Inspirations />} />

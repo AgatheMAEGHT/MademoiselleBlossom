@@ -83,7 +83,7 @@ function DriedFlowers() {
                     <img
                         className="dried-tile-img"
                         src={imageUrl}
-                        alt={"courone de fleurs séchées " + article.name}
+                        alt={"couronne de fleurs séchées " + article.name}
                     />
                 </a>
                 <div className="dried-tile-name">{article.name}</div>
@@ -92,10 +92,31 @@ function DriedFlowers() {
         );
     }
 
+    function persoTile() {
+        return <div className="dried-tile" key="couronne-personnalisable">
+            <a href="/fleurs-sechees/couronne-personnalisable">
+                <img
+                    className="dried-tile-img"
+                    src="/couronnes-personnalisables/home.jpg"
+                    alt="couronne de fleurs séchées personnalisable"
+                />
+            </a>
+            <div className="dried-tile-name">Couronne Personnalisable</div>
+            <div className="dried-tile-price">de 35€ à 60€</div>
+        </div>;
+    }
+
     function displayTiles() {
         let driedFlowersList: JSX.Element[] = [];
-        for (let i = 0; i < driedFlowers?.length; i += 3) {
-            let row: JSX.Element[] = [];
+        let row: JSX.Element[] = [persoTile()];
+        for (let i = 0; i < 2; i++) {
+            if (driedFlowers[i]) {
+                row.push(catalogTile(driedFlowers[i]));
+            }
+        }
+        driedFlowersList.push(<div key={0} className="dried-flowers-row">{row}</div>);
+        for (let i = 3; i < driedFlowers?.length; i += 3) {
+            row = [];
             for (let j = 0; j < 3; j++) {
                 if (driedFlowers[i + j]) {
                     row.push(catalogTile(driedFlowers[i + j]));

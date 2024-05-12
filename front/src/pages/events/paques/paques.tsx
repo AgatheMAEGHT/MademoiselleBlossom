@@ -23,13 +23,13 @@ function Paques() {
                     <img src='/inspirations/mariage/bouquet-rose.jpg' alt="bouquet-rose" className='inspiration-image' />
                     <img src='/inspirations/mariage/broche-rose.jpg' alt="broche-rose" className='inspiration-image' />
                 </div>
-                <img src='/inspirations/mariage/courone-tete1.jpg' alt="courone-tete1" className='inspiration-image inspiration-vertical-tripanel-tall' />
-                <img src='/inspirations/mariage/courone-tete2.jpg' alt="courone-tete2" className='inspiration-image inspiration-vertical-tripanel-tall' />
+                <img src='/inspirations/mariage/couronne-tete1.jpg' alt="couronne-tete1" className='inspiration-image inspiration-vertical-tripanel-tall' />
+                <img src='/inspirations/mariage/couronne-tete2.jpg' alt="couronne-tete2" className='inspiration-image inspiration-vertical-tripanel-tall' />
             </div>
 
             <div className='inspirations-vertical-tripanel'>
                 <div className='inspirations-vertical-tripanel-stack'>
-                    <img src='/inspirations/mariage/courone.jpg' alt="broche-rose" className='inspiration-image' />
+                    <img src='/inspirations/mariage/couronne.jpg' alt="broche-rose" className='inspiration-image' />
                     <img src='/inspirations/mariage/bouquet-blanc-gros.jpg' alt="bouquet-blanc-gros" className='inspiration-image' />
                 </div>
                 <img src='/inspirations/mariage/panier1.jpg' alt="panier1" className='inspiration-image inspiration-vertical-tripanel-tall' />

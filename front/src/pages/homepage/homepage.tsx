@@ -20,7 +20,7 @@ function Homepage() {
                         </div>
                     </div>
                     <div id="home-carousel-list">
-                        <img src='/accueil/accueil_courone.jpg' alt="courone" className='home-carousel-img' />
+                        <img src='/accueil/accueil_courone.jpg' alt="couronne" className='home-carousel-img' />
                         <img src='/accueil/accueil_rose.jpg' alt="bouquet-rose-pale" className='home-carousel-img' />
                         <img src='/accueil/accueil_plante.png' alt="bouquet-arc-rose" className='home-carousel-img' />
                         <img src='/accueil/accueil_rouge.jpg' alt="bouquet-rose-pale" className='home-carousel-img' />
@@ -29,7 +29,7 @@ function Homepage() {
                 <div id="home-top-buttons-area">
                     <a className='home-top-buttons' href="/fleurs-sechees">Fleurs séchées</a>
                     <a className='home-top-buttons' href="/fleurs-de-la-semaine">Fleurs de la semaine</a>
-                    <a className='home-top-buttons' href="/contact">Commande sur mesure</a>
+                    <a className='home-top-buttons' href="/fleurs-sechees/couronne-personnalisable">Commande sur mesure</a>
                 </div>
             </div>
 
