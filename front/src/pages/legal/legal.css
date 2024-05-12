@@ -1,0 +1,43 @@
+#legal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    padding: 5vw 20vw;
+}
+
+.contact-emma-text {
+    font-size: large;
+    width: 100%;
+}
+
+.contact-emma-info {
+    text-align: left;
+    width: 100%;
+}
+
+.contact-info-separation {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: transparent;
+    cursor: default;
+    font-size: 0px;
+}
+
+@media (width <=768px) {
+    #contact-emma {
+        flex-direction: column;
+        margin: 0px;
+        gap: 20px;
+    }
+
+    #contact-emma-img {
+        width: 40vw;
+    }
+
+    .contact-emma-text {
+        font-size: medium;
+    }
+}
