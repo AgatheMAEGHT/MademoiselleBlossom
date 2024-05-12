@@ -1,29 +1,25 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { articleDB, colorDB, driedFlowerTile, freshFlowerTile, newArticleDB, speciesDB, toneDB } from '../../../../components/types';
+import { colorDB, driedFlowerTile, freshFlowerTile, newArticleDB, speciesDB, toneDB } from '../../../../components/types';
 
-import '../../../../components/catalog-tile/catalogTile.css';
 import { requester } from '../../../../components/requester';
 import { displayAlert } from '../../../../components/alert_TODO/alert';
 
-export function AdminDriedCatalogTile(props: driedFlowerTile) {
-    let navigate = useNavigate();
+import '../../../../components/catalog-tile/catalogTile.css';
 
+export function AdminDriedCatalogTile(props: driedFlowerTile) {
     let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
 
     return (
-        <div className="dried-tile" key={props.id} onClick={() => navigate(props.name.replaceAll(" ", "_"))}>
+        <a className="dried-tile" key={props.id} href={"fleurs-sechees/" + props.name.replaceAll(" ", "_")}>
             <img className="dried-tile-img" src={imageUrl} alt={"courone de fleurs séchées " + props.name} />
             <div className="dried-tile-name">{props.name}</div>
             <div className="dried-tile-price">{props.price}€</div>
-        </div>
+        </a>
     );
 }
 
 export function AdminFreshCatalogTile(props: freshFlowerTile) {
-    let navigate = useNavigate();
-
     let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
 
     function addToWeek() {
@@ -82,10 +78,10 @@ export function AdminFreshCatalogTile(props: freshFlowerTile) {
 
     return (
         <div className="dried-tile">
-            <div className="dried-tile" key={props.id} onClick={() => navigate(props.name.replaceAll(" ", "_"))}>
+            <a key={props.id} href={"fleurs-de-la-semaine/" + props.name.replaceAll(" ", "_")}>
                 <img className="dried-tile-img" src={imageUrl} alt={props.name + "fraiche"} />
-                <div className="dried-tile-name">{props.name}</div>
-            </div>
+            </a>
+            <div className="dried-tile-name admin-fresh-name">{props.name}</div>
             {props.article.type === "fresh" ?
                 <div className='admin-fresh-tile-button' onClick={() => addToWeek()}>Ajouter à la semaine</div> :
                 <div className='admin-fresh-tile-button' onClick={() => removeFromWeek()}>Retirer de la semaine</div>

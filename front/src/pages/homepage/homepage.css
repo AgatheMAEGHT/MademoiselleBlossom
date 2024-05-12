@@ -89,6 +89,7 @@
     font-size: larger;
     font-weight: bold;
     color: var(--color-1);
+    text-decoration: none;
 }
 
 /* Texts and Images */

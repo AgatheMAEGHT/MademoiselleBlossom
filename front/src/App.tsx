@@ -23,6 +23,7 @@ import Login from './pages/login/login';
 import CreateAccount from './pages/login/createAccount';
 import Profile from './pages/profile/profile';
 import Favorites from './pages/favorites/favorites';
+import Legal from './pages/legal/legal';
 
 import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
 import CatalogAdmin from './pages/admin/dried/dried';
@@ -66,17 +67,14 @@ function App() {
                 <Route path='/inspirations' element={<Inspirations />} />
                 <Route path='/inspirations/mariage' element={<Mariage />} />
                 <Route path='/inspirations/deuil' element={<Deuil />} />
-                <Route path='/inspirations/anniversaire' element={<Homepage />} />
-                <Route path='/inspirations/naissance' element={<Homepage />} />
+                {/*<Route path='/inspirations/anniversaire' element={<Homepage />} />*/}
+                {/*<Route path='/inspirations/naissance' element={<Homepage />} />*/}
                 <Route path='/contact' element={<Contact />} />
-                <Route path='/a-propos' element={<Homepage />} />
-                <Route path='/livraisons' element={<Homepage />} />
-                <Route path='/cgv' element={<Homepage />} />
-                <Route path='/mentions-legales' element={<Homepage />} />
                 <Route path='/se-connecter' element={<Login />} />
                 <Route path='/creer-un-compte' element={<CreateAccount />} />
                 <Route path='/mon-compte' element={<Profile />} />
                 <Route path='/favoris' element={<Favorites />} />
+                <Route path='/mentions-legales' element={<Legal />} />
 
                 <Route path='/Noël' element={<Noel />} />
                 <Route path='/Saint-Valentin' element={<SaintValentin />} />

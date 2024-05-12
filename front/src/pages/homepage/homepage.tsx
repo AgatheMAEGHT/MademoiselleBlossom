@@ -1,12 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { translateCarousel } from '../../components/translateCarousel';
 
 import './homepage.css';
 
 function Homepage() {
-    let navigate = useNavigate();
     const [tr, setTr] = React.useState<number>(0);
 
     return (
@@ -29,9 +27,9 @@ function Homepage() {
                     </div>
                 </div>
                 <div id="home-top-buttons-area">
-                    <div className='home-top-buttons' onClick={() => navigate("/fleurs-sechees")}>Fleurs séchées</div>
-                    <div className='home-top-buttons' onClick={() => navigate("/fleurs-de-la-semaine")}>Fleurs de la semaine</div>
-                    <div className='home-top-buttons' onClick={() => navigate("")}>Commande sur mesure</div>
+                    <a className='home-top-buttons' href="/fleurs-sechees">Fleurs séchées</a>
+                    <a className='home-top-buttons' href="/fleurs-de-la-semaine">Fleurs de la semaine</a>
+                    <a className='home-top-buttons' href="/contact">Commande sur mesure</a>
                 </div>
             </div>
 

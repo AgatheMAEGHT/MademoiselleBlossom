@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { articleDB, catalog, favoriteDB } from '../../components/types';
 import { requester } from '../../components/requester';
@@ -7,8 +6,6 @@ import { requester } from '../../components/requester';
 import '../../components/catalogs.css';
 
 function DriedFlowers() {
-    let navigate = useNavigate();
-
     const [driedFlowers, setDriedFlowers] = React.useState<catalog>([]);
     const [favorites, setFavorites] = React.useState<favoriteDB[]>([]);
 

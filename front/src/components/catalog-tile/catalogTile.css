@@ -9,6 +9,8 @@
     background-color: var(--color-2-lighter);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 3px;
     z-index: 2;
+    color: var(--color-0);
+    text-decoration: none;
 }
 
 .dried-tile-img-buttons {
@@ -71,6 +73,10 @@
     margin: none;
     text-align: center;
     padding-bottom: 5px;
+}
+
+.admin-fresh-name {
+    cursor: default;
 }
 
 @media (width <=768px) {

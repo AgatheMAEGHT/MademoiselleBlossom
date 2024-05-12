@@ -40,6 +40,15 @@
     cursor: pointer;
 }
 
+.header-top-button-with-border {
+    margin: 5px;
+    padding: 5px 10px;
+    height: fit-content;
+    border: var(--color-2-darker) 1px solid;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 #header-top-button-burger {
     display: none;
     cursor: pointer;

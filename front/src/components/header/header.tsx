@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import logo from '../../Mademoiselle_blossom-transparent.png';
 
@@ -9,7 +8,6 @@ import './header.css';
 
 function Header() {
     let logged: string | null = localStorage.getItem("logged");
-    let navigate = useNavigate();
 
     // Remove burger menu when resize
     window.addEventListener('resize', function () {
@@ -27,7 +25,7 @@ function Header() {
                     </div>
                     {!logged || logged === "" ?
                         <div id="header-top-buttons-right">
-                            <a href="/se-connecter" className='header-top-button link'>Se connecter</a>
+                            <a href="/se-connecter" className='header-top-button-with-border link'>Se connecter</a>
                             {/*<a className='header-top-button'>Mon panier</a>*/}
                         </div>
                         :
@@ -38,6 +36,7 @@ function Header() {
                                     className='header-top-button-icon'
                                     src={"/icons/profile.svg"}
                                     id="header-button-profile"
+                                    alt='mon compte'
                                 />
                             </a>
                             <a href="/favoris" className='header-top-button header-top-button-withicon link'>
@@ -45,6 +44,7 @@ function Header() {
                                 <img
                                     className='header-top-button-icon'
                                     src={"/icons/heart_full.svg"}
+                                    alt='favoris'
                                 />
                             </a>
                             {/*<a href="/panier" className='header-top-button header-top-button-withicon link'>
@@ -54,13 +54,13 @@ function Header() {
                                     src={"/icons/cart.svg"}
                                     id="header-button-cart"
                                 />
-    </a>*/}
+                            </a>*/}
                         </div>
                     }
                 </div>
                 <div id="header-logo-area">
                     <a href='/'>
-                        <img src={logo} id="header-logo" className='header-item' alt="logo" onClick={() => { navigate("/"); }} />
+                        <img src={logo} id="header-logo" className='header-item' alt="logo" />
                     </a>
                     <p id="header-name">Mademoiselle Blossom</p>
                 </div>

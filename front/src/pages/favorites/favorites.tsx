@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { articleDB, favoritePopulatedDB } from '../../components/types';
 import { requester } from '../../components/requester';
@@ -7,7 +6,6 @@ import { requester } from '../../components/requester';
 import './favorites.css';
 
 function Favorites() {
-    let navigate = useNavigate();
 
     const [favorites, setFavorites] = React.useState<favoritePopulatedDB[]>([]);
 
@@ -54,12 +52,13 @@ function Favorites() {
                     />
                     <div className='dried-tile-img-buttons-cart' title='Ajouter au panier'>Ajouter au panier</div>
                 </div>
-                <img
-                    className="dried-tile-img"
-                    src={imageUrl}
-                    alt={"courone de fleurs séchées " + article.name}
-                    onClick={() => navigate("/fleurs-sechees/" + article.name)}
-                />
+                <a href={"/fleurs-sechees/" + article.name}>
+                    <img
+                        className="dried-tile-img"
+                        src={imageUrl}
+                        alt={"courone de fleurs séchées " + article.name}
+                    />
+                </a>
                 <div className="dried-tile-name">{article.name}</div>
                 <div className="dried-tile-price">{article.price.toString()}€</div>
             </div>

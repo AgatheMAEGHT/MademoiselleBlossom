@@ -161,7 +161,7 @@ function DriedFlowersItempage() {
                         ></img>
                         Ajouter aux favoris
                     </div>
-                    {/*<div id="item-page-info-add-to-cart" onClick={() => navigate("/panier")}>
+                    {/*<div id="item-page-info-add-to-cart"}>
                     <img
                     className='header-top-button-icon'
                     src={"/icons/cart.svg"}
