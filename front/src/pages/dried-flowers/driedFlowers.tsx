@@ -114,8 +114,9 @@ function DriedFlowers() {
                 row.push(catalogTile(driedFlowers[i]));
             }
         }
+
         driedFlowersList.push(<div key={0} className="dried-flowers-row">{row}</div>);
-        for (let i = 3; i < driedFlowers?.length; i += 3) {
+        for (let i = 2; i < driedFlowers?.length; i += 3) {
             row = [];
             for (let j = 0; j < 3; j++) {
                 if (driedFlowers[i + j]) {
