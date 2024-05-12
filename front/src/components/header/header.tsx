@@ -30,7 +30,7 @@ function Header() {
                         </div>
                         :
                         <div id="header-top-buttons-right">
-                            <a href="/mon-compte" className='header-top-button header-top-button-withicon link'>
+                            <a href="/mon-compte" className='header-top-button-with-border header-top-button-withicon link'>
                                 Mon compte
                                 <img
                                     className='header-top-button-icon'
@@ -39,7 +39,7 @@ function Header() {
                                     alt='mon compte'
                                 />
                             </a>
-                            <a href="/favoris" className='header-top-button header-top-button-withicon link'>
+                            <a href="/favoris" className='header-top-button-with-border header-top-button-withicon link'>
                                 Mes favoris
                                 <img
                                     className='header-top-button-icon'
