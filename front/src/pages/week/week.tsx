@@ -6,7 +6,7 @@ import { requester } from '../../components/requester';
 import '../../components/catalogs.css';
 
 function Week() {
-    const [driedFlowers, setDriedFlowers] = React.useState<catalog>([]);
+    const [freshFlowers, setDriedFlowers] = React.useState<catalog>([]);
     const [colors, setColors] = React.useState<{ name: string, id: number }[]>([]);
 
     React.useEffect(() => {
@@ -63,11 +63,11 @@ function Week() {
 
     function displayTiles() {
         let driedFlowersList: JSX.Element[] = [];
-        for (let i = 0; i < driedFlowers?.length; i += 3) {
+        for (let i = 0; i < freshFlowers?.length; i += 3) {
             let row: JSX.Element[] = [];
             for (let j = 0; j < 3; j++) {
-                if (driedFlowers[i + j]) {
-                    row.push(catalogTile(driedFlowers[i + j]));
+                if (freshFlowers[i + j]) {
+                    row.push(catalogTile(freshFlowers[i + j]));
                 }
             }
             driedFlowersList.push(<div key={i} className="dried-flowers-row">{row}</div>);
@@ -80,9 +80,12 @@ function Week() {
         <div className="page catalog">
             <h2 className="page-title">Fleurs de la Semaine</h2>
             <div id="week-gradient" style={{ background: createGradient() }}></div>
-            <div id="dried-flowers-catalog">
-                {displayTiles()}
-            </div>
+            {freshFlowers.length > 0 ?
+                <div id="dried-flowers-catalog">
+                    {displayTiles()}
+                </div> :
+                <div><i>Malheureusement, il n'y a pas de fleurs fraiches pour le moment</i></div>
+            }
         </div>
     );
 }
