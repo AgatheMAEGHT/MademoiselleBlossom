@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { articleDB, favoritePopulatedDB } from '../../components/types';
 import { requester } from '../../components/requester';
@@ -6,13 +7,14 @@ import { requester } from '../../components/requester';
 import './favorites.css';
 
 function Favorites() {
+    let navigate = useNavigate();
 
     const [favorites, setFavorites] = React.useState<favoritePopulatedDB[]>([]);
 
     React.useEffect(() => {
         requester('/favorite?populate=true', 'GET').then((res: any) => {
             if (res?.err) {
-                console.log("error while fetching dried flowers");
+                navigate('/');
                 return;
             }
             setFavorites(res ?? []);

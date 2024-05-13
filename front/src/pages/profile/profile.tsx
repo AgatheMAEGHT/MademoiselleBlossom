@@ -1,14 +1,21 @@
 import React from 'react';
-
 import { useNavigate } from 'react-router-dom';
 
-import './profile.css';
+import { alertStatus } from '../../components/types';
 import { requester } from '../../components/requester';
 import Alert, { displayAlert } from '../../components/alert_TODO/alert';
-import { alertStatus } from '../../components/types';
+
+import './profile.css';
 
 function Profile() {
     let navigate = useNavigate();
+
+    React.useEffect(() => {
+        if (localStorage.getItem('logged') === null) {
+            navigate('/');
+        }
+    });
+
     let [passwordChange, setPasswordChange] = React.useState<any>({
         oldPassword: '',
         newPassword: '',
