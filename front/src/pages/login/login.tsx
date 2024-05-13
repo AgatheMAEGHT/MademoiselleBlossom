@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { requester } from '../../components/requester';
 
 import './login.css';
-import Alert, { displayAlert } from '../../components/alert_TODO/alert';
+import Alert, { displayAlert } from '../../components/alert/alert';
 import { alertStatus } from '../../components/types';
 
 function Login() {

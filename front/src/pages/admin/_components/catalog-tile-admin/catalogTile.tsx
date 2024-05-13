@@ -3,7 +3,7 @@ import React from 'react';
 import { colorDB, driedFlowerTile, freshFlowerTile, newArticleDB, speciesDB, toneDB } from '../../../../components/types';
 
 import { requester } from '../../../../components/requester';
-import { displayAlert } from '../../../../components/alert_TODO/alert';
+import { displayAlert } from '../../../../components/alert/alert';
 
 import '../../../../components/catalog-tile/catalogTile.css';
 

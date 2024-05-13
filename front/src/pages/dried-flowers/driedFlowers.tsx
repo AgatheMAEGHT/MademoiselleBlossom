@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { articleDB, catalog, favoriteDB } from '../../components/types';
+import { alertStatus, articleDB, catalog, favoriteDB } from '../../components/types';
 import { requester } from '../../components/requester';
+import Alert, { displayAlert } from '../../components/alert/alert';
 
 import '../../components/catalogs.css';
 
@@ -35,6 +36,10 @@ function DriedFlowers() {
 
     /* TILE */
     function editIsFavorite(articleId: string, favorite: string) {
+        if (!localStorage.getItem("access_token")) {
+            displayAlert('need-login');
+            return;
+        }
         if (favorite) {
             requester("/favorite/delete?_id=" + favorite, "DELETE").then((res: any) => {
                 if (res) {
@@ -138,6 +143,7 @@ function DriedFlowers() {
                 </div> :
                 <div><i>Malheureusement, il n'y a pas de fleurs séchées pour le moment</i></div>
             }
+            <Alert message="Pour ajouter un article en favoris, connectez-vous" id="need-login" status={alertStatus.info} />
         </div>
     );
 }

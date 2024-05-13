@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../../components/requester';
-import Alert, { displayAlert } from '../../../../components/alert_TODO/alert';
+import Alert, { displayAlert } from '../../../../components/alert/alert';
 import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../../components/types';
 
 import '../../_components/catalogEdit.css';

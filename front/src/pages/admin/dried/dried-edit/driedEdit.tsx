@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../../components/requester';
 import { article, newArticleDB, colorDB, shapeDB, toneDB, select, editArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../../components/types';
-import Alert, { displayAlert } from '../../../../components/alert_TODO/alert';
+import Alert, { displayAlert } from '../../../../components/alert/alert';
 
 import '../../_components/catalogEdit.css';
 

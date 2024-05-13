@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { alertStatus, catalog } from '../../../components/types';
 import { requester } from '../../../components/requester';
-import Alert, { displayAlert } from '../../../components/alert_TODO/alert';
+import Alert, { displayAlert } from '../../../components/alert/alert';
 import { AdminFreshCatalogTile } from '../_components/catalog-tile-admin/catalogTile';
 
 import './week.css';

@@ -1,9 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { articleDB } from '../../components/types';
+import { alertStatus, articleDB } from '../../components/types';
 import { requester } from '../../components/requester';
 import { columnImagesTranslateCarousel, translateCarousel } from '../../components/translateCarousel';
+import Alert, { displayAlert } from '../../components/alert/alert';
 
 import './driedFlowersItempage.css';
 
@@ -104,6 +105,10 @@ function DriedFlowersItempage() {
     }
 
     function editIsFavorite(article: string, favorite: string) {
+        if (!localStorage.getItem("access_token")) {
+            displayAlert('need-login');
+            return;
+        }
         if (favorite) {
             requester("/favorite/delete?_id=" + favorite, "DELETE").then((res: any) => {
                 if (!res.err) {
@@ -186,6 +191,7 @@ function DriedFlowersItempage() {
                     {bigImages()}
                 </div>
             </div>
+            <Alert message="Pour ajouter un article en favoris, connectez-vous" id="need-login" status={alertStatus.info} />
         </div>
     );
 }

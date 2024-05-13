@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { alertStatus } from '../../components/types';
 import { requester } from '../../components/requester';
-import Alert, { displayAlert } from '../../components/alert_TODO/alert';
+import Alert, { displayAlert } from '../../components/alert/alert';
 
 import './profile.css';
 
