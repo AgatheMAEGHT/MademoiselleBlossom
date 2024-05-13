@@ -132,7 +132,7 @@ function DriedFlowers() {
     return (
         <div className='page catalog'>
             <h2 className="page-title">Fleurs Séchées</h2>
-            {[driedFlowers].length > 0 ?
+            {driedFlowers.length > 0 ?
                 <div id="dried-flowers-catalog">
                     {displayTiles()}
                 </div> :

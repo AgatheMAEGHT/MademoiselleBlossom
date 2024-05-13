@@ -81,11 +81,14 @@ function Favorites() {
     }
 
     return (
-        <div id="catalog" className='page'>
-            <h2 id="dried-title">Couronnes de Fleurs Séchées</h2>
-            <div id="dried-flowers-catalog">
-                {displayTiles()}
-            </div>
+        <div className='page catalog'>
+            <h2 className="page-title">Mes articles Favoris</h2>
+            {favorites.length > 0 ?
+                <div id="dried-flowers-catalog">
+                    {displayTiles()}
+                </div> :
+                <div><i>Vous n'avez mis aucun article en favori</i></div>
+            }
         </div>
     );
 }
