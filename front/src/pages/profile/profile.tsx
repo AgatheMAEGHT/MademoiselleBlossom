@@ -55,7 +55,7 @@ function Profile() {
         localStorage.removeItem('phone');
         localStorage.removeItem('firstName');
         localStorage.removeItem('lastName');
-        navigate('/');
+        window.location.reload();
     }
 
     return (
