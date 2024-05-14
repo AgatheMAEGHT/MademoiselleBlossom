@@ -160,7 +160,7 @@ function WeekNewAdmin() {
         // Create new article
         requester('/article/create', 'POST', tmpArticle).then((res: any) => {
             if (res?._id) {
-                navigate('/admin/fleurs-sechees');
+                navigate('/admin/fleurs-de-la-semaine');
             } else {
                 console.log(res);
                 displayAlert('admin-alert-createarticle');
