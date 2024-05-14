@@ -155,7 +155,7 @@ function DriedFlowersItempage() {
                 <div id="item-page-infos">
                     <h1 id="item-page-info-name">{item?.name}</h1>
                     <div id="item-page-info-price">{item?.price}€</div>
-                    <div id="item-page-info-stock">{item?.stock} en stock</div>
+                    <div id="item-page-info-stock">{item?.size} cm</div>
                     <div id="item-page-info-favorite" onClick={() => editIsFavorite(item?._id, favId)}>
                         <img
                             id="item-page-info-favorite-icon"
@@ -177,6 +177,7 @@ function DriedFlowersItempage() {
                 </div>
             </div>
             <div id="item-page-description">{displayDescription()}</div>
+            <div id="item-page-description">Pour plus de renseignements ou pour passer commande, n'hésitez pas à me contacter par mail à ma<i className='contact-info-separation'>puis</i>demoiselle<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>blossom<i className='contact-info-separation'>puis</i>34<i className='contact-info-separation'>puis</i>@<i className='contact-info-separation'>puis</i>g<i className='contact-info-separation'>puis</i>mail<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>com ou par téléphone au <i className='contact-info-separation'>numéro </i>06 <i className='contact-info-separation'>puis</i>16 <i className='contact-info-separation'>puis</i>28 <i className='contact-info-separation'>puis</i>28 <i className='contact-info-separation'>puis</i>83.</div>
             <div id="big-carousel-area" onClick={() => displayBigImage(false)}></div>
             <div id="big-carousel">
                 {(item.files.length > 1) && <div id="item-page-big-carousel-dir-buttons-area">

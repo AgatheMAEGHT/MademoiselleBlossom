@@ -13,7 +13,7 @@ function Contact() {
                     Par e-mail à l'adresse ma<i className='contact-info-separation'>puis</i>demoiselle<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>blossom<i className='contact-info-separation'>puis</i>34<i className='contact-info-separation'>puis</i>@<i className='contact-info-separation'>puis</i>g<i className='contact-info-separation'>puis</i>mail<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>com</p>
             </div>
             <div>
-                <p className='contact-emma-text'><b>Retrouvez moi sur les marchés</b></p>
+                <p className='contact-emma-text'><b>Vous pouvez également me retrouver sur les marchés</b></p>
                 <ul>
                     <li className='contact-emma-marche'> Jeudi : J'alterne une semaine sur deux, entre Paulhan et Pouzols.</li>
                     <li className='contact-emma-marche'> Vendredi : Une fois sur deux, vous me trouverez au marché de Saint-Jean-de-Fos, sinon je serai à Nébian.</li>

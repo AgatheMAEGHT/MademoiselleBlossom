@@ -104,7 +104,7 @@ function CouronnePersonnalisable() {
                     <div id="item-page-info-price">50cm - 60€</div>
                 </div>
             </div>
-            <div id="item-page-description">Couleurs possibles: orange, bleu, rose, naturel, rouge.</div>
+            <div id="item-page-description">Couleurs possibles : orange, bleu, rose, naturel, rouge.</div>
             <div id="item-page-description">Pour plus de renseignements ou pour passer commande, n'hésitez pas à me contacter par mail à ma<i className='contact-info-separation'>puis</i>demoiselle<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>blossom<i className='contact-info-separation'>puis</i>34<i className='contact-info-separation'>puis</i>@<i className='contact-info-separation'>puis</i>g<i className='contact-info-separation'>puis</i>mail<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>com ou par téléphone au <i className='contact-info-separation'>numéro </i>06 <i className='contact-info-separation'>puis</i>16 <i className='contact-info-separation'>puis</i>28 <i className='contact-info-separation'>puis</i>28 <i className='contact-info-separation'>puis</i>83.</div>
             <div id="big-carousel-area" onClick={() => displayBigImage(false)}></div>
             <div id="big-carousel">
