@@ -3,21 +3,30 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: justify;
     padding: 5vw 20vw;
 }
 
-.contact-emma-text {
+.legal-emma-text {
+    font-size: large;
+    text-align: justify;
+    width: 100%;
+}
+
+.legal-emma-text-short {
     font-size: large;
     width: 100%;
 }
 
-.contact-emma-info {
+.legal-emma-text-long {
+    word-break: break-all;
+}
+
+.legal-emma-info {
     text-align: left;
     width: 100%;
 }
 
-.contact-info-separation {
+.legal-info-separation {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
@@ -27,17 +36,21 @@
 }
 
 @media (width <=768px) {
-    #contact-emma {
+    #legal-emma {
         flex-direction: column;
         margin: 0px;
         gap: 20px;
     }
 
-    #contact-emma-img {
+    #legal-emma-img {
         width: 40vw;
     }
 
-    .contact-emma-text {
+    .legal-emma-text {
+        font-size: medium;
+    }
+
+    .legal-emma-text-short {
         font-size: medium;
     }
 }

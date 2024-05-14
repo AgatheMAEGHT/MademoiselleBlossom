@@ -15,8 +15,8 @@ function Deuil() {
             <div className='inspirations-horizontal-area'>
                 <img src='/inspirations/deuil/couronne-orange.jpg' alt="couronne-orange" className='inspiration-image inspirations-horizontal' id="bouquet-orange" />
                 <div className='inspirations-horizontal-line'>
-                    <img src='/inspirations/deuil/couronne-rouge-blanc.png' alt="couronne-rouge-blanc" className='inspiration-image' />
-                    <img src='/inspirations/deuil/croix-orange.png' alt="croix-orange" className='inspiration-image' />
+                    <img src='/inspirations/deuil/couronne-rouge-blanc.jpg' alt="couronne-rouge-blanc" className='inspiration-image' />
+                    <img src='/inspirations/deuil/croix-orange2.jpg' alt="croix-orange" className='inspiration-image' />
                     <img src='/inspirations/deuil/coeur-orange.jpg' alt="coeur-orange" className='inspiration-image' />
                 </div>
             </div>

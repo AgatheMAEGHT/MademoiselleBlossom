@@ -22,7 +22,7 @@ function Homepage() {
                     <div id="home-carousel-list">
                         <img src='/accueil/accueil_couronne.jpg' alt="couronne" className='home-carousel-img' />
                         <img src='/accueil/accueil_rose.jpg' alt="bouquet-rose-pale" className='home-carousel-img' />
-                        <img src='/accueil/accueil_plante.png' alt="bouquet-arc-rose" className='home-carousel-img' />
+                        <img src='/accueil/accueil_plante.jpg' alt="bouquet-arc-rose" className='home-carousel-img' />
                         <img src='/accueil/accueil_rouge.jpg' alt="bouquet-rose-pale" className='home-carousel-img' />
                     </div>
                 </div>

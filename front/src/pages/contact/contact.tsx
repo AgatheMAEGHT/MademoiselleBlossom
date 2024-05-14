@@ -5,7 +5,7 @@ function Contact() {
         <div id="contact">
             <div id="contact-emma">
                 <img id="contact-emma-img" src='/emma.png' />
-                <p className='contact-emma-text'>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions.<br/><br/> Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
+                <p className='contact-emma-text'>Je suis Emma, une fleuriste passionnée détenant un CAP et un BP en fleuristerie résidant sur Canet dans le sud de la France (Hérault). En tant qu'artisan fleuriste, j'ai à cœur de créer des compositions florales pour vos événements, apportant une touche personnalisée pour toutes les occasions.<br/><br/> Ma sensibilité ainsi que mon amour pour les fleurs se manifestent dans chacune de mes créations, offrant ainsi une touche spéciale à chaque arrangement floral.</p>
             </div>
             <div>
                 <p className='contact-emma-text'><b>Contactez Mademoiselle Blossom</b></p>
