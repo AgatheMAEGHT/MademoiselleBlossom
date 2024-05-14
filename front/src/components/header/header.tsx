@@ -62,7 +62,7 @@ function Header() {
                     <a href='/'>
                         <img src={logo} id="header-logo" className='header-item' alt="logo" />
                     </a>
-                    <p id="header-name">Mademoiselle Blossom</p>
+                    <h1 id="header-name">Mademoiselle Blossom</h1>
                 </div>
             </div>
         </div>
