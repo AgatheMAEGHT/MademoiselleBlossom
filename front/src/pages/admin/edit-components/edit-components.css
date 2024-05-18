@@ -1,0 +1,92 @@
+.admin-edit-elements-list {
+    width: 100%;
+}
+
+.admin-edit-elements {
+    display: flex;
+    width: 100%;
+    gap: 5%;
+}
+
+.admin-edit-elements-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5%;
+}
+
+/* Color */
+.admin-edit-elements-left {
+    width: 60%;
+}
+
+.admin-edit-elements-center {
+    width: 70%;
+}
+
+.admin-edit-elements-right {
+    width: 50%;
+}
+
+.admin-edit-elements-label {
+    width: 40%;
+}
+
+.admin-edit-elements-input {
+    width: 100%;
+}
+
+.admin-edit-element-color {
+    width: 30%;
+    height: 35px;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    cursor: pointer;
+}
+
+/* Other Elements */
+.admin-edit-elements-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 5%;
+    width: 100%;
+}
+
+@media (width <=768px) {
+    .admin-edit-elements-list {
+        display: flex;
+        flex-direction: column;
+        gap: 5vw;
+    }
+
+    .admin-edit-elements {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .admin-edit-elements-line {
+        width: 90%;
+    }
+
+    /* Color */
+    .admin-edit-elements-left {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .admin-edit-elements-right {
+        justify-content: center;
+    }
+
+    .admin-edit-elements-label {
+        width: fit-content;
+        font-weight: bold;
+    }
+
+    /* Other Elements */
+    .admin-edit-elements-buttons {
+        justify-content: center;
+    }
+}

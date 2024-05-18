@@ -28,6 +28,19 @@
     margin: 5px;
 }
 
+.admin-button:disabled {
+    border: #979797 1px solid;
+    border-radius: 5px;
+    background-color: #c2c2c2;
+    cursor: not-allowed;
+    text-decoration: none;
+    color: #ececec;
+    text-align: center;
+
+    padding: 10px 20px;
+    margin: 5px;
+}
+
 .admin-delete-button {
     border: #ff0000 1px solid;
     border-radius: 5px;

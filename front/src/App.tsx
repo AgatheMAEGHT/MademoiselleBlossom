@@ -7,6 +7,7 @@ import Footer from './components/footer/footer';
 import Homepage from './pages/homepage/homepage';
 import DriedFlowers from './pages/dried-flowers/driedFlowers';
 import DriedFlowersItempage from './pages/dried-flowers-itempage/driedFlowersItempage';
+import CouronnePersonnalisable from './pages/dried-flowers-itempage/couronnePersonnalisable';
 import Week from './pages/week/week';
 import Inspirations from './pages/inspirations/inspirations';
 import Mariage from './pages/inspirations/mariage/mariage';
@@ -33,11 +34,11 @@ import WeekAdmin from './pages/admin/week/week';
 import WeekNewAdmin from './pages/admin/week/week-new/weekNew';
 import WeekEditAdmin from './pages/admin/week/week-edit/weekEdit';
 import EventsAdmin from './pages/admin/events/eventsAdmin';
+import EditComponentsAdmin from './pages/admin/edit-components/edit-components';
 
 import "./App.css";
 import "./pages/admin/_components/styleAdmin.css";
 import "./components/style.css";
-import CouronnePersonnalisable from './pages/dried-flowers-itempage/couronnePersonnalisable';
 
 function App() {
     let logged: string | null = localStorage.getItem("logged");
@@ -57,6 +58,7 @@ function App() {
                     <Route path='/admin/fleurs-de-la-semaine/nouveau' element={<WeekNewAdmin />} />
                     <Route path='/admin/fleurs-de-la-semaine/:itemName' element={<WeekEditAdmin />} />
                     <Route path='/admin/evenements' element={<EventsAdmin />} />
+                    <Route path='/admin/components' element={<EditComponentsAdmin />} />
                 </>}
 
                 {/* Client */}
