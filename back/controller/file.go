@@ -75,6 +75,30 @@ func postFile(w http.ResponseWriter, r *http.Request, user database.User) {
 		Ext:  ext,
 	}
 
+	// Read all body
+	body := make([]byte, contentLength)
+	_, err = io.ReadFull(r.Body, body)
+	if err != nil {
+		log.Errorf("Error reading body %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(utils.NewResErr("Error reading body").ToJson())
+		return
+	}
+
+	// Compress image
+	if fileType == database.FileTypeImage {
+		body, err = utils.ToJpeg(&body)
+		if err != nil {
+			log.Errorf("Error compressing image %v", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error compressing image").ToJson())
+			return
+		}
+
+		fileModel.Ext = "jpg"
+	}
+
+	// Create file model
 	_, err = fileModel.CreateOne(ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -98,7 +122,7 @@ func postFile(w http.ResponseWriter, r *http.Request, user database.User) {
 	defer file.Close()
 
 	// Write file
-	_, err = io.Copy(file, r.Body)
+	_, err = file.Write(body)
 	if err != nil {
 		log.Errorf("Error writing file %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
