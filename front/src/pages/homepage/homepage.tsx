@@ -38,7 +38,7 @@ function Homepage() {
             <div className='home-text-and-img'>
                 <img src='/bouquet_seche.jpg' alt="bouquet-arc-rose" className='home-img-tall' />
                 <p className='paragraph'>Bienvenue chez Mademoiselle Blossom !<br /><br />
-                    J'ai à cœur d'égayer chaque moment de votre vie à l'aide de création florale unique et personnalisable. Explorer ma sélection en ligne pour trouver l'inspiration et laissez-moi transformer vos envies en réalité fleurie. Faites de chaque jour une occasion spéciale...</p>
+                    J'ai à cœur d'égayer chaque moment de votre vie à l'aide de création florale unique et personnalisable. Explorez ma sélection en ligne pour trouver l'inspiration et laissez-moi transformer vos envies en réalité fleurie. Faites de chaque jour une occasion spéciale...</p>
             </div>
         </div>
     );
