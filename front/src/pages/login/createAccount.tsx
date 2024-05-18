@@ -6,6 +6,7 @@ import './login.css';
 import { requester } from '../../components/requester';
 import Alert, { displayAlert } from '../../components/alert/alert';
 import { alertStatus } from '../../components/types';
+import MetaData from '../../components/metaData';
 
 function CreateAccount() {
     let navigate = useNavigate();
@@ -68,6 +69,7 @@ function CreateAccount() {
 
     return (
         <div id="login">
+            <MetaData title="Créer un compte" url="/creer-un-compte" />
             <div className="login-container">
                 <h1 id="login-container-title">Créer un compte</h1>
                 <div id="login-container-inputs">

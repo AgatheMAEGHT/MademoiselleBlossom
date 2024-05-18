@@ -17,7 +17,7 @@ import FeteDesGrandsMeres from './pages/events/feteDesGrandsMeres/feteDesGrandsM
 import Toussaint from './pages/events/toussaint/toussaint';
 import Paques from './pages/events/paques/paques';
 import SaintValentin from './pages/events/saint-valentin/saint-valentin';
-import Noel from './pages/events/neol/noel';
+import Noel from './pages/events/noel/noel';
 import Contact from './pages/contact/contact';
 import Login from './pages/login/login';
 import CreateAccount from './pages/login/createAccount';

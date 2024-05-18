@@ -5,6 +5,7 @@ import { requester } from '../../components/requester';
 import Alert, { displayAlert } from '../../components/alert/alert';
 
 import '../../components/catalogs.css';
+import MetaData from '../../components/metaData';
 
 function DriedFlowers() {
     const [driedFlowers, setDriedFlowers] = React.useState<catalog>([]);
@@ -136,6 +137,7 @@ function DriedFlowers() {
 
     return (
         <div className='page catalog'>
+            <MetaData title="Fleurs Séchées" url="/fleurs-sechees" />
             <h2 className="page-title">Fleurs Séchées</h2>
             {driedFlowers.length > 0 ?
                 <div id="dried-flowers-catalog">

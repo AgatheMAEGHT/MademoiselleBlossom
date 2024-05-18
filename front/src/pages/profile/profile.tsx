@@ -6,6 +6,7 @@ import { requester } from '../../components/requester';
 import Alert, { displayAlert } from '../../components/alert/alert';
 
 import './profile.css';
+import MetaData from '../../components/metaData';
 
 function Profile() {
     let navigate = useNavigate();
@@ -60,6 +61,7 @@ function Profile() {
 
     return (
         <div id="profile">
+            <MetaData title="Mon compte" url="/mon-compte" />
             <h2>Mon compte</h2>
             <div className='profile-container'>
                 <h3>Informations personnelles</h3>

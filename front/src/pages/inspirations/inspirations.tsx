@@ -1,11 +1,14 @@
 import React from 'react';
 
+import MetaData from '../../components/metaData';
+
 import './inspirations.css';
 
 function Inspirations() {
 
     return (
         <div className="page catalog">
+            <MetaData title="Inspirations" url="/inspirations" />
             <h2 className="page-title">Inspirations</h2>
             <div id="inspirations-menu">
                 <a className='inspirations-tile' href='/inspirations/mariage'>

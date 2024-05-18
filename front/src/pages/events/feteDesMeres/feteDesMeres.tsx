@@ -1,4 +1,4 @@
-import React from 'react';
+import MetaData from '../../../components/metaData';
 
 import '../../inspirations/inspirations.css';
 
@@ -6,7 +6,8 @@ function FeteDesMeres() {
     // Src image in public folder
     return (
         <div id="inspiration">
-            <h1 className='page-title'>Mariage</h1>
+            <MetaData title="Fête des mères" url="/Fête_des_mères" />
+            <h1 className='page-title'>Fête des mères</h1>
             <h3 className='inspirations-subtitle'><i>Sublimez votre mariage avec des créations uniques</i></h3>
             <div className="inspirations-vertical-stack-area">
                 <img src='/inspirations/mariage/coeur1.jpg' alt="coeur1" className='inspiration-image inspirations-vertical-stack-main' />

@@ -1,3 +1,11 @@
+export type metaHead = {
+    title: string,
+    url: string
+};
+
+/* ==================== *
+*     Catalogs Tiles
+*  ==================== */
 export type freshFlowerTile = {
     id: string,
     name: string,
@@ -22,8 +30,8 @@ export type driedFlowerTileClient = {
 
 
 /* ==================== *
- *       FROM DB 
-* ==================== */
+*        FROM DB
+*  ==================== */
 //Color
 export type colorDB = {
     _id: string,

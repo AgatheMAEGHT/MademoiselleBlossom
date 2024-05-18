@@ -5,6 +5,7 @@ import { articleDB, favoritePopulatedDB } from '../../components/types';
 import { requester } from '../../components/requester';
 
 import './favorites.css';
+import MetaData from '../../components/metaData';
 
 function Favorites() {
     let navigate = useNavigate();
@@ -19,6 +20,7 @@ function Favorites() {
             }
             setFavorites(res ?? []);
         })
+        //eslint-disable-next-line
     }, []);
 
     function editIsFavorite(article: string, favorite: string) {
@@ -84,6 +86,7 @@ function Favorites() {
 
     return (
         <div className='page catalog'>
+            <MetaData title="Favoris" url="/favoris" />
             <h2 className="page-title">Mes articles Favoris</h2>
             {favorites.length > 0 ?
                 <div id="dried-flowers-catalog">

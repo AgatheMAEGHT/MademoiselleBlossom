@@ -1,8 +1,10 @@
+import MetaData from '../../components/metaData';
 import './legal.css';
 
 function Legal() {
     return (
         <div id="legal">
+            <MetaData title="Mentions Légales" url="/mentions-legales" />
             <h2>Mentions Légales</h2>
             <h3>Informations légales</h3>
             <p className='legal-emma-text-short'>Le site mademoiselleblossom.fr est édité par la société Mademoiselle Blossom</p>

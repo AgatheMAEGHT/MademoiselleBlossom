@@ -1,5 +1,6 @@
 import React from 'react';
 
+import MetaData from '../../components/metaData';
 import { translateCarousel } from '../../components/translateCarousel';
 
 import './homepage.css';
@@ -9,6 +10,7 @@ function Homepage() {
 
     return (
         <div id="homepage">
+            <MetaData title="Mademoiselle Blossom" url="" />
             <div id="home-top">
                 <div id="home-carousel">
                     <div id="home-carousel-dir-buttons-area">

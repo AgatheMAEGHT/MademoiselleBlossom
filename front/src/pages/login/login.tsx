@@ -7,6 +7,7 @@ import { requester } from '../../components/requester';
 import './login.css';
 import Alert, { displayAlert } from '../../components/alert/alert';
 import { alertStatus } from '../../components/types';
+import MetaData from '../../components/metaData';
 
 function Login() {
     let navigate = useNavigate();
@@ -58,6 +59,7 @@ function Login() {
 
     return (
         <div id="login">
+            <MetaData title="Se connecter" url="/se-connecter" />
             <div className="login-container">
                 <h1 id="login-container-title">Se connecter</h1>
                 <div id="login-container-inputs">

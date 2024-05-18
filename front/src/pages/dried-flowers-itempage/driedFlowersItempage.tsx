@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import MetaData from '../../components/metaData';
 import { alertStatus, articleDB } from '../../components/types';
 import { requester } from '../../components/requester';
 import { columnImagesTranslateCarousel, translateCarousel } from '../../components/translateCarousel';
@@ -131,6 +132,7 @@ function DriedFlowersItempage() {
 
     return (
         <div id="item-page">
+            <MetaData title={item?.name} url={"/fleurs-sechees/" + params.itemName} />
             <div id="item-page-top">
                 <div id="item-page-images">
                     <div id='item-page-images-col'>

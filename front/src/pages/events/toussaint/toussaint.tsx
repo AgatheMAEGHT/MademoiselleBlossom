@@ -1,12 +1,14 @@
 import React from 'react';
 
 import '../../inspirations/inspirations.css';
+import MetaData from '../../../components/metaData';
 
 function Toussaint() {
     // Src image in public folder
     return (
         <div id="inspiration">
-            <h1 className='page-title'>Mariage</h1>
+            <MetaData title="Toussaint" url="/Toussaint" />
+            <h1 className='page-title'>Toussaint</h1>
             <h3 className='inspirations-subtitle'><i>Sublimez votre mariage avec des créations uniques</i></h3>
             <div className="inspirations-vertical-stack-area">
                 <img src='/inspirations/mariage/coeur1.jpg' alt="coeur1" className='inspiration-image inspirations-vertical-stack-main' />

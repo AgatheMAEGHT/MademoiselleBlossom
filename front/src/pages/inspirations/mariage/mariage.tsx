@@ -1,11 +1,14 @@
 import React from 'react';
 
+import MetaData from '../../../components/metaData';
+
 import '../inspirations.css';
 
 function Mariage() {
     // Src image in public folder
     return (
         <div id="inspiration">
+            <MetaData title="Mariage" url="/inspirations/mariage" />
             <h1 className='page-title'>Mariage</h1>
             <h3 className='inspirations-subtitle'><i>Sublimez votre mariage avec des créations uniques</i></h3>
             <div className="inspirations-vertical-stack-area">

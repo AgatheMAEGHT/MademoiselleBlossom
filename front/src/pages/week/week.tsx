@@ -4,6 +4,7 @@ import { articleDB, catalog } from '../../components/types';
 import { requester } from '../../components/requester';
 
 import '../../components/catalogs.css';
+import MetaData from '../../components/metaData';
 
 function Week() {
     const [freshFlowers, setDriedFlowers] = React.useState<catalog>([]);
@@ -78,6 +79,7 @@ function Week() {
 
     return (
         <div className="page catalog">
+            <MetaData title="Fleurs de la semaine" url="/fleurs-de-la-semaine" />
             <h2 className="page-title">Fleurs de la Semaine</h2>
             <div id="week-gradient" style={{ background: createGradient() }}></div>
             {freshFlowers.length > 0 ?

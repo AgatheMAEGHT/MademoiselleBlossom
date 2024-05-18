@@ -4,6 +4,7 @@ import { articleDB } from '../../components/types';
 import { columnImagesTranslateCarousel, translateCarousel } from '../../components/translateCarousel';
 
 import './driedFlowersItempage.css';
+import MetaData from '../../components/metaData';
 
 function CouronnePersonnalisable() {
     const [tr, setTr] = React.useState<number>(0);
@@ -75,6 +76,7 @@ function CouronnePersonnalisable() {
 
     return (
         <div id="item-page">
+            <MetaData title="Couronne personnalisable" url="/fleurs-sechees/couronne-personnalisable" />
             <div id="item-page-top">
                 <div id="item-page-images">
                     <div id='item-page-images-col'>

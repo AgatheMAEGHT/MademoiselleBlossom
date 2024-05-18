@@ -1,11 +1,14 @@
 import React from 'react';
 
+import MetaData from '../../../components/metaData';
+
 import '../inspirations.css';
 
 function Deuil() {
     // Src image in public folder
     return (
         <div id="inspiration">
+            <MetaData title="Deuil" url="/inspirations/deuil" />
             <h1 className="page-title">Deuil</h1>
 
             <h3 className='inspirations-subtitle'><i>Les fleurs sont les mots muets de l'amour, de la compassion et du réconfort.</i></h3>
