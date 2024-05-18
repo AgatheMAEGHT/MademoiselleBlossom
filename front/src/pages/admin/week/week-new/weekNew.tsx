@@ -112,7 +112,7 @@ function WeekNewAdmin() {
             return;
         }
         let type: string = "image/" + article.firstFile.name.split('.')[article.firstFile.name.split('.').length - 1];
-        promises.push(requesterFile('/file/create', 'POST', article.firstFile.stream(), type));
+        promises.push(requesterFile('/file/create', 'POST', article.firstFile, type));
 
         Promise.all(promises).then((res) => {
             res.forEach(result => {

@@ -117,7 +117,7 @@ function NewDriedAdmin() {
             return;
         }
         let type: string = "image/" + article.firstFile.name.split('.')[article.firstFile.name.split('.').length - 1];
-        promises.push(requesterFile('/file/create', 'POST', article.firstFile.stream(), type));
+        promises.push(requesterFile('/file/create', 'POST', article.firstFile, type));
 
         for (let i = 0; i < article.files.length; i++) {
             let file = article.files[i];
@@ -125,7 +125,7 @@ function NewDriedAdmin() {
                 return;
             }
             type = "image/" + file.name.split('.')[file.name.split('.').length - 1];
-            promises.push(requesterFile('/file/create', 'POST', file.stream(), type));
+            promises.push(requesterFile('/file/create', 'POST', file, type));
         }
 
         Promise.all(promises).then((res) => {

@@ -165,7 +165,7 @@ function EditDriedAdmin() {
 
         if (typeof article.firstFile !== "string") {
             let type: string = "image/" + article.firstFile.name.split('.')[article.firstFile.name.split('.').length - 1];
-            promises.push(requesterFile('/file/create', 'POST', article.firstFile.stream(), type));
+            promises.push(requesterFile('/file/create', 'POST', article.firstFile, type));
             images.push("");
         } else {
             images.push(article.firstFile.split('.')[0]);
@@ -178,7 +178,7 @@ function EditDriedAdmin() {
                 continue;
             }
             let type: string = "image/" + file.name.split('.')[file.name.split('.').length - 1];
-            promises.push(requesterFile('/file/create', 'POST', file.stream(), type));
+            promises.push(requesterFile('/file/create', 'POST', file, type));
         }
 
         Promise.all(promises).then((res) => {

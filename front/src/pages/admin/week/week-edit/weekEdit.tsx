@@ -138,7 +138,7 @@ function WeekEditAdmin() {
 
         if (typeof article.firstFile !== "string") {
             let type: string = "image/" + article.firstFile.name.split('.')[1];
-            promises.push(requesterFile('/file/create', 'POST', article.firstFile.stream(), type));
+            promises.push(requesterFile('/file/create', 'POST', article.firstFile, type));
         } else {
             image = article.firstFile.split('.')[0];
         }

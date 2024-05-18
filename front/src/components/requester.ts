@@ -84,7 +84,43 @@ export function requester<T>(url: string, method: string, body?: any): Promise<T
         });
 }
 
-export function requesterFile<T>(url: string, method: string, body: ReadableStream<Uint8Array>, contentType?: string): Promise<T> {
+export function requesterFile<T>(url: string, method: string, file: File, contentType?: string): Promise<T> {
+    if (contentType && !contentType.includes('image')) {
+        return postFile(url, method, file.stream(), contentType);
+    }
+
+    // Compress images before sending them to the server
+    let p = new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target?.result as string;
+            img.onload = () => {
+                const elem = document.createElement('canvas');
+                elem.width = img.width;
+                elem.height = img.height;
+                const ctx = elem.getContext('2d');
+                ctx?.drawImage(img, 0, 0, img.width, img.height);
+                ctx?.canvas.toBlob((blob) => {
+                    const compressedFile = new File([blob as Blob], file.name, {
+                        type: 'image/jpeg',
+                        lastModified: Date.now(),
+                    });
+                    resolve(compressedFile);
+                }, 'image/jpeg', 0.7);
+            };
+        };
+    });
+
+    return p.then((compressedFile: any) => {
+        if (compressedFile === undefined) return;
+
+        return postFile(url, method, compressedFile.stream(), contentType);
+    });
+}
+
+function postFile(url: string, method: string, body: ReadableStream<Uint8Array>, contentType?: string) {
     resfreshToken();
 
     let token = localStorage.getItem('access_token') ?? '';
