@@ -105,6 +105,21 @@ function DriedFlowersItempage() {
         return imagesList;
     }
 
+    function imagesColMobile() {
+        let imagesList: JSX.Element[] = [];
+        let selected: number = (tr / 60) ?? 0;
+        if (selected < 0) {
+            selected = -selected;
+        }
+
+        for (let i = 0; i < item?.files?.length; i++) {
+            let border: React.CSSProperties = selected === i ? { border: '3px solid var(--color-2-darker2)' } : { padding: '3px' };
+            let imageUrl: string = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + item?.files[i];
+            imagesList.push(<img key={i} className='item-page-images-col' src={imageUrl} alt={item.name} style={border} onClick={() => columnImagesTranslateCarousel(i, 30, item?.files?.length, tr, setTr, "item-page-carousel-list")} />);
+        }
+        return imagesList;
+    }
+
     function editIsFavorite(article: string, favorite: string) {
         if (!localStorage.getItem("access_token")) {
             displayAlert('need-login');
@@ -138,17 +153,26 @@ function DriedFlowersItempage() {
                     <div id='item-page-images-col'>
                         {imagesCol()}
                     </div>
+                    <div id='item-page-images-col-mobile'>
+                        {imagesColMobile()}
+                    </div>
                     <div id="home-carousel">
-                        {(item.files.length > 1) && <div id="home-carousel-dir-buttons-area">
-                            <div className='home-carousel-dir-buttons' onClick={() => { translateCarousel(1, 80, item?.files?.length, trBig, setTrBig, "item-page-carousel-list-big", true); translateCarousel(1, 30, item?.files?.length, tr, setTr, "item-page-carousel-list") }}>
-                                <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel' />
+                        {(item.files.length > 1) ?
+                            <div id="home-carousel-dir-buttons-area">
+                                <div className='home-carousel-dir-buttons' onClick={() => { translateCarousel(1, 80, item?.files?.length, trBig, setTrBig, "item-page-carousel-list-big", true); translateCarousel(1, 30, item?.files?.length, tr, setTr, "item-page-carousel-list") }}>
+                                    <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' style={{ transform: "rotate(180deg)" }} alt='fleche gauche carousel' />
+                                </div>
+                                <div id="item-page-carousel-display-big" onClick={() => displayBigImage(true)}>
+                                </div>
+                                <div className='home-carousel-dir-buttons' onClick={() => { translateCarousel(-1, 80, item?.files?.length, trBig, setTrBig, "item-page-carousel-list-big", true); translateCarousel(-1, 30, item?.files?.length, tr, setTr, "item-page-carousel-list") }}>
+                                    <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
+                                </div>
                             </div>
-                            <div id="item-page-carousel-display-big" onClick={() => displayBigImage(true)}>
+                            :
+                            <div id="home-carousel-dir-buttons-area">
+                                <div id="item-page-carousel-display-big-alone" onClick={() => displayBigImage(true)}></div>
                             </div>
-                            <div className='home-carousel-dir-buttons' onClick={() => { translateCarousel(-1, 80, item?.files?.length, trBig, setTrBig, "item-page-carousel-list-big", true); translateCarousel(-1, 30, item?.files?.length, tr, setTr, "item-page-carousel-list") }}>
-                                <img className='home-carousel-dir-buttons-arrow' src='/icons/arrow.png' alt='fleche droite carousel' />
-                            </div>
-                        </div>}
+                        }
                         <div id="item-page-carousel-list">
                             {images()}
                         </div>

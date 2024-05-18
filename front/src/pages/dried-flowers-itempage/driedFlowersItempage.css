@@ -27,6 +27,10 @@
     flex-direction: column;
 }
 
+#item-page-images-col-mobile {
+    display: none;
+}
+
 .item-page-images-col {
     width: 6vw;
     height: 6vw;
@@ -104,6 +108,12 @@
     cursor: zoom-in;
 }
 
+#item-page-carousel-display-big-alone {
+    height: 30vw;
+    width: 30vw;
+    cursor: zoom-in;
+}
+
 #item-page-big-carousel-dir-buttons-area {
     position: absolute;
     width: var(--big-carousel-size);
@@ -151,5 +161,14 @@
 
     #big-carousel {
         top: 20vh;
+    }
+
+    #item-page-images-col {
+        display: none;
+    }
+
+    #item-page-images-col-mobile {
+        display: flex;
+        flex-direction: column;
     }
 }

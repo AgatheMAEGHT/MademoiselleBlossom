@@ -22,6 +22,7 @@ export function translateCarousel(direction: number, width: number, imgNumber: n
 }
 
 export function columnImagesTranslateCarousel(index: number, width: number, imgNumber: number, previousTr: number, setTr: React.Dispatch<React.SetStateAction<number>>, id: string) {
+    console.log("index: " + index + " width: " + width + " imgNumber: " + imgNumber + " previousTr: " + previousTr + " id: " + id);
     if (getWindowSize() < 768) {
         width = 60;
     }
