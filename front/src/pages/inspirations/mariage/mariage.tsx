@@ -69,12 +69,11 @@ function Mariage() {
                 </div>
             </div>
 
-
             <div className='inspirations-vertical-bipanel'>
+                <img src='/inspirations/mariage/porte-alliance.jpg' alt="porte-alliance" className='inspiration-image inspiration-vertical-bipanel-tall' />
                 <img src='/inspirations/mariage/bouquet-blanc-beige.jpg' alt="bouquet-blanc-beige" className='inspiration-image inspiration-vertical-bipanel-tall' />
                 <img src='/inspirations/mariage/broche-jaune.jpg' alt="broche-jaune" className='inspiration-image' />
             </div>
-
         </div>
     );
 }

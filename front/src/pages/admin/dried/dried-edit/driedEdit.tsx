@@ -100,6 +100,7 @@ function EditDriedAdmin() {
             }
             setOptions(newOptions);
         });
+        //eslint-disable-next-line
     }, []);
 
     function displayColors() {
