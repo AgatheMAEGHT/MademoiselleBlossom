@@ -155,7 +155,11 @@ function EditComponentsAdmin() {
             return;
         }
 
-        requester('/article-tone/update', 'PUT', optionsEdit.tones[index]).then((res: any) => {
+        let tmpTone = {
+            _id: options.tones[index].value,
+            name: optionsEdit.tones[index].label,
+        }
+        requester('/article-tone/update', 'PUT', tmpTone).then((res: any) => {
             if (res._id) {
                 setOptions({ ...options, tones: options.tones.map((tone: select, i) => i === index ? { value: tone.value, label: optionsEdit.tones[index].label } : tone) });
             } else {
@@ -171,7 +175,11 @@ function EditComponentsAdmin() {
             return;
         }
 
-        requester('/article-shape/update', 'PUT', optionsEdit.shapes[index]).then((res: any) => {
+        let tmpShape = {
+            _id: options.shapes[index].value,
+            name: optionsEdit.shapes[index].label,
+        }
+        requester('/article-shape/update', 'PUT', tmpShape).then((res: any) => {
             if (res._id) {
                 setOptions({ ...options, shapes: options.shapes.map((shape: select, i) => i === index ? { value: shape.value, label: optionsEdit.shapes[index].label } : shape) });
             } else {
@@ -188,7 +196,11 @@ function EditComponentsAdmin() {
             return;
         }
 
-        requester('/article-species/update', 'PUT', optionsEdit.species[index]).then((res: any) => {
+        let tmpSpecies = {
+            _id: options.species[index].value,
+            name: optionsEdit.species[index].label,
+        }
+        requester('/article-species/update', 'PUT', tmpSpecies).then((res: any) => {
             if (res._id) {
                 setOptions({ ...options, species: options.species.map((species: select, i) => i === index ? { value: species.value, label: optionsEdit.species[index].label } : species) });
             } else {
@@ -543,8 +555,8 @@ function EditComponentsAdmin() {
             <Alert message="Une erreur est survenue lors de la modification du ton" id="admin-alert-edittone" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la modification de la forme" id="admin-alert-editshape" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la modification de l'espèce" id="admin-alert-editspecies" status={alertStatus.error} />
-            <Alert message="Ce nom est déjà pris par une autre couleur" id="form-alreadytaken-color" status={alertStatus.error} />
             <Alert message="Cette couleur existe déjà" id="form-alreadytaken-hexa" status={alertStatus.error} />
+            <Alert message="Ce nom de couleur existe déjà" id="form-alreadytaken-color" status={alertStatus.error} />
             <Alert message="Ce ton existe déjà" id="form-alreadytaken-tone" status={alertStatus.error} />
             <Alert message="Cette forme existe déjà" id="form-alreadytaken-shape" status={alertStatus.error} />
             <Alert message="Cette variété existe déjà" id="form-alreadytaken-species" status={alertStatus.error} />

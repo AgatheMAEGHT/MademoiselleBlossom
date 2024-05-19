@@ -152,7 +152,7 @@ function EditDriedAdmin() {
         </div>;
     }
 
-    /* Submit functions */
+    /* Post Article */
     function postFile() {
         // Check if firstFile filled
         if (article.firstFile === undefined || article.firstFile === null || article.firstFile === "" as unknown as File) {
@@ -239,10 +239,43 @@ function EditDriedAdmin() {
         });
     }
 
+    function deleteArticle() {
+
+        requester(`/article/delete?_id=${article._id}`, 'DELETE').then(() => {
+            navigate('/admin/fleurs-sechees');
+        });
+    }
+
+    function confirmDelete() {
+        let popup = document.getElementById("admin-article-delete-popup");
+        if (popup) {
+            popup.style.display = "flex";
+        }
+    }
+
+    function cancelDelete() {
+        let popup = document.getElementById("admin-article-delete-popup");
+        if (popup) {
+            popup.style.display = "none";
+        }
+    }
+
+    /* Post Elements */
     function postColor() {
         // Check if all fields are filled
         if (color.name === "" || color.hexa === "") {
             displayAlert('form-mandatory-color');
+            return;
+        }
+
+        // Check if color already exists
+        if (colorAlreadyTaken) {
+            displayAlert('form-alreadytaken-color');
+            return;
+        }
+        // Check if hexa already exists
+        if (options.colors?.filter((elt: selectColor) => elt.hexa === color.hexa).length > 0) {
+            displayAlert('form-alreadytaken-hexa');
             return;
         }
 
@@ -277,6 +310,12 @@ function EditDriedAdmin() {
             return;
         }
 
+        // Check if tone already exists
+        if (toneAlreadyTaken) {
+            displayAlert('form-alreadytaken-tone');
+            return;
+        }
+
         // Create new tone object to send to the server
         let tmpTone: newToneDB = {
             name: tone ?? "",
@@ -302,6 +341,12 @@ function EditDriedAdmin() {
         // Check if all fields are filled
         if (shape === "") {
             displayAlert('form-mandatory-shape');
+            return;
+        }
+
+        // Check if shape already exists
+        if (shapeAlreadyTaken) {
+            displayAlert('form-alreadytaken-shape');
             return;
         }
 
@@ -334,6 +379,12 @@ function EditDriedAdmin() {
             return;
         }
 
+        // Check if species already exists
+        if (speciesAlreadyTaken) {
+            displayAlert('form-alreadytaken-species');
+            return;
+        }
+
         // Create new species object to send to the server
         let tmpSpecies: newSpeciesDB = {
             name: species ?? "",
@@ -354,27 +405,6 @@ function EditDriedAdmin() {
                 displayAlert('admin-alert-createspecies');
             }
         });
-    }
-
-    function deleteArticle() {
-
-        requester(`/article/delete?_id=${article._id}`, 'DELETE').then(() => {
-            navigate('/admin/fleurs-sechees');
-        });
-    }
-
-    function confirmDelete() {
-        let popup = document.getElementById("admin-article-delete-popup");
-        if (popup) {
-            popup.style.display = "flex";
-        }
-    }
-
-    function cancelDelete() {
-        let popup = document.getElementById("admin-article-delete-popup");
-        if (popup) {
-            popup.style.display = "none";
-        }
     }
 
     /* Display */
@@ -692,6 +722,11 @@ function EditDriedAdmin() {
             <Alert message="Une erreur est survenue lors de la création de la forme" id="admin-alert-createshape" status={alertStatus.error} />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-species" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la création de l'espèce" id="admin-alert-createspecies" status={alertStatus.error} />
+            <Alert message="Cette couleur existe déjà" id="form-alreadytaken-hexa" status={alertStatus.error} />
+            <Alert message="Ce nom de couleur existe déjà" id="form-alreadytaken-color" status={alertStatus.error} />
+            <Alert message="Ce ton existe déjà" id="form-alreadytaken-tone" status={alertStatus.error} />
+            <Alert message="Cette forme existe déjà" id="form-alreadytaken-shape" status={alertStatus.error} />
+            <Alert message="Cette variété existe déjà" id="form-alreadytaken-species" status={alertStatus.error} />
         </div>
     );
 }

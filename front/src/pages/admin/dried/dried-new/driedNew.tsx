@@ -189,6 +189,17 @@ function NewDriedAdmin() {
             return;
         }
 
+        // Check if color already taken
+        if (colorAlreadyTaken) {
+            displayAlert('form-alreadytaken-color');
+            return;
+        }
+        // Check if hexa already taken
+        if (options.colors?.filter((elt: selectColor) => elt.hexa === color.hexa).length > 0) {
+            displayAlert('form-alreadytaken-hexa');
+            return;
+        }
+
         // Create new color object to send to the server
         let tmpColor: newColorDB = {
             name: color.name ?? "",
@@ -220,6 +231,12 @@ function NewDriedAdmin() {
             return;
         }
 
+        // Check if tone already taken
+        if (toneAlreadyTaken) {
+            displayAlert('form-alreadytaken-tone');
+            return;
+        }
+
         // Create new tone object to send to the server
         let tmpTone: newToneDB = {
             name: tone ?? "",
@@ -245,6 +262,12 @@ function NewDriedAdmin() {
         // Check if all fields are filled
         if (shape === "") {
             displayAlert('form-mandatory-shape');
+            return;
+        }
+
+        // Check if shape already taken
+        if (shapeAlreadyTaken) {
+            displayAlert('form-alreadytaken-shape');
             return;
         }
 
@@ -274,6 +297,12 @@ function NewDriedAdmin() {
         // Check if all fields are filled
         if (species === "") {
             displayAlert('form-mandatory-species');
+            return;
+        }
+
+        // Check if species already taken
+        if (speciesAlreadyTaken) {
+            displayAlert('form-alreadytaken-species');
             return;
         }
 
@@ -587,6 +616,11 @@ function NewDriedAdmin() {
             <Alert message="Une erreur est survenue lors de la création de la forme" id="admin-alert-createshape" status={alertStatus.error} />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-species" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la création de l'espèce" id="admin-alert-createspecies" status={alertStatus.error} />
+            <Alert message="Cette couleur existe déjà" id="form-alreadytaken-hexa" status={alertStatus.error} />
+            <Alert message="Ce nom de couleur existe déjà" id="form-alreadytaken-color" status={alertStatus.error} />
+            <Alert message="Ce ton existe déjà" id="form-alreadytaken-tone" status={alertStatus.error} />
+            <Alert message="Cette forme existe déjà" id="form-alreadytaken-shape" status={alertStatus.error} />
+            <Alert message="Cette variété existe déjà" id="form-alreadytaken-species" status={alertStatus.error} />
         </div>
     );
 }

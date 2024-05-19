@@ -125,7 +125,7 @@ function WeekEditAdmin() {
         }
     }
 
-    /* Submit functions */
+    /* Post article */
     function postFile() {
         // Check if firstFile filled
         if (article.firstFile === undefined || article.firstFile === null || article.firstFile === "" as unknown as File) {
@@ -200,10 +200,42 @@ function WeekEditAdmin() {
         });
     }
 
+    function deleteArticle() {
+        requester(`/article/delete?_id=${article._id}`, 'DELETE').then(() => {
+            navigate('/admin/fleurs-de-la-semaine');
+        });
+    }
+
+    function confirmDelete() {
+        let popup = document.getElementById("admin-article-delete-popup");
+        if (popup) {
+            popup.style.display = "flex";
+        }
+    }
+
+    function cancelDelete() {
+        let popup = document.getElementById("admin-article-delete-popup");
+        if (popup) {
+            popup.style.display = "none";
+        }
+    }
+
+    /* Post Elements */
     function postColor() {
         // Check if all fields are filled
         if (color.name === "" || color.hexa === "") {
             displayAlert('form-mandatory-color');
+            return;
+        }
+
+        // Check if color already taken
+        if (colorAlreadyTaken) {
+            displayAlert('form-alreadytaken-color');
+            return;
+        }
+        // Check if hexa already taken
+        if (options.colors?.filter((elt: selectColor) => elt.hexa === color.hexa).length > 0) {
+            displayAlert('form-alreadytaken-hexa');
             return;
         }
 
@@ -237,6 +269,12 @@ function WeekEditAdmin() {
             return;
         }
 
+        // Check if tone already taken
+        if (toneAlreadyTaken) {
+            displayAlert('form-alreadytaken-tone');
+            return;
+        }
+
         // Create new tone object to send to the server
         let tmpTone: newToneDB = {
             name: tone ?? "",
@@ -265,6 +303,12 @@ function WeekEditAdmin() {
             return;
         }
 
+        // Check if species already taken
+        if (speciesAlreadyTaken) {
+            displayAlert('form-alreadytaken-species');
+            return;
+        }
+
         // Create new species object to send to the server
         let tmpSpecies: newSpeciesDB = {
             name: species ?? "",
@@ -285,26 +329,6 @@ function WeekEditAdmin() {
                 displayAlert('admin-alert-createspecies');
             }
         });
-    }
-
-    function deleteArticle() {
-        requester(`/article/delete?_id=${article._id}`, 'DELETE').then(() => {
-            navigate('/admin/fleurs-de-la-semaine');
-        });
-    }
-
-    function confirmDelete() {
-        let popup = document.getElementById("admin-article-delete-popup");
-        if (popup) {
-            popup.style.display = "flex";
-        }
-    }
-
-    function cancelDelete() {
-        let popup = document.getElementById("admin-article-delete-popup");
-        if (popup) {
-            popup.style.display = "none";
-        }
     }
 
     /* Display */
@@ -524,7 +548,10 @@ function WeekEditAdmin() {
             <Alert message="Une erreur est survenue lors de la création du ton" id="admin-alert-createtone" status={alertStatus.error} />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-species" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la création de la'espèce" id="admin-alert-createspecies" status={alertStatus.error} />
-
+            <Alert message="Cette couleur existe déjà" id="form-alreadytaken-hexa" status={alertStatus.error} />
+            <Alert message="Ce nom de couleur existe déjà" id="form-alreadytaken-color" status={alertStatus.error} />
+            <Alert message="Ce ton existe déjà" id="form-alreadytaken-tone" status={alertStatus.error} />
+            <Alert message="Cette variété existe déjà" id="form-alreadytaken-species" status={alertStatus.error} />
         </div>
     );
 }

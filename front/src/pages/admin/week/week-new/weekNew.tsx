@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../../components/requester';
 import Alert, { displayAlert } from '../../../../components/alert/alert';
-import { article, newArticleDB, colorDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, alertStatus } from '../../../../components/types';
+import { article, newArticleDB, colorDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, alertStatus, selectColor } from '../../../../components/types';
 
 import '../../_components/catalogEdit.css';
 
@@ -174,6 +174,17 @@ function WeekNewAdmin() {
             return;
         }
 
+        // Check if color already taken
+        if (colorAlreadyTaken) {
+            displayAlert('form-alreadytaken-color');
+            return;
+        }
+        // Check if hexa already taken
+        if (options.colors?.filter((elt: selectColor) => elt.hexa === color.hexa).length > 0) {
+            displayAlert('form-alreadytaken-hexa');
+            return;
+        }
+
         // Create new color object to send to the server
         let tmpColor: newColorDB = {
             name: color.name ?? "",
@@ -204,6 +215,12 @@ function WeekNewAdmin() {
             return;
         }
 
+        // Check if tone already taken
+        if (toneAlreadyTaken) {
+            displayAlert('form-alreadytaken-tone');
+            return;
+        }
+
         // Create new tone object to send to the server
         let tmpTone: newToneDB = {
             name: tone ?? "",
@@ -229,6 +246,12 @@ function WeekNewAdmin() {
         // Check if all fields are filled
         if (species === "") {
             displayAlert('form-mandatory-species');
+            return;
+        }
+
+        // Check if species already taken
+        if (speciesAlreadyTaken) {
+            displayAlert('form-alreadytaken-species');
             return;
         }
 
@@ -377,7 +400,7 @@ function WeekNewAdmin() {
                     <p id="form-mandatory-text">Champs obligatoires</p>
                 </div>
             </div>
-
+-
             <div className='admin-form'> {/* Elements */}
                 <h2>Créer des éléments</h2>
                 <p className='admin-form-infotext'>Les éléments créés ici seront disponibles pour tous les articles.<br />
@@ -454,7 +477,10 @@ function WeekNewAdmin() {
             <Alert message="Une erreur est survenue lors de la création du ton" id="admin-alert-createtone" status={alertStatus.error} />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-species" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la création de la'espèce" id="admin-alert-createspecies" status={alertStatus.error} />
-
+            <Alert message="Cette couleur existe déjà" id="form-alreadytaken-hexa" status={alertStatus.error} />
+            <Alert message="Ce nom de couleur existe déjà" id="form-alreadytaken-color" status={alertStatus.error} />
+            <Alert message="Ce ton existe déjà" id="form-alreadytaken-tone" status={alertStatus.error} />
+            <Alert message="Cette variété existe déjà" id="form-alreadytaken-species" status={alertStatus.error} />
         </div>
     );
 }
