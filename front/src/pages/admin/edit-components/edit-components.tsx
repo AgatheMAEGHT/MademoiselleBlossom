@@ -1,13 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
 
-import { requester, requesterFile } from '../../../components/requester';
+import { requester } from '../../../components/requester';
 import Alert, { displayAlert } from '../../../components/alert/alert';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../components/types';
+import { colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../components/types';
 
 import '../_components/catalogEdit.css';
-import "./edit-components.css";
+import './edit-components.css';
 
 function EditComponentsAdmin() {
     /* Elements Variables */
@@ -76,230 +74,92 @@ function EditComponentsAdmin() {
 
     /* Delete functions */
     function deleteColor(index: number) {
-        // Check if all fields are filled
-        if (color.name === "" || color.hexa === "") {
-            displayAlert('form-mandatory-color');
-            return;
-        }
-
-        // Create new color object to send to the server
-        let tmpColor: newColorDB = {
-            name: color.name ?? "",
-            hexa: color.hexa.replace("#", "") ?? "",
-        };
-
-        // Create new color
-        requester('/article-color/create', 'POST', tmpColor).then((res: any) => {
-            if (res._id) {
-                if (options.colors === undefined) {
-                    setOptions({ ...options, colors: [{ value: res._id, label: res.name, hexa: res.hexa }] });
-                    return;
-                } else {
-                    console.log(res._id, res.name, res.hexa);
-                    setOptions({ ...options, colors: [...options.colors, { value: res._id, label: res.name, hexa: res.hexa }] });
-                }
-                setColor({ name: "", hexa: "#ffffff" });
+        requester('/article-color/delete?_id=' + options.colors[index].value, 'DELETE').then((res: any) => {
+            if (res.msg) {
+                setOptions({ ...options, colors: options.colors.filter((elt: selectColor) => elt.value !== options.colors[index].value) });
+                setOptionsEdit({ ...optionsEdit, colors: optionsEdit.colors.filter((elt: selectColor) => elt.value !== options.colors[index].value) });
             } else {
                 console.log(res);
-                displayAlert('admin-alert-createcolor');
+                displayAlert('admin-alert-deletecolor');
             }
         });
     }
 
     function deleteTone(index: number) {
-        // Check if all fields are filled
-        if (tone === "") {
-            displayAlert('form-mandatory-tone');
-            return;
-        }
-
-        // Create new tone object to send to the server
-        let tmpTone: newToneDB = {
-            name: tone ?? "",
-        };
-
-        // Create new tone
-        requester('/article-tone/create', 'POST', tmpTone).then((res: any) => {
-            if (res._id) {
-                if (options.tones === undefined) {
-                    setOptions({ ...options, tones: [{ value: res._id, label: res.name }] });
-                    return;
-                } else {
-                    setOptions({ ...options, tones: [...options.tones, { value: res._id, label: res.name }] });
-                }
-                setTone("");
+        requester('/article-tone/delete?_id=' + options.tones[index].value, 'DELETE').then((res: any) => {
+            if (res.msg) {
+                setOptions({ ...options, tones: options.tones.filter((elt: select) => elt.value !== options.tones[index].value) });
+                setOptionsEdit({ ...optionsEdit, tones: optionsEdit.tones.filter((elt: select) => elt.value !== options.tones[index].value) });
             } else {
-                displayAlert('admin-alert-createtone');
+                displayAlert('admin-alert-deletetone');
             }
         });
     }
 
     function deleteShape(index: number) {
-        // Check if all fields are filled
-        if (shape === "") {
-            displayAlert('form-mandatory-shape');
-            return;
-        }
-
-        // Create new shape object to send to the server
-        let tmpShape: newToneDB = {
-            name: shape ?? "",
-        };
-
-        // Create new shape
-        requester('/article-shape/create', 'POST', tmpShape).then((res: any) => {
-            if (res._id) {
-                if (options.tones === undefined) {
-                    setOptions({ ...options, shapes: [{ value: res._id, label: res.name }] });
-                    return;
-                } else {
-                    setOptions({ ...options, shapes: [...options.shapes, { value: res._id, label: res.name }] });
-                }
-                setShape("");
+        requester('/article-shape/delete?_id=' + options.shapes[index].value, 'DELETE').then((res: any) => {
+            if (res.msg) {
+                setOptions({ ...options, shapes: options.shapes.filter((elt: select) => elt.value !== options.shapes[index].value) });
+                setOptionsEdit({ ...optionsEdit, shapes: optionsEdit.shapes.filter((elt: select) => elt.value !== options.shapes[index].value) });
             } else {
                 console.log(res);
-                displayAlert('admin-alert-createshape');
+                displayAlert('admin-alert-deleteshape');
             }
         });
     }
 
     function deleteSpecies(index: number) {
-        // Check if all fields are filled
-        if (species === "") {
-            displayAlert('form-mandatory-species');
-            return;
-        }
-
-        // Create new species object to send to the server
-        let tmpSpecies: newSpeciesDB = {
-            name: species ?? "",
-        };
-
-        // Create new species
-        requester('/article-species/create', 'POST', tmpSpecies).then((res: any) => {
-            if (res._id) {
-                if (options.tones === undefined) {
-                    setOptions({ ...options, species: [{ value: res._id, label: res.name }] });
-                    return;
-                } else {
-                    setOptions({ ...options, species: [...options.species, { value: res._id, label: res.name }] });
-                }
-                setSpecies("");
+        requester('/article-species/delete?_id=' + options.species[index].value, 'DELETE').then((res: any) => {
+            if (res.msg) {
+                setOptions({ ...options, species: options.species.filter((elt: select) => elt.value !== options.species[index].value) });
+                setOptionsEdit({ ...optionsEdit, species: optionsEdit.species.filter((elt: select) => elt.value !== options.species[index].value) });
             } else {
                 console.log(res);
-                displayAlert('admin-alert-createspecies');
+                displayAlert('admin-alert-deletespecies');
             }
         });
     }
 
     /* Edit functions */
     function editColor(index: number) {
-        // Check if all fields are filled
-        if (color.name === "" || color.hexa === "") {
-            displayAlert('form-mandatory-color');
-            return;
-        }
-
-        // Create new color object to send to the server
-        let tmpColor: newColorDB = {
-            name: color.name ?? "",
-            hexa: color.hexa.replace("#", "") ?? "",
-        };
-
-        // Create new color
-        requester('/article-color/create', 'POST', tmpColor).then((res: any) => {
+        requester('/article-color/update', 'PUT', optionsEdit.colors[index]).then((res: any) => {
             if (res._id) {
-                if (options.colors === undefined) {
-                    setOptions({ ...options, colors: [{ value: res._id, label: res.name, hexa: res.hexa }] });
-                    return;
-                } else {
-                    console.log(res._id, res.name, res.hexa);
-                    setOptions({ ...options, colors: [...options.colors, { value: res._id, label: res.name, hexa: res.hexa }] });
-                }
-                setColor({ name: "", hexa: "#ffffff" });
+                setOptions({ ...options, colors: options.colors.map((color: selectColor, i) => i === index ? { value: color.value, label: optionsEdit.colors[index].label, hexa: optionsEdit.colors[index].hexa } : color) });
             } else {
                 console.log(res);
-                displayAlert('admin-alert-createcolor');
+                displayAlert('admin-alert-editcolor');
             }
         });
     }
 
     function editTone(index: number) {
-        // Check if all fields are filled
-        if (tone === "") {
-            displayAlert('form-mandatory-tone');
-            return;
-        }
-
-        // Create new tone object to send to the server
-        let tmpTone: newToneDB = {
-            name: tone ?? "",
-        };
-
-        // Create new tone
-        requester('/article-tone/create', 'POST', tmpTone).then((res: any) => {
+        requester('/article-tone/update', 'PUT', optionsEdit.tones[index]).then((res: any) => {
             if (res._id) {
-                if (options.tones === undefined) {
-                    setOptions({ ...options, tones: [{ value: res._id, label: res.name }] });
-                    return;
-                } else {
-                    setOptions({ ...options, tones: [...options.tones, { value: res._id, label: res.name }] });
-                }
-                setTone("");
+                setOptions({ ...options, tones: options.tones.map((tone: select, i) => i === index ? { value: tone.value, label: optionsEdit.tones[index].label } : tone) });
             } else {
-                displayAlert('admin-alert-createtone');
+                displayAlert('admin-alert-edittone');
             }
         });
     }
 
     function editShape(index: number) {
-        // Check if all fields are filled
-        if (shape === "") {
-            displayAlert('form-mandatory-shape');
-            return;
-        }
-
-        // Create new shape object to send to the server
-        let tmpShape: newToneDB = {
-            name: shape ?? "",
-        };
-
-        // Create new shape
-        requester('/article-shape/create', 'POST', tmpShape).then((res: any) => {
+        requester('/article-shape/update', 'PUT', optionsEdit.shapes[index]).then((res: any) => {
             if (res._id) {
-                if (options.tones === undefined) {
-                    setOptions({ ...options, shapes: [{ value: res._id, label: res.name }] });
-                    return;
-                } else {
-                    setOptions({ ...options, shapes: [...options.shapes, { value: res._id, label: res.name }] });
-                }
-                setShape("");
+                setOptions({ ...options, shapes: options.shapes.map((shape: select, i) => i === index ? { value: shape.value, label: optionsEdit.shapes[index].label } : shape) });
             } else {
                 console.log(res);
-                displayAlert('admin-alert-createshape');
+                displayAlert('admin-alert-editshape');
             }
         });
     }
 
     function editSpecies(index: number) {
-        // Create new species object to send to the server
-        let tmpSpecies: newSpeciesDB = {
-            name: optionsEdit.species[index].label ?? "",
-        };
-
-        // Create new species
-        requester('/article-species/create', 'POST', tmpSpecies).then((res: any) => {
+        requester('/article-species/update', 'PUT', optionsEdit.species[index]).then((res: any) => {
             if (res._id) {
-                if (options.tones === undefined) {
-                    setOptions({ ...options, species: [{ value: res._id, label: res.name }] });
-                    return;
-                } else {
-                    setOptions({ ...options, species: [...options.species, { value: res._id, label: res.name }] });
-                }
-                setSpecies("");
+                setOptions({ ...options, species: options.species.map((species: select, i) => i === index ? { value: species.value, label: optionsEdit.species[index].label } : species) });
             } else {
                 console.log(res);
-                displayAlert('admin-alert-createspecies');
+                displayAlert('admin-alert-editspecies');
             }
         });
     }
@@ -424,11 +284,14 @@ function EditComponentsAdmin() {
 
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'>Admin - Ajouter un article séché</h1>
+            <h1 className='admin-page-title'>Admin - Éléments</h1>
 
             <div className='admin-form'> {/* Article */}
                 <h2>Modifier des éléments</h2>
-                <h3>Couleurs</h3>
+                <p className='admin-form-infotext'>Les éléments créés ici seront disponibles pour tous les articles.<br />
+                    Ils servent à donner plus d'informations sur les articles et à les trier dans le catalogue.<br />
+                </p>
+                <h3 className='admin-form-sub-title'>Modifier les couleurs d'article</h3>
                 <div className='admin-edit-elements-list'>
                     {optionsEdit.colors && optionsEdit.colors.map((elt: selectColor, index) => (
                         <div key={elt.value} className='admin-edit-elements'>
@@ -455,17 +318,17 @@ function EditComponentsAdmin() {
                                 </div>
                             </div>
                             <div className='admin-edit-elements-line admin-edit-elements-right'>
-                                <button className='admin-button' onClick={() => editColor(index)} disabled={options.colors[index].hexa == elt.hexa && options.colors[index].label == elt.label} >Modifier</button>
+                                <button className='admin-button' onClick={() => editColor(index)} disabled={options.colors[index].hexa === elt.hexa && options.colors[index].label === elt.label} >Modifier</button>
                                 <button className='admin-button admin-delete-button' onClick={() => deleteColor(index)} >Supprimer</button>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                <h3>Tons</h3>
+                <h3 className='admin-form-sub-title'>Modifier les tons d'article</h3>
                 {optionsEdit.tones && optionsEdit.tones.map((elt: select, index) => (
                     <div key={elt.value} className='admin-edit-elements admin-edit-elements-line'>
-                        <label htmlFor={`admin-form-input-tone-${elt.label}`} className='admin-form-label admin-edit-elements-label'>{elt.label}</label>
+                        <label htmlFor={`admin-form-input-tone-${elt.label}`} className='admin-form-label admin-edit-elements-label'>{options.tones[index].label}</label>
                         <div className='admin-form-element-right'>
                             <input
                                 className='admin-form-input admin-form-input-right'
@@ -477,16 +340,16 @@ function EditComponentsAdmin() {
                             />
                         </div>
                         <div className='admin-edit-elements-buttons'>
-                            <button className='admin-button' onClick={() => editTone(index)} disabled={options.tones[index].label == elt.label} >Modifier</button>
+                            <button className='admin-button' onClick={() => editTone(index)} disabled={options.tones[index].label === elt.label} >Modifier</button>
                             <button className='admin-button admin-delete-button' onClick={() => deleteTone(index)} >Supprimer</button>
                         </div>
                     </div>
                 ))}
 
-                <h3>Formes</h3>
+                <h3 className='admin-form-sub-title'>Modifier les formes d'article</h3>
                 {optionsEdit.shapes && optionsEdit.shapes.map((elt: select, index) => (
                     <div key={elt.value} className='admin-edit-elements admin-edit-elements-line'>
-                        <label htmlFor={`admin-form-input-shape-${elt.label}`} className='admin-form-label admin-edit-elements-label'>{elt.label}</label>
+                        <label htmlFor={`admin-form-input-shape-${elt.label}`} className='admin-form-label admin-edit-elements-label'>{options.shapes[index].label}</label>
                         <div className='admin-form-element-right'>
                             <input
                                 className='admin-form-input admin-form-input-right'
@@ -498,16 +361,16 @@ function EditComponentsAdmin() {
                             />
                         </div>
                         <div className='admin-edit-elements-buttons'>
-                            <button className='admin-button' onClick={() => editShape(index)} disabled={options.shapes[index].label == elt.label} >Modifier</button>
+                            <button className='admin-button' onClick={() => editShape(index)} disabled={options.shapes[index].label === elt.label} >Modifier</button>
                             <button className='admin-button admin-delete-button' onClick={() => deleteShape(index)} >Supprimer</button>
                         </div>
                     </div>
                 ))}
 
-                <h3>Variétés</h3>
+                <h3 className='admin-form-sub-title'>Modifier les variétés de fleur</h3>
                 {optionsEdit.species && optionsEdit.species.map((elt: select, index) => (
                     <div key={elt.value} className='admin-edit-elements admin-edit-elements-line'>
-                        <label htmlFor={`admin-form-input-species-${elt.label}`} className='admin-form-label admin-edit-elements-label'>{elt.label}</label>
+                        <label htmlFor={`admin-form-input-species-${elt.label}`} className='admin-form-label admin-edit-elements-label'>{options.species[index].label}</label>
                         <div className='admin-form-element-right'>
                             <input
                                 className='admin-form-input admin-form-input-right'
@@ -519,7 +382,7 @@ function EditComponentsAdmin() {
                             />
                         </div>
                         <div className='admin-edit-elements-buttons'>
-                            <button className='admin-button' onClick={() => editSpecies(index)} disabled={options.species[index].label == elt.label} >Modifier</button>
+                            <button className='admin-button' onClick={() => editSpecies(index)} disabled={options.species[index].label === elt.label} >Modifier</button>
                             <button className='admin-button admin-delete-button' onClick={() => deleteSpecies(index)} >Supprimer</button>
                         </div>
                     </div>
@@ -608,8 +471,15 @@ function EditComponentsAdmin() {
                 </div>
                 <button className='admin-button' onClick={() => postSpecies()}>Ajouter la variété</button>
             </div>
-            <Alert message="Aucune image de couverture n'est sélectionnée" id="admin-alert-postfile-firstfile" status={alertStatus.error} />
-            <Alert message="Une erreur est survenue lors de l'envoi des images" id="admin-alert-postfile-sendfiles" status={alertStatus.error} />
+            {/* Alerts */}
+            <Alert message="Une erreur est survenue lors de la suppression de la couleur" id="admin-alert-deletecolor" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la suppression du ton" id="admin-alert-deletetone" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la suppression de la forme" id="admin-alert-deleteshape" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la suppression de l'espèce" id="admin-alert-deletespecies" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la modification de la couleur" id="admin-alert-editcolor" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la modification du ton" id="admin-alert-edittone" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la modification de la forme" id="admin-alert-editshape" status={alertStatus.error} />
+            <Alert message="Une erreur est survenue lors de la modification de l'espèce" id="admin-alert-editspecies" status={alertStatus.error} />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory" status={alertStatus.error} />
             <Alert message="Ce nom est déjà pris par une autre création" id="form-name-alreadytaken" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la création de l'article" id="admin-alert-createarticle" status={alertStatus.error} />
