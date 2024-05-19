@@ -97,7 +97,7 @@ function WeekEditAdmin() {
                 setArticle(res[4][0]);
             }
         });
-
+        //eslint-disable-next-line
     }, []);
 
     function displayColors() {
