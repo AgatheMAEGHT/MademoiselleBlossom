@@ -26,7 +26,7 @@ func TestFile(t *testing.T) {
 	assert.True(t, ok)
 	resExt, ok := result["ext"].(string)
 	assert.True(t, ok)
-	assert.Equal(t, "png", resExt)
+	assert.Equal(t, "jpg", resExt)
 
 	// Get file
 	result, status = requesterFile(fmt.Sprintf("/file/download/%s.%s", resID, resExt), http.MethodGet, "", "")

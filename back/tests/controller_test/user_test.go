@@ -46,15 +46,15 @@ func TestChangePassword(t *testing.T) {
 	assert.NotEmpty(t, testTok)
 
 	body := map[string]interface{}{
-		"newPassword": "test2",
-		"oldPassword": "test",
+		"newPassword": "test123456789101112",
+		"oldPassword": "test123456789",
 	}
 	result, status := requester("/user/password", http.MethodPut, body, testTok)
 	assert.Equal(t, 200, status, result["err"])
 	// Login with new password
 	body = map[string]interface{}{
 		"email":    "test@test.fr",
-		"password": "test2",
+		"password": "test123456789101112",
 	}
 	result, status = requester("/login", http.MethodPost, body, "")
 	assert.Equal(t, 200, status, result["err"])
@@ -86,8 +86,8 @@ func TestChangePassword(t *testing.T) {
 
 	// Update password
 	body = map[string]interface{}{
-		"newPassword": "test3",
-		"oldPassword": "test2",
+		"newPassword": "test3123456789",
+		"oldPassword": "test123456789101112",
 	}
 	result, status = requester(fmt.Sprintf("/user/password?_id=%s", testId), http.MethodPut, body, notAdminTok)
 	assert.Equal(t, 401, status, result["err"])
@@ -136,7 +136,7 @@ func TestRegister(t *testing.T) {
 		"email":     "test@test.fr",
 		"firstName": "test",
 		"lastName":  "test",
-		"password":  "test",
+		"password":  "test123456789",
 	}
 	result, status := requester("/register", http.MethodPost, body, "")
 	assert.Equal(t, 200, status, result["err"])

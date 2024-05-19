@@ -155,7 +155,7 @@ func createTestAccount(t *testing.T, email string) string {
 		"email":     email,
 		"firstName": "test",
 		"lastName":  "test",
-		"password":  "test",
+		"password":  "test123456789",
 	}
 	result, status := requester("/register", http.MethodPost, body, "")
 	assert.Equal(t, 200, status, result["err"])

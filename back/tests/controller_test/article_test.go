@@ -19,7 +19,7 @@ func PostCompleteArticle(t *testing.T) (deferFunc func(), articles []string, col
 	assert.True(t, ok)
 	fileExt, ok := result["ext"].(string)
 	assert.True(t, ok)
-	assert.Equal(t, "png", fileExt)
+	assert.Equal(t, "jpg", fileExt)
 
 	// Post ArticleShapes
 	body := map[string]interface{}{

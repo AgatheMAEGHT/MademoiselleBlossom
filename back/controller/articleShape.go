@@ -189,10 +189,14 @@ func deleteArticleShape(w http.ResponseWriter, r *http.Request, user database.Us
 		return
 	}
 
-	if len(articles) > 0 {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write(utils.NewResErr("Article shape is used").ToJson())
-		return
+	for _, article := range articles {
+		article.Shape = primitive.NilObjectID
+		_, err = article.UpdateOne(ctx)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write(utils.NewResErr("Error updating article").ToJson())
+			return
+		}
 	}
 
 	res, err := database.DeleteOneArticleShape(ctx, id)
