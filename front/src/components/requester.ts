@@ -1,9 +1,8 @@
-export function resfreshToken() {
+export function resfreshToken(): Promise<void> | void {
     if (!localStorage.getItem('refresh_token')) return;
     if (new Date(parseInt(localStorage.getItem('expire_date') ?? '0')).getTime() > new Date().getTime()) return;
 
     let token = localStorage.getItem('refresh_token') ?? '';
-    console.log(token);
     return fetch(process.env.REACT_APP_API_URL + '/refresh', {
         method: 'POST',
         headers: {
@@ -24,13 +23,13 @@ export function resfreshToken() {
                 res.json().then(res => {
                     console.log(res);
                 });
-
-                return;
             }
 
             return res.json();
         })
         .then(res => {
+            if (!res || res.access_token === undefined) return;
+
             localStorage.setItem('access_token', res.access_token);
             let d = new Date().setSeconds(new Date().getSeconds() + parseInt(res.expires_in) ?? 0);
             localStorage.setItem('expire_date', d.toString());
@@ -104,11 +103,12 @@ export function requesterFile<T>(url: string, method: string, file: File, conten
                 ctx?.drawImage(img, 0, 0, img.width, img.height);
                 ctx?.canvas.toBlob((blob) => {
                     const compressedFile = new File([blob as Blob], file.name, {
-                        type: 'image/jpeg',
+                        type: 'image/jpg',
                         lastModified: Date.now(),
                     });
+                    contentType = 'image/jpg';
                     resolve(compressedFile);
-                }, 'image/jpeg', 0.7);
+                }, 'image/jpg', 0.7);
             };
         };
     });
@@ -184,7 +184,10 @@ function postFile(url: string, method: string, body: ReadableStream<Uint8Array>,
                     localStorage.removeItem('lastName');
 
                     throw new Error('Session expired');
+                } else if (res.status === 413) {
+                    alert("Fichier trop volumineux.");
                 }
+
                 return res.json();
             });
     });
