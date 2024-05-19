@@ -36,6 +36,21 @@
     width: 100%;
 }
 
+.admin-delete-popup {
+    display: none;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 203, 203, 0.938);
+    border: red 1px solid;
+    width: 40vw;
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 10;
+    text-align: center;
+}
+
+
 .admin-edit-element-color {
     width: 30%;
     height: 35px;

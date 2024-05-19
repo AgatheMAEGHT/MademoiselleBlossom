@@ -348,7 +348,7 @@ function WeekEditAdmin() {
                 </div>
             </div>
             <div className='admin-form'> {/* Article */}
-                <h2>Modifier une fleur - {(article.species[0]?.name ?? "") + " " + (article.colors.map((elt: colorDB) => elt.name).join(" "))}</h2>
+                <h2>Modifier une fleur - {article?.name ?? ""}</h2>
                 {nameAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette fleur existe déjà</div>}
                 <div className='admin-form-element'> {/* Species */}
                     <label htmlFor='admin-form-input-species' className='admin-form-label'>Espèce<p className='form-mandatory'>*</p></label>

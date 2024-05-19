@@ -104,7 +104,7 @@ function EditDriedAdmin() {
     }, []);
 
     function displayColors() {
-        return article.colors.map((elt: colorDB) => {
+        return article?.colors.map((elt: colorDB) => {
             let color: string = "#" + elt.hexa;
             return <div key={elt._id} className='admin-form-color' style={{ background: color }}></div>;
         });
@@ -113,7 +113,7 @@ function EditDriedAdmin() {
     /* Check functions */
     function checkName(e: string) {
         let name: select = options.names?.filter((elt: select) => elt.label === e)[0];
-        if (name && name?.value !== article._id) {
+        if (name && name?.value !== article?._id) {
             setNameAlreadyTaken(true);
         } else {
             setNameAlreadyTaken(false);
@@ -130,7 +130,7 @@ function EditDriedAdmin() {
 
     /* File functions */
     function addFiles(files: [File | string]) {
-        let newFiles = article.files;
+        let newFiles = article?.files;
         for (let i = 0; i < files.length; i++) {
             newFiles.push(files[i]);
         }
@@ -424,7 +424,7 @@ function EditDriedAdmin() {
                 </div>
             </div>
             <div className='admin-form'> {/* Article */}
-                <h2>Modifier {article.name}</h2>
+                <h2>Modifier {article?.name}</h2>
                 <div className='admin-form-element'> {/* Name */}
                     <label htmlFor='admin-form-input-name' className='admin-form-label'>Nom<p className='form-mandatory'>*</p></label>
                     <div className='admin-form-element-right'>
@@ -442,7 +442,7 @@ function EditDriedAdmin() {
                 <div className='admin-form-element'> {/* Price */}
                     <label htmlFor='admin-form-input-price' className='admin-form-label'>Prix (en €)<p className='form-mandatory'>*</p></label>
                     <input
-                        value={article.price}
+                        value={article?.price}
                         onChange={e => setArticle({ ...article, price: e.target.value })}
                         className='admin-form-input'
                         id='admin-form-input-price'
@@ -454,7 +454,7 @@ function EditDriedAdmin() {
                     <label htmlFor='admin-form-input-stock' className='admin-form-label'>Stock<p className='form-mandatory'>*</p></label >
                     <input
                         min="0"
-                        value={article.stock}
+                        value={article?.stock}
                         onChange={e => setArticle({ ...article, stock: parseInt(e.target.value) })}
                         className='admin-form-input'
                         id="admin-form-input-stock"
@@ -465,7 +465,7 @@ function EditDriedAdmin() {
                 <div className='admin-form-element'> {/* Description */}
                     <label htmlFor='admin-form-input-description' className='admin-form-label'>Description</label>
                     <textarea
-                        value={article.description}
+                        value={article?.description}
                         onChange={e => setArticle({ ...article, description: e.target.value })}
                         className='admin-form-input'
                         id="admin-form-input-description"
@@ -486,14 +486,14 @@ function EditDriedAdmin() {
                             isMulti
                             isSearchable
                             isClearable
-                            defaultValue={article.colors.map((elt: colorDB) => ({ label: elt.name, value: elt._id, hexa: elt.hexa })) ?? []}
+                            defaultValue={article?.colors.map((elt: colorDB) => ({ label: elt.name, value: elt._id, hexa: elt.hexa })) ?? []}
                             options={options.colors}
                             onChange={(e) => setArticle({ ...article, colors: (e ? e.map((elt: selectColor) => ({ _id: elt.value, name: elt.label, hexa: elt.hexa })) : []) })}
                             id='admin-form-input-colors'
                         />
                     </div>
                 </div>
-                {(article.colors.length !== 0) && <div className='admin-form-element'> {/* Colors */}
+                {(article?.colors.length !== 0) && <div className='admin-form-element'> {/* Colors */}
                     <div></div>
                     <div id='admin-form-color-list'>
                         {displayColors()}
@@ -513,7 +513,7 @@ function EditDriedAdmin() {
                             isMulti
                             isSearchable
                             isClearable
-                            defaultValue={article.tones.map((elt: toneDB) => ({ label: elt.name, value: elt._id })) ?? []}
+                            defaultValue={article?.tones.map((elt: toneDB) => ({ label: elt.name, value: elt._id })) ?? []}
                             options={options.tones}
                             onChange={(e) => setArticle({ ...article, tones: (e ? e.map((elt: select) => ({ _id: elt.value, name: elt.label })) : []) })}
                             id='admin-form-input-tones'
@@ -525,7 +525,7 @@ function EditDriedAdmin() {
                     <input
                         step={0.01}
                         min="0"
-                        value={article.size}
+                        value={article?.size}
                         onChange={e => setArticle({ ...article, size: parseFloat(e.target.value) })}
                         className='admin-form-input'
                         id="admin-form-input-size"
@@ -546,7 +546,7 @@ function EditDriedAdmin() {
                             }}
                             isSearchable
                             isClearable
-                            defaultValue={{ label: article.shape.name, value: article.shape._id }}
+                            defaultValue={{ label: article?.shape?.name, value: article?.shape?._id }}
                             options={options.shapes}
                             onChange={(elt) => setArticle({ ...article, shape: (elt ? ({ _id: elt.value, name: elt.label }) : { _id: "", name: "" }) })}
                             id='admin-form-input-shapes'
@@ -567,7 +567,7 @@ function EditDriedAdmin() {
                             isMulti
                             isSearchable
                             isClearable
-                            defaultValue={article.species.map((elt: speciesDB) => ({ label: elt.name, value: elt._id })) ?? []}
+                            defaultValue={article?.species.map((elt: speciesDB) => ({ label: elt.name, value: elt._id })) ?? []}
                             options={options.species}
                             onChange={(e) => setArticle({ ...article, species: (e ? e.map((elt: select) => ({ _id: elt.value, name: elt.label })) : []) })}
                             id='admin-form-input-species'
@@ -584,7 +584,7 @@ function EditDriedAdmin() {
                         name="images"
                         accept='image/*'
                         placeholder="Remplacer l\'image de couverture"
-                        defaultValue={typeof (article.firstFile) === "string" ? "" : article.firstFile.name}
+                        defaultValue={typeof (article?.firstFile) === "string" ? "" : article?.firstFile.name}
                     />
                 </div>
                 <p className="admin-form-input-info">L'image de couverture déjà sauvegardée n'apparait pas ici mais dans la liste <b>Images sélctionnées</b>.</p>
@@ -608,14 +608,14 @@ function EditDriedAdmin() {
                 </div>
                 <div> {/* Display Images */}
                     <div id='admin-form-images'>
-                        {article.firstFile && <div id="admin-form-image-first">
-                            {(typeof (article.firstFile) !== "string") ?
-                                <img key={article.firstFile.name} className='admin-form-image' src={URL.createObjectURL(article.firstFile)} alt={article.firstFile.name} /> :
-                                <img key={article.firstFile} className='admin-form-image' src={(process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + article.firstFile} alt={article.firstFile} />
+                        {article?.firstFile && <div id="admin-form-image-first">
+                            {(typeof (article?.firstFile) !== "string") ?
+                                <img key={article?.firstFile?.name} className='admin-form-image' src={URL.createObjectURL(article?.firstFile)} alt={article?.firstFile?.name} /> :
+                                <img key={article?.firstFile} className='admin-form-image' src={(process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + article?.firstFile} alt={article?.firstFile} />
                             }
                             <p className="admin-form-input-info">Image de couverture</p>
                         </div>}
-                        {Array.from(article.files || []).map((elt: File | string, index) => (typeof (elt) !== "string") ?
+                        {Array.from(article?.files || []).map((elt: File | string, index) => (typeof (elt) !== "string") ?
                             displayFile(elt.name, URL.createObjectURL(elt), elt.name, index) :
                             displayFile(elt, (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + elt, elt, index))
                         }

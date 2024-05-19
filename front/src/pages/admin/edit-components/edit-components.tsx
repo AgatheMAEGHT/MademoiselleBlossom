@@ -73,6 +73,20 @@ function EditComponentsAdmin() {
     }
 
     /* Delete functions */
+    function confirmDelete(id: string) {
+        let popup = document.getElementById(id);
+        if (popup) {
+            popup.style.display = "flex";
+        }
+    }
+
+    function cancelDelete(id: string) {
+        let popup = document.getElementById(id);
+        if (popup) {
+            popup.style.display = "none";
+        }
+    }
+
     function deleteColor(index: number) {
         requester('/article-color/delete?_id=' + options.colors[index].value, 'DELETE').then((res: any) => {
             if (res.msg) {
@@ -394,7 +408,14 @@ function EditComponentsAdmin() {
                             </div>
                             <div className='admin-edit-elements-line admin-edit-elements-right'>
                                 <button className='admin-button' onClick={() => editColor(index)} disabled={options.colors[index].hexa === elt.hexa && options.colors[index].label === elt.label} >Modifier</button>
-                                <button className='admin-button admin-delete-button' onClick={() => deleteColor(index)} >Supprimer</button>
+                                <div id="admin-article-delete-area">
+                                    <button className='admin-button admin-delete-button' onClick={() => confirmDelete("admin-delete-popup-color-" + index)}>Supprimer</button>
+                                    <div className="admin-delete-popup" id={"admin-delete-popup-color-" + index}>
+                                        <p>Veux-tu vraiment supprimer la couleur {elt.label} ?</p>
+                                        <button className='admin-button admin-delete-button' onClick={() => deleteColor(index)}>Oui</button>
+                                        <button className='admin-button' onClick={() => cancelDelete("admin-delete-popup-color-" + index)}>Non</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -416,7 +437,14 @@ function EditComponentsAdmin() {
                         </div>
                         <div className='admin-edit-elements-buttons'>
                             <button className='admin-button' onClick={() => editTone(index)} disabled={options.tones[index].label === elt.label} >Modifier</button>
-                            <button className='admin-button admin-delete-button' onClick={() => deleteTone(index)} >Supprimer</button>
+                            <div id="admin-article-delete-area">
+                                <button className='admin-button admin-delete-button' onClick={() => confirmDelete("admin-delete-popup-tone-" + index)}>Supprimer</button>
+                                <div className="admin-delete-popup" id={"admin-delete-popup-tone-" + index}>
+                                    <p>Veux-tu vraiment supprimer le ton {elt.label} ?</p>
+                                    <button className='admin-button admin-delete-button' onClick={() => deleteTone(index)}>Oui</button>
+                                    <button className='admin-button' onClick={() => cancelDelete("admin-delete-popup-tone-" + index)}>Non</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -437,7 +465,14 @@ function EditComponentsAdmin() {
                         </div>
                         <div className='admin-edit-elements-buttons'>
                             <button className='admin-button' onClick={() => editShape(index)} disabled={options.shapes[index].label === elt.label} >Modifier</button>
-                            <button className='admin-button admin-delete-button' onClick={() => deleteShape(index)} >Supprimer</button>
+                            <div id="admin-article-delete-area">
+                                <button className='admin-button admin-delete-button' onClick={() => confirmDelete("admin-delete-popup-shape-" + index)}>Supprimer</button>
+                                <div className="admin-delete-popup" id={"admin-delete-popup-shape-" + index}>
+                                    <p>Veux-tu vraiment supprimer la forme {elt.label} ?</p>
+                                    <button className='admin-button admin-delete-button' onClick={() => deleteShape(index)}>Oui</button>
+                                    <button className='admin-button' onClick={() => cancelDelete("admin-delete-popup-shape-" + index)}>Non</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -458,7 +493,14 @@ function EditComponentsAdmin() {
                         </div>
                         <div className='admin-edit-elements-buttons'>
                             <button className='admin-button' onClick={() => editSpecies(index)} disabled={options.species[index].label === elt.label} >Modifier</button>
-                            <button className='admin-button admin-delete-button' onClick={() => deleteSpecies(index)} >Supprimer</button>
+                            <div id="admin-article-delete-area">
+                                <button className='admin-button admin-delete-button' onClick={() => confirmDelete("admin-delete-popup-species-" + index)}>Supprimer</button>
+                                <div className="admin-delete-popup" id={"admin-delete-popup-species-" + index}>
+                                    <p>Veux-tu vraiment supprimer l'espèce {elt.label} ?</p>
+                                    <button className='admin-button admin-delete-button' onClick={() => deleteSpecies(index)}>Oui</button>
+                                    <button className='admin-button' onClick={() => cancelDelete("admin-delete-popup-species-" + index)}>Non</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))}
