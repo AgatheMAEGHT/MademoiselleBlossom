@@ -122,7 +122,23 @@ function EditComponentsAdmin() {
 
     /* Edit functions */
     function editColor(index: number) {
-        requester('/article-color/update', 'PUT', optionsEdit.colors[index]).then((res: any) => {
+        // Check if hexa already exists
+        if (optionsEdit.colors.filter((c: selectColor) => c.hexa === options.colors[index].hexa).length > 1) {
+            displayAlert('form-alreadytaken-hexa');
+            return;
+        }
+        // Check if name already exists
+        if (optionsEdit.colors.filter((c: selectColor) => c.label === options.colors[index].label).length > 1) {
+            displayAlert('form-alreadytaken-color');
+            return;
+        }
+
+        let tmpColor = {
+            _id: options.colors[index].value,
+            name: optionsEdit.colors[index].label,
+            hexa: optionsEdit.colors[index].hexa,
+        }
+        requester('/article-color/update', 'PUT', tmpColor).then((res: any) => {
             if (res._id) {
                 setOptions({ ...options, colors: options.colors.map((color: selectColor, i) => i === index ? { value: color.value, label: optionsEdit.colors[index].label, hexa: optionsEdit.colors[index].hexa } : color) });
             } else {
@@ -133,6 +149,12 @@ function EditComponentsAdmin() {
     }
 
     function editTone(index: number) {
+        // Check if tone already exists
+        if (optionsEdit.tones.filter((t: select) => t.label === options.tones[index].label).length > 1) {
+            displayAlert('form-alreadytaken-tone');
+            return;
+        }
+
         requester('/article-tone/update', 'PUT', optionsEdit.tones[index]).then((res: any) => {
             if (res._id) {
                 setOptions({ ...options, tones: options.tones.map((tone: select, i) => i === index ? { value: tone.value, label: optionsEdit.tones[index].label } : tone) });
@@ -143,6 +165,12 @@ function EditComponentsAdmin() {
     }
 
     function editShape(index: number) {
+        // Check if shape already exists
+        if (optionsEdit.shapes.filter((s: select) => s.label === options.shapes[index].label).length > 1) {
+            displayAlert('form-alreadytaken-shape');
+            return;
+        }
+
         requester('/article-shape/update', 'PUT', optionsEdit.shapes[index]).then((res: any) => {
             if (res._id) {
                 setOptions({ ...options, shapes: options.shapes.map((shape: select, i) => i === index ? { value: shape.value, label: optionsEdit.shapes[index].label } : shape) });
@@ -154,6 +182,12 @@ function EditComponentsAdmin() {
     }
 
     function editSpecies(index: number) {
+        // Check if species already exists
+        if (optionsEdit.species.filter((s: select) => s.label === options.species[index].label).length > 1) {
+            displayAlert('form-alreadytaken-species');
+            return;
+        }
+
         requester('/article-species/update', 'PUT', optionsEdit.species[index]).then((res: any) => {
             if (res._id) {
                 setOptions({ ...options, species: options.species.map((species: select, i) => i === index ? { value: species.value, label: optionsEdit.species[index].label } : species) });
@@ -169,6 +203,17 @@ function EditComponentsAdmin() {
         // Check if all fields are filled
         if (color.name === "" || color.hexa === "") {
             displayAlert('form-mandatory-color');
+            return;
+        }
+
+        // Check if hexa already exists
+        if (optionsEdit.colors.filter((c: selectColor) => color.hexa === c.hexa).length > 0) {
+            displayAlert('form-alreadytaken-hexa');
+            return;
+        }
+        // Check if name already exists
+        if (optionsEdit.colors.filter((c: selectColor) => color.name === c.label).length > 0) {
+            displayAlert('form-alreadytaken-color');
             return;
         }
 
@@ -203,6 +248,12 @@ function EditComponentsAdmin() {
             return;
         }
 
+        // Check if tone already exists
+        if (optionsEdit.tones.filter((t: select) => tone === t.label).length > 0) {
+            displayAlert('form-alreadytaken-tone');
+            return;
+        }
+
         // Create new tone object to send to the server
         let tmpTone: newToneDB = {
             name: tone ?? "",
@@ -228,6 +279,12 @@ function EditComponentsAdmin() {
         // Check if all fields are filled
         if (shape === "") {
             displayAlert('form-mandatory-shape');
+            return;
+        }
+
+        // Check if shape already exists
+        if (optionsEdit.shapes.filter((s: select) => shape === s.label).length > 0) {
+            displayAlert('form-alreadytaken-shape');
             return;
         }
 
@@ -257,6 +314,12 @@ function EditComponentsAdmin() {
         // Check if all fields are filled
         if (species === "") {
             displayAlert('form-mandatory-species');
+            return;
+        }
+
+        // Check if species already exists
+        if (optionsEdit.species.filter((s: select) => species === s.label).length > 0) {
+            displayAlert('form-alreadytaken-species');
             return;
         }
 
@@ -480,8 +543,11 @@ function EditComponentsAdmin() {
             <Alert message="Une erreur est survenue lors de la modification du ton" id="admin-alert-edittone" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la modification de la forme" id="admin-alert-editshape" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la modification de l'espèce" id="admin-alert-editspecies" status={alertStatus.error} />
-            <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory" status={alertStatus.error} />
-            <Alert message="Ce nom est déjà pris par une autre création" id="form-name-alreadytaken" status={alertStatus.error} />
+            <Alert message="Ce nom est déjà pris par une autre couleur" id="form-alreadytaken-color" status={alertStatus.error} />
+            <Alert message="Cette couleur existe déjà" id="form-alreadytaken-hexa" status={alertStatus.error} />
+            <Alert message="Ce ton existe déjà" id="form-alreadytaken-tone" status={alertStatus.error} />
+            <Alert message="Cette forme existe déjà" id="form-alreadytaken-shape" status={alertStatus.error} />
+            <Alert message="Cette variété existe déjà" id="form-alreadytaken-species" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la création de l'article" id="admin-alert-createarticle" status={alertStatus.error} />
             <Alert message="Certains champs obligatoires ne sont pas remplis" id="form-mandatory-color" status={alertStatus.error} />
             <Alert message="Une erreur est survenue lors de la création de la couleur" id="admin-alert-createcolor" status={alertStatus.error} />

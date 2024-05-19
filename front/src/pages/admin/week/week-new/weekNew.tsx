@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../../components/requester';
 import Alert, { displayAlert } from '../../../../components/alert/alert';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../../components/types';
+import { article, newArticleDB, colorDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, alertStatus } from '../../../../components/types';
 
 import '../../_components/catalogEdit.css';
 
@@ -71,7 +71,6 @@ function WeekNewAdmin() {
             newOptions.names = res[4]?.map((elt: any) => elt.name);
             setOptions(newOptions);
         });
-
     }, []);
 
     function displayColors() {

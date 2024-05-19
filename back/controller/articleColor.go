@@ -151,6 +151,7 @@ func putArticleColor(w http.ResponseWriter, r *http.Request, user database.User)
 
 	_, err = color.UpdateOne(ctx)
 	if err != nil {
+		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write(utils.NewResErr("Error updating article color").ToJson())
 		return
