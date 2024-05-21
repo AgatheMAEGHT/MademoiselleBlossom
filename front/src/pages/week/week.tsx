@@ -12,7 +12,7 @@ function Week() {
 
     React.useEffect(() => {
         let promises: Promise<any>[] = [];
-        promises.push(requester('/article?populate=true&types=week', 'GET'));
+        promises.push(requester('/article?populate=true&types=fresh', 'GET'));
         promises.push(requester('/colors-of-the-week', 'GET'));
 
         Promise.all(promises).then((res: any) => {

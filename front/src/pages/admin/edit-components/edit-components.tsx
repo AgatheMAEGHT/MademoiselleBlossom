@@ -4,7 +4,7 @@ import { requester } from '../../../components/requester';
 import Alert, { displayAlert } from '../../../components/alert/alert';
 import { colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../components/types';
 
-import '../_components/catalogEdit.css';
+import '../catalog-edit/catalogEdit.css';
 import './edit-components.css';
 
 function EditComponentsAdmin() {

@@ -44,6 +44,17 @@ function EventsAdmin() {
                     <option value="Fête des grand-mères">Fête des grand-mères</option>
                 </select>
             </div>
+
+            <h2>Catalogues</h2>
+            <div id="admin-events-catalogs">
+                <a className='admin-button' href="/admin/evenements/Saint-Valentin">Saint-Valentin</a>
+                <a className='admin-button' href="/admin/evenements/Pâques">Pâques</a>
+                <a className='admin-button' href="/admin/evenements/Fête_des_grand-mères">Fête des grand-mères</a>
+                <a className='admin-button' href="/admin/evenements/Fête_des_mères">Fête des mères</a>
+                <a className='admin-button' href="/admin/evenements/Fête_des_pères">Fête des pères</a>
+                <a className='admin-button' href="/admin/evenements/Toussaint">Toussaint</a>
+                <a className='admin-button' href="/admin/evenements/Noël">Noël</a>
+            </div>
         </div>
     );
 }

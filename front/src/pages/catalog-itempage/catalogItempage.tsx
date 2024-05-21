@@ -7,9 +7,9 @@ import { requester } from '../../components/requester';
 import { columnImagesTranslateCarousel, translateCarousel } from '../../components/translateCarousel';
 import Alert, { displayAlert } from '../../components/alert/alert';
 
-import './driedFlowersItempage.css';
+import './catalogItempage.css';
 
-function DriedFlowersItempage() {
+function CatalogItempage() {
     let params = useParams();
 
     const [tr, setTr] = React.useState<number>(0);
@@ -223,4 +223,4 @@ function DriedFlowersItempage() {
     );
 }
 
-export default DriedFlowersItempage;
+export default CatalogItempage;

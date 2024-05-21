@@ -41,6 +41,12 @@
     font-size: 0px;
 }
 
+.contact-url {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 @media (width <=768px) {
     #contact-emma {
         flex-direction: column;

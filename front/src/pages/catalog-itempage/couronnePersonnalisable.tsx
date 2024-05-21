@@ -3,7 +3,7 @@ import React from 'react';
 import { articleDB } from '../../components/types';
 import { columnImagesTranslateCarousel, translateCarousel } from '../../components/translateCarousel';
 
-import './driedFlowersItempage.css';
+import './catalogItempage.css';
 import MetaData from '../../components/metaData';
 
 function CouronnePersonnalisable() {

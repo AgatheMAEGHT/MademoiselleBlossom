@@ -6,7 +6,7 @@ import { requester, requesterFile } from '../../../../components/requester';
 import Alert, { displayAlert } from '../../../../components/alert/alert';
 import { article, newArticleDB, colorDB, toneDB, select, newColorDB, newToneDB, speciesDB, newSpeciesDB, editArticleOptions, selectColor, alertStatus } from '../../../../components/types';
 
-import '../../_components/catalogEdit.css';
+import '../../catalog-edit/catalogEdit.css';
 
 function WeekEditAdmin() {
     let navigate = useNavigate();

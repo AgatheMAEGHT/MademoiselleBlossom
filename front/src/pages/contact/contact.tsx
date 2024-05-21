@@ -12,8 +12,10 @@ function Contact() {
             </div>
             <div>
                 <p className='contact-emma-text'><b>Contactez Mademoiselle Blossom</b></p>
-                <p className='contact-emma-text'>Par téléphone au <i className='contact-info-separation'>numéro </i>06 <i className='contact-info-separation'>puis</i>16 <i className='contact-info-separation'>puis</i>28 <i className='contact-info-separation'>puis</i>28 <i className='contact-info-separation'>puis</i>83<br />
-                    Par e-mail à l'adresse ma<i className='contact-info-separation'>puis</i>demoiselle<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>blossom<i className='contact-info-separation'>puis</i>34<i className='contact-info-separation'>puis</i>@<i className='contact-info-separation'>puis</i>g<i className='contact-info-separation'>puis</i>mail<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>com</p>
+                <p className='contact-emma-text'>Par téléphone au <b><i><i className='contact-info-separation'>numéro </i>06 <i className='contact-info-separation'>puis</i>16 <i className='contact-info-separation'>puis</i>28 <i className='contact-info-separation'>puis</i>28 <i className='contact-info-separation'>puis</i>83</i></b></p>
+                <p className='contact-emma-text'> Par e-mail à l'adresse <b><i>ma<i className='contact-info-separation'>puis</i>demoiselle<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>blossom<i className='contact-info-separation'>puis</i>34<i className='contact-info-separation'>puis</i>@<i className='contact-info-separation'>puis</i>g<i className='contact-info-separation'>puis</i>mail<i className='contact-info-separation'>puis</i>.<i className='contact-info-separation'>puis</i>com</i></b></p>
+                <p className='contact-emma-text'>Sur Facebook <i><a className='contact-url' href='https://www.facebook.com/mademoiselleblossom34' target='_blank' rel='noreferrer'>Mademoiselle Blossom</a></i></p>
+                <p className='contact-emma-text'>Sur Instagram <i><a className='contact-url' href='https://www.instagram.com/mademoiselle_blossom_/' target='_blank' rel='noreferrer'>@mademoiselle_blossom_</a></i></p>
             </div>
             <div>
                 <p className='contact-emma-text'><b>Vous pouvez également me retrouver sur les marchés</b></p>
@@ -24,7 +26,7 @@ function Contact() {
                 </ul>
             </div>
             <p className='contact-emma-text'><br />Je vous invite à me contacter pour un devis personnalisé gratuit.</p>
-        </div>
+        </div >
     );
 }
 

@@ -9,3 +9,12 @@
     padding: 5px;
     height: fit-content;
 }
+
+#admin-events-catalogs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 60%;
+    cursor: pointer;
+}

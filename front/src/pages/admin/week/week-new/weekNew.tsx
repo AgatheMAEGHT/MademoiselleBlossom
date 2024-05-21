@@ -6,7 +6,7 @@ import { requester, requesterFile } from '../../../../components/requester';
 import Alert, { displayAlert } from '../../../../components/alert/alert';
 import { article, newArticleDB, colorDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, alertStatus, selectColor } from '../../../../components/types';
 
-import '../../_components/catalogEdit.css';
+import '../../catalog-edit/catalogEdit.css';
 
 function WeekNewAdmin() {
     let navigate = useNavigate();
@@ -400,7 +400,7 @@ function WeekNewAdmin() {
                     <p id="form-mandatory-text">Champs obligatoires</p>
                 </div>
             </div>
--
+            -
             <div className='admin-form'> {/* Elements */}
                 <h2>Créer des éléments</h2>
                 <p className='admin-form-infotext'>Les éléments créés ici seront disponibles pour tous les articles.<br />

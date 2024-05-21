@@ -164,6 +164,18 @@ export type selectColor = {
     hexa: string,
 };
 
+export enum articleType {
+    fresh = "fresh",
+    dried = "dried",
+    christmas = "christmas",
+    valentine = "valentine",
+    paschal = "paschal",
+    toussaint = "toussaint",
+    mother = "mother",
+    grandMother = "grandMother",
+    father = "father"
+};
+
 /* Pop UP */
 export enum alertStatus {
     success = "success",

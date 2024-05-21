@@ -2,13 +2,13 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
 
-import { requester, requesterFile } from '../../../../components/requester';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, select, editArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../../components/types';
-import Alert, { displayAlert } from '../../../../components/alert/alert';
+import { requester, requesterFile } from '../../../components/requester';
+import { article, newArticleDB, colorDB, shapeDB, toneDB, select, editArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../components/types';
+import Alert, { displayAlert } from '../../../components/alert/alert';
 
-import '../../_components/catalogEdit.css';
+import './catalogEdit.css';
 
-function EditDriedAdmin() {
+function EditCatalogAdmin(props: { articleType: string }) {
     let navigate = useNavigate();
     let params = useParams();
 
@@ -51,6 +51,19 @@ function EditDriedAdmin() {
         species: [],
         names: [],
     });
+
+    const typeOptions: select[] = [
+        { value: "dried", label: "Fleurs séchées" },
+        { value: "fresh", label: "Fleurs fraîches" },
+        { value: "christmas", label: "Fleurs de Noël" },
+        { value: "valentine", label: "Fleurs de la Saint-Valentin" },
+        { value: "pascal", label: "Fleurs de Pâques" },
+        { value: "toussaint", label: "Fleurs de la Toussaint" },
+        { value: "mother", label: "Fleurs de la fête des mères" },
+        { value: "grandmother", label: "Fleurs de la fête des grands-mères" },
+        { value: "father", label: "Fleurs de la fête des pères" },
+    ];
+
 
     React.useEffect(() => {
         let newOptions = {
@@ -201,7 +214,7 @@ function EditDriedAdmin() {
 
     function editArticle(files: string[]) {
         // Check if all fields are filled
-        if (article.name === "" || article.price === "" || article.stock === 0 || article.colors.length === 0 || article.tones.length === 0 || article.shape.name === "" || article.size === 0 || files.length === 0) {
+        if (article.name === "" || article.price === "" || article.stock === 0 || article.colors?.length === 0 || article.tones?.length === 0 || article.shape?.name === "" || article.size === 0 || files.length === 0) {
             displayAlert('form-mandatory');
             return;
         }
@@ -214,17 +227,17 @@ function EditDriedAdmin() {
 
         // Create new article object to send to the server
         let tmpArticle: newArticleDB = {
-            _id: article._id,
-            type: "dried",
-            name: article.name,
-            description: article.description ?? "",
-            price: parseFloat(article.price.toString().replace(",", ".")) ?? 0,
-            stock: article.stock,
-            size: article.size,
-            shape: article.shape._id,
-            colors: article.colors.map((elt: colorDB) => elt._id) ?? [],
-            species: article.species.map((elt: speciesDB) => elt._id) ?? [],
-            tones: article.tones.map((elt: toneDB) => elt._id) ?? [],
+            _id: article?._id,
+            type: article?.type,
+            name: article?.name,
+            description: article?.description ?? "",
+            price: parseFloat(article?.price?.toString().replace(",", ".")) ?? 0,
+            stock: article?.stock,
+            size: article?.size,
+            shape: article?.shape?._id,
+            colors: article?.colors?.map((elt: colorDB) => elt._id) ?? [],
+            species: article?.species?.map((elt: speciesDB) => elt._id) ?? [],
+            tones: article?.tones?.map((elt: toneDB) => elt._id) ?? [],
             files: files,
         };
 
@@ -414,7 +427,7 @@ function EditDriedAdmin() {
 
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'>Admin - Modifier un article</h1>
+            <h1 className='admin-page-title'>Admin - Modifier un article de {window.location.pathname.split("/")[window.location.pathname.split("/").length - 2].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")}</h1>
             <div id="admin-article-delete-area">
                 <button className='admin-button admin-delete-button' onClick={() => confirmDelete()}>Supprimer l'article</button>
                 <div id="admin-article-delete-popup">
@@ -602,6 +615,26 @@ function EditDriedAdmin() {
                 </div>
                 <p className="admin-form-input-info">Les images déjà sauvegardées n'apparaissent pas ici mais dans la liste <b>Images sélctionnées</b>.</p>
                 <p className="admin-form-input-info">Pour sélectionner plusieurs images en même temps, maintient la touche <i>Ctrl</i> enfoncée et sélectionne les images de ton choix.</p>
+                <div className='admin-form-element'> {/* Occasion */}
+                    <label htmlFor='admin-form-input-tones' className='admin-form-label'>Occasion<p className='form-mandatory'>*</p></label>
+                    <div className='admin-form-input-select'>
+                        <Select
+                            name="tones"
+                            styles={{
+                                control: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    borderColor: 'var(--color-2-darker)',
+                                }),
+                            }}
+                            isSearchable
+                            isClearable
+                            options={typeOptions}
+                            defaultValue={typeOptions[typeOptions.findIndex((elt: select) => elt.value === props.articleType) ?? 0]}
+                            onChange={(e) => setArticle({ ...article, type: e?.value ?? "" })}
+                            id='admin-form-input-tones'
+                        />
+                    </div>
+                </div>
                 <div className='admin-form-element'>
                     <p>Images sélectionnées</p>
                     <div></div>
@@ -731,4 +764,4 @@ function EditDriedAdmin() {
     );
 }
 
-export default EditDriedAdmin;
+export default EditCatalogAdmin;

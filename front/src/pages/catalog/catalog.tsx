@@ -7,13 +7,13 @@ import Alert, { displayAlert } from '../../components/alert/alert';
 import '../../components/catalogs.css';
 import MetaData from '../../components/metaData';
 
-function DriedFlowers() {
+function Catalog(props: { articleType: string }) {
     const [driedFlowers, setDriedFlowers] = React.useState<catalog>([]);
     const [favorites, setFavorites] = React.useState<favoriteDB[]>([]);
 
     React.useEffect(() => {
         let promises: Promise<any>[] = [];
-        promises.push(requester('/article?populate=true&types=dried', 'GET'));
+        promises.push(requester('/article?populate=true&types=' + props.articleType, 'GET'));
         if (localStorage.getItem("access_token")) {
             promises.push(requester('/favorite', 'GET'));
         }
@@ -21,18 +21,19 @@ function DriedFlowers() {
         Promise.all(promises).then((res: any) => {
             if (res) {
                 if (res[0]?.err) {
-                    console.log("error while fetching dried flowers");
+                    console.log("error while fetching " + props.articleType + " flowers");
                     return;
                 }
                 setDriedFlowers(res[0] ?? []);
 
                 if (res[1]?.err) {
-                    console.log("error while fetching dried flowers");
+                    console.log("error while fetching favorite flowers");
                     return;
                 }
                 setFavorites(res[1] ?? []);
             }
         })
+        // eslint-disable-next-line
     }, []);
 
     /* TILE */
@@ -138,16 +139,16 @@ function DriedFlowers() {
     return (
         <div className='page catalog'>
             <MetaData title="Fleurs Séchées" url="/fleurs-sechees" />
-            <h2 className="page-title">Fleurs Séchées</h2>
+            <h2 className="page-title">{window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")}</h2>
             {driedFlowers.length > 0 ?
                 <div id="dried-flowers-catalog">
                     {displayTiles()}
                 </div> :
-                <div><i>Malheureusement, il n'y a pas de fleurs séchées pour le moment</i></div>
+                <div><i>Malheureusement, il n'y a pas de fleurs de {window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")} pour le moment</i></div>
             }
             <Alert message="Pour ajouter un article en favoris, connectez-vous" id="need-login" status={alertStatus.info} />
         </div>
     );
 }
 
-export default DriedFlowers;
+export default Catalog;

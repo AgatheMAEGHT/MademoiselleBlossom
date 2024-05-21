@@ -1,20 +1,19 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { catalog } from '../../../components/types';
 import { requester } from '../../../components/requester';
 import { AdminDriedCatalogTile } from '../_components/catalog-tile-admin/catalogTile';
 
-import './dried.css';
+import './catalog.css';
 
-function CatalogAdmin() {
-    let navigate = useNavigate();
+function CatalogAdmin(props: { articleType: string, event: boolean }) {
     const [flowers, setFlowers] = React.useState<catalog>([]);
 
     React.useEffect(() => {
-        requester('/article?populate=true&limit=100&types=dried', 'GET').then((res: any) => {
+        requester('/article?populate=true&limit=100&types=' + props.articleType, 'GET').then((res: any) => {
             setFlowers(res);
         })
+        // eslint-disable-next-line
     }, []);
 
     function displayDriedFlowers() {
@@ -36,8 +35,8 @@ function CatalogAdmin() {
 
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'>Admin - Fleurs séchées</h1>
-            <button className='admin-button' onClick={() => navigate("/admin/fleurs-sechees/nouveau")}>Ajouter un article</button>
+            <h1 className='admin-page-title'>Admin - {window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")}</h1>
+            <a className='admin-button' href={"/admin/" + (props.event ? "evenements/" : "") + window.location.pathname.split("/")[window.location.pathname.split("/").length - 1] + "/nouveau"}>Ajouter un article</a>
             <div id="admin-dried-catalog">
                 {displayDriedFlowers()}
             </div>

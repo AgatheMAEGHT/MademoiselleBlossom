@@ -2,13 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 
-import { requester, requesterFile } from '../../../../components/requester';
-import Alert, { displayAlert } from '../../../../components/alert/alert';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../../components/types';
+import { requester, requesterFile } from '../../../components/requester';
+import Alert, { displayAlert } from '../../../components/alert/alert';
+import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../components/types';
 
-import '../../_components/catalogEdit.css';
+import '../catalog-edit/catalogEdit.css';
 
-function NewDriedAdmin() {
+function NewCatalogAdmin(props: { articleType: string }) {
     let navigate = useNavigate();
 
     /* Article Variables */
@@ -51,6 +51,18 @@ function NewDriedAdmin() {
         species: [],
         names: [],
     });
+
+    const typeOptions: select[] = [
+        { value: "dried", label: "Fleurs séchées" },
+        { value: "fresh", label: "Fleurs fraîches" },
+        { value: "christmas", label: "Fleurs de Noël" },
+        { value: "valentine", label: "Fleurs de la Saint-Valentin" },
+        { value: "pascal", label: "Fleurs de Pâques" },
+        { value: "toussaint", label: "Fleurs de la Toussaint" },
+        { value: "mother", label: "Fleurs de la fête des mères" },
+        { value: "grandmother", label: "Fleurs de la fête des grands-mères" },
+        { value: "father", label: "Fleurs de la fête des pères" },
+    ];
 
     React.useEffect(() => {
         let newOptions = {
@@ -158,7 +170,7 @@ function NewDriedAdmin() {
         // Create new article object to send to the server
         let tmpArticle: newArticleDB = {
             _id: "",
-            type: "dried",
+            type: article.type ?? "",
             name: article.name ?? "",
             description: article.description ?? "",
             price: parseFloat(article.price.toString().replace(",", ".")) ?? 0,
@@ -330,7 +342,7 @@ function NewDriedAdmin() {
 
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'>Admin - Ajouter un article séché</h1>
+            <h1 className='admin-page-title'>Admin - Ajouter un article de {window.location.pathname.split("/")[window.location.pathname.split("/").length - 2].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")}</h1>
 
             <div className='admin-form'> {/* Article */}
                 <h2>Créer un article</h2>
@@ -502,6 +514,26 @@ function NewDriedAdmin() {
                         accept='image/*'
                     />
                 </div>
+                <div className='admin-form-element'> {/* Occasion */}
+                    <label htmlFor='admin-form-input-tones' className='admin-form-label'>Occasion<p className='form-mandatory'>*</p></label>
+                    <div className='admin-form-input-select'>
+                        <Select
+                            name="tones"
+                            styles={{
+                                control: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    borderColor: 'var(--color-2-darker)',
+                                }),
+                            }}
+                            isSearchable
+                            isClearable
+                            options={typeOptions}
+                            defaultValue={typeOptions[typeOptions.findIndex((elt: select) => elt.value === props.articleType) ?? 0]}
+                            onChange={(e) => setArticle({ ...article, type: e?.value ?? "" })}
+                            id='admin-form-input-tones'
+                        />
+                    </div>
+                </div>
                 <div>   {/* Display Images */}
                     <div>
                         <p>Images sélectionnées</p>
@@ -625,4 +657,4 @@ function NewDriedAdmin() {
     );
 }
 
-export default NewDriedAdmin;
+export default NewCatalogAdmin;

@@ -11,7 +11,7 @@ export function AdminDriedCatalogTile(props: driedFlowerTile) {
     let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
 
     return (
-        <a className="dried-tile" key={props.id} href={"fleurs-sechees/" + props.name.replaceAll(" ", "_")}>
+        <a className="dried-tile" key={props.id} href={window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ") + "/" + props.name.replaceAll(" ", "_")}>
             <img className="dried-tile-img" src={imageUrl} alt={"couronne de fleurs séchées " + props.name} />
             <div className="dried-tile-name">{props.name}</div>
             <div className="dried-tile-price">{props.price}€</div>
@@ -32,10 +32,10 @@ export function AdminFreshCatalogTile(props: freshFlowerTile) {
             stock: props.article.stock,
             size: props.article.size,
             shape: "",
-            colors: props.article.colors.map((elt: colorDB) => elt._id) ?? [],
-            species: props.article.species.map((elt: speciesDB) => elt._id) ?? [],
-            tones: props.article.tones.map((elt: toneDB) => elt._id) ?? [],
-            files: props.article.files.map((elt: string) => elt.split('.')[0]) ?? [],
+            colors: props.article.colors?.map((elt: colorDB) => elt._id) ?? [],
+            species: props.article.species?.map((elt: speciesDB) => elt._id) ?? [],
+            tones: props.article.tones?.map((elt: toneDB) => elt._id) ?? [],
+            files: props.article.files?.map((elt: string) => elt.split('.')[0]) ?? [],
         }
 
         requester('/article/update', 'PUT', tmpArticle).then((res: any) => {
