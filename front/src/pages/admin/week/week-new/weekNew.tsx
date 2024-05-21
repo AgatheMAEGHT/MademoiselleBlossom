@@ -152,7 +152,7 @@ function WeekNewAdmin() {
         // Create new article object to send to the server
         let tmpArticle: newArticleDB = {
             _id: "",
-            type: article.type,
+            type: "fresh",
             name: article.name ?? (article.species[0]?.name + " " + article.colors.map((elt: colorDB) => elt.name).join(" ")),
             description: article.description ?? "",
             price: 0,
