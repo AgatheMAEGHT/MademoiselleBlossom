@@ -64,7 +64,6 @@ function EditCatalogAdmin(props: { articleType: string }) {
         { value: "father", label: "Fleurs de la fête des pères" },
     ];
 
-
     React.useEffect(() => {
         let newOptions = {
             colors: [],
@@ -109,7 +108,9 @@ function EditCatalogAdmin(props: { articleType: string }) {
                     res[5][0].species = [];
                 }
 
-                setArticle(res[5][0]);
+                let tmpArticle: article = res[5][0];
+                tmpArticle.type = props.articleType;
+                setArticle(tmpArticle);
             }
             setOptions(newOptions);
         });
@@ -427,7 +428,7 @@ function EditCatalogAdmin(props: { articleType: string }) {
 
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'>Admin - Modifier un article de {window.location.pathname.split("/")[window.location.pathname.split("/").length - 2].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")}</h1>
+            <h1 className='admin-page-title'>Admin - Modifier un article de {window.location.pathname.split("/")[window.location.pathname.split("/").length - 2].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("%C3%A2", "â").replaceAll("%C3%AB", "ë").replaceAll("_", " ")}</h1>
             <div id="admin-article-delete-area">
                 <button className='admin-button admin-delete-button' onClick={() => confirmDelete()}>Supprimer l'article</button>
                 <div id="admin-article-delete-popup">
@@ -637,22 +638,20 @@ function EditCatalogAdmin(props: { articleType: string }) {
                 </div>
                 <div className='admin-form-element'>
                     <p>Images sélectionnées</p>
-                    <div></div>
+                    <div id='empty'></div>
                 </div>
-                <div> {/* Display Images */}
-                    <div id='admin-form-images'>
-                        {article?.firstFile && <div id="admin-form-image-first">
-                            {(typeof (article?.firstFile) !== "string") ?
-                                <img key={article?.firstFile?.name} className='admin-form-image' src={URL.createObjectURL(article?.firstFile)} alt={article?.firstFile?.name} /> :
-                                <img key={article?.firstFile} className='admin-form-image' src={(process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + article?.firstFile} alt={article?.firstFile} />
-                            }
-                            <p className="admin-form-input-info">Image de couverture</p>
-                        </div>}
-                        {Array.from(article?.files || []).map((elt: File | string, index) => (typeof (elt) !== "string") ?
-                            displayFile(elt.name, URL.createObjectURL(elt), elt.name, index) :
-                            displayFile(elt, (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + elt, elt, index))
+                <div id='admin-form-images'> {/* Display Images */}
+                    {article?.firstFile && <div id="admin-form-image-first">
+                        {(typeof (article?.firstFile) !== "string") ?
+                            <img key={article?.firstFile?.name} className='admin-form-image' src={URL.createObjectURL(article?.firstFile)} alt={article?.firstFile?.name} /> :
+                            <img key={article?.firstFile} className='admin-form-image' src={(process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + article?.firstFile} alt={article?.firstFile} />
                         }
-                    </div>
+                        <p className="admin-form-input-info">Image de couverture</p>
+                    </div>}
+                    {Array.from(article?.files || []).map((elt: File | string, index) => (typeof (elt) !== "string") ?
+                        displayFile(elt.name, URL.createObjectURL(elt), elt.name, index) :
+                        displayFile(elt, (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + elt, elt, index))
+                    }
                 </div>
                 <button className='admin-button' onClick={() => postFile()}>Modifier l'article</button>
                 <div id="form-mandatory-info">

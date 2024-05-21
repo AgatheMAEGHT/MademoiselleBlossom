@@ -11,7 +11,7 @@ export function AdminDriedCatalogTile(props: driedFlowerTile) {
     let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
 
     return (
-        <a className="dried-tile" key={props.id} href={window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ") + "/" + props.name.replaceAll(" ", "_")}>
+        <a className="dried-tile" key={props.id} href={window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll(" ", "_") + "/" + props.name.replaceAll(" ", "_")}>
             <img className="dried-tile-img" src={imageUrl} alt={"couronne de fleurs séchées " + props.name} />
             <div className="dried-tile-name">{props.name}</div>
             <div className="dried-tile-price">{props.price}€</div>

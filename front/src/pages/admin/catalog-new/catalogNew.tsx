@@ -15,7 +15,7 @@ function NewCatalogAdmin(props: { articleType: string }) {
     const [nameAlreadyTaken, setNameAlreadyTaken] = React.useState(false);
     const [article, setArticle] = React.useState<article>({
         _id: "",
-        type: "",
+        type: props.articleType,
         name: "",
         description: "",
         price: "",
@@ -342,7 +342,7 @@ function NewCatalogAdmin(props: { articleType: string }) {
 
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'>Admin - Ajouter un article de {window.location.pathname.split("/")[window.location.pathname.split("/").length - 2].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")}</h1>
+            <h1 className='admin-page-title'>Admin - Ajouter un article de {window.location.pathname.split("/")[window.location.pathname.split("/").length - 2].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("%C3%A2", "â").replaceAll("%C3%AB", "ë").replaceAll("_", " ")}</h1>
 
             <div className='admin-form'> {/* Article */}
                 <h2>Créer un article</h2>

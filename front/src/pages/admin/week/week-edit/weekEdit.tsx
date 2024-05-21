@@ -108,9 +108,18 @@ function WeekEditAdmin() {
     }
 
     /* Check functions */
-    function checkName() {
+    function checkAlreadyExists() {
         let name: select = options.names?.filter((elt: select) => elt.label === (article.species[0]?.name + " " + article.colors[0]?.name))[0];
         if (name && name?.value !== article._id) {
+            setNameAlreadyTaken(true);
+        } else {
+            setNameAlreadyTaken(false);
+        }
+    }
+
+    function checkName(e: string) {
+        let name: select = options.names?.filter((elt: select) => elt.label === e)[0];
+        if (name && name?.value !== article?._id) {
             setNameAlreadyTaken(true);
         } else {
             setNameAlreadyTaken(false);
@@ -160,7 +169,7 @@ function WeekEditAdmin() {
 
     function editArticle(files: string[]) {
         // Check if all fields are filled
-        if (article.species[0].name === "" || article.colors.length === 0 || article.tones.length === 0 || files.length === 0) {
+        if (article.species.length === 0 || article.colors.length === 0 || article.tones.length === 0 || files.length === 0) {
             displayAlert('form-mandatory');
             return;
         }
@@ -174,8 +183,8 @@ function WeekEditAdmin() {
         // Create new article object to send to the server
         let tmpArticle: newArticleDB = {
             _id: article._id,
-            type: "fresh",
-            name: article.species[0]?.name + " " + article.colors.map((elt: colorDB) => elt.name).join(" "),
+            type: article.type,
+            name: article.name ?? (article.species[0]?.name + " " + article.colors.map((elt: colorDB) => elt.name).join(" ")),
             description: article.description ?? "",
             price: 0,
             stock: article.stock,
@@ -186,8 +195,6 @@ function WeekEditAdmin() {
             tones: article.tones.map((elt: toneDB) => elt._id),
             files: files,
         };
-
-        console.log(tmpArticle);
 
         // Create new article
         requester('/article/update', 'PUT', tmpArticle).then((res: any) => {
@@ -349,6 +356,21 @@ function WeekEditAdmin() {
             </div>
             <div className='admin-form'> {/* Article */}
                 <h2>Modifier une fleur - {article?.name ?? ""}</h2>
+                <div className='admin-form-element'> {/* Name */}
+                    <label htmlFor='admin-form-input-name' className='admin-form-label'>Nom</label>
+                    <div className='admin-form-element-right'>
+                        {nameAlreadyTaken && <div id="admin-form-element-alreadytaken">Ce nom est déjà pris par une autre création</div>}
+                        <input
+                            value={article.name}
+                            onChange={e => { setArticle({ ...article, name: e.target.value }); checkName(e.target.value); }}
+                            className='admin-form-input admin-form-input-right'
+                            id="admin-form-input-name"
+                            type="text"
+                            name="name"
+                        />
+                    </div>
+                </div>
+                <p className="admin-form-input-info">Si te ne donnes pas de nom à une fleur fraiche, par défaut ce sera ne nom de l'espèce (la première s'il y en a plusieurs) suivi de toutes les couleurs.</p>
                 {nameAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette fleur existe déjà</div>}
                 <div className='admin-form-element'> {/* Species */}
                     <label htmlFor='admin-form-input-species' className='admin-form-label'>Espèce<p className='form-mandatory'>*</p></label>
@@ -363,9 +385,10 @@ function WeekEditAdmin() {
                             }}
                             isSearchable
                             isClearable
-                            defaultValue={article.species.map((elt: speciesDB) => ({ label: elt.name, value: elt._id })) ?? []}
+                            isMulti
                             options={options.species}
-                            onChange={(elt) => { setArticle({ ...article, species: (elt ? ([{ _id: elt.value, name: elt.label }]) : []) }); checkName(); }}
+                            defaultValue={article.species.map((elt: speciesDB) => ({ label: elt.name, value: elt._id })) ?? []}
+                            onChange={(elt) => { setArticle({ ...article, species: (elt ? elt.map((elt: select) => ({ _id: elt.value, name: elt.label })) : []) }); checkAlreadyExists(); }}
                             id='admin-form-input-species'
                         />
                     </div>

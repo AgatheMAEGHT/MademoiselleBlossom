@@ -81,8 +81,17 @@ function WeekNewAdmin() {
     }
 
     /* Check functions */
-    function checkName() {
+    function checkAlreadyExists() {
         if (options.names?.includes(article.species[0]?.name + " " + article.colors[0]?.name)) {
+            setNameAlreadyTaken(true);
+        } else {
+            setNameAlreadyTaken(false);
+        }
+    }
+
+    function checkName(e: string) {
+        let name: string = options.names?.filter((elt: string) => elt === e)[0];
+        if (name) {
             setNameAlreadyTaken(true);
         } else {
             setNameAlreadyTaken(false);
@@ -129,7 +138,7 @@ function WeekNewAdmin() {
 
     function postArticle(files: string[]) {
         // Check if all fields are filled
-        if (article.species[0].name === "" || article.colors.length === 0 || article.tones.length === 0 || files.length === 0) {
+        if (article.species.length === 0 || article.colors.length === 0 || article.tones.length === 0 || files.length === 0) {
             displayAlert('form-mandatory');
             return;
         }
@@ -143,8 +152,8 @@ function WeekNewAdmin() {
         // Create new article object to send to the server
         let tmpArticle: newArticleDB = {
             _id: "",
-            type: "fresh",
-            name: article.species[0]?.name + " " + article.colors[0]?.name,
+            type: article.type,
+            name: article.name ?? (article.species[0]?.name + " " + article.colors.map((elt: colorDB) => elt.name).join(" ")),
             description: article.description ?? "",
             price: 0,
             stock: 0,
@@ -283,6 +292,21 @@ function WeekNewAdmin() {
 
             <div className='admin-form'> {/* Article */}
                 <h2>Créer une fleur - {(article.species[0]?.name ?? "") + " " + (article.colors[0]?.name ?? "")}</h2>
+                <div className='admin-form-element'> {/* Name */}
+                    <label htmlFor='admin-form-input-name' className='admin-form-label'>Nom</label>
+                    <div className='admin-form-element-right'>
+                        {nameAlreadyTaken && <div id="admin-form-element-alreadytaken">Ce nom est déjà pris par une autre création</div>}
+                        <input
+                            value={article.name}
+                            onChange={e => { setArticle({ ...article, name: e.target.value }); checkName(e.target.value); }}
+                            className='admin-form-input admin-form-input-right'
+                            id="admin-form-input-name"
+                            type="text"
+                            name="name"
+                        />
+                    </div>
+                </div>
+                <p className="admin-form-input-info">Si te ne donnes pas de nom à une fleur fraiche, par défaut ce sera ne nom de l'espèce (la première s'il y en a plusieurs) suivi de toutes les couleurs.</p>
                 {nameAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette fleur existe déjà</div>}
                 <div className='admin-form-element'> {/* Species */}
                     <label htmlFor='admin-form-input-species' className='admin-form-label'>Espèce<p className='form-mandatory'>*</p></label>
@@ -297,8 +321,10 @@ function WeekNewAdmin() {
                             }}
                             isSearchable
                             isClearable
+                            isMulti
                             options={options.species}
-                            onChange={(elt) => { setArticle({ ...article, species: (elt ? ([{ _id: elt.value, name: elt.label }]) : []) }); checkName(); }}
+                            defaultValue={article.species.map((elt: speciesDB) => ({ label: elt.name, value: elt._id })) ?? []}
+                            onChange={(elt) => { setArticle({ ...article, species: (elt ? elt.map((elt: select) => ({ _id: elt.value, name: elt.label })) : []) }); checkAlreadyExists(); }}
                             id='admin-form-input-species'
                         />
                     </div>
@@ -318,7 +344,7 @@ function WeekNewAdmin() {
                             isSearchable
                             isClearable
                             options={options.colors}
-                            onChange={(e) => { setArticle({ ...article, colors: (e ? [{ _id: e[0].value, name: e[0].label, hexa: e[0].hexa }] : []) }); checkName(); }}
+                            onChange={(e) => { setArticle({ ...article, colors: (e ? [{ _id: e[0].value, name: e[0].label, hexa: e[0].hexa }] : []) }); checkAlreadyExists(); }}
                             id='admin-form-input-colors'
                         />
                     </div>
@@ -382,17 +408,15 @@ function WeekNewAdmin() {
                         accept='image/*'
                     />
                 </div>
-                <div>   {/* Display Images */}
-                    <div>
-                        <p>Image sélectionnée</p>
-                        <div></div>
-                    </div>
-                    <div id='admin-form-images'>
-                        {article.firstFile && <div id="admin-form-image-first">
-                            {typeof (article.firstFile) !== "string" && <img className='admin-form-image' src={URL.createObjectURL(article.firstFile)} alt={article.firstFile.name} />}
-                            <p className="admin-form-input-info">Image de couverture</p>
-                        </div>}
-                    </div>
+                <div>
+                    <p>Image sélectionnée</p>
+                    <div></div>
+                </div>
+                <div id='admin-form-images'>{/* Display Images */}
+                    {article.firstFile && <div id="admin-form-image-first">
+                        {typeof (article.firstFile) !== "string" && <img className='admin-form-image' src={URL.createObjectURL(article.firstFile)} alt={article.firstFile.name} />}
+                        <p className="admin-form-input-info">Image de couverture</p>
+                    </div>}
                 </div>
                 <button className='admin-button' onClick={() => postFile()}>Ajouter l'article</button>
                 <div id="form-mandatory-info">
@@ -400,7 +424,7 @@ function WeekNewAdmin() {
                     <p id="form-mandatory-text">Champs obligatoires</p>
                 </div>
             </div>
-            -
+
             <div className='admin-form'> {/* Elements */}
                 <h2>Créer des éléments</h2>
                 <p className='admin-form-infotext'>Les éléments créés ici seront disponibles pour tous les articles.<br />

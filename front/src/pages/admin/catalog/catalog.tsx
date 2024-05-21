@@ -35,7 +35,7 @@ function CatalogAdmin(props: { articleType: string, event: boolean }) {
 
     return (
         <div className='admin-page page'>
-            <h1 className='admin-page-title'>Admin - {window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")}</h1>
+            <h1 className='admin-page-title'>Admin - {window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("%C3%A2", "â").replaceAll("%C3%AB", "ë").replaceAll("_", " ")}</h1>
             <a className='admin-button' href={"/admin/" + (props.event ? "evenements/" : "") + window.location.pathname.split("/")[window.location.pathname.split("/").length - 1] + "/nouveau"}>Ajouter un article</a>
             <div id="admin-dried-catalog">
                 {displayDriedFlowers()}
