@@ -94,10 +94,27 @@ export function requesterFile<T>(url: string, method: string, file: File, conten
                 img.src = event.target?.result as string;
                 img.onload = () => {
                     const elem = document.createElement('canvas');
-                    elem.width = img.width;
-                    elem.height = img.height;
+                    // One side must be max 1920px
+                    if (img.width > img.height) {
+                        if (img.width > 1920) {
+                            elem.width = 1920;
+                            elem.height = img.height * 1920 / img.width;
+                        } else {
+                            elem.width = img.width;
+                            elem.height = img.height;
+                        }
+                    } else {
+                        if (img.height > 1920) {
+                            elem.height = 1920;
+                            elem.width = img.width * 1920 / img.height;
+                        } else {
+                            elem.width = img.width;
+                            elem.height = img.height;
+                        }
+                    }
+
                     const ctx = elem.getContext('2d');
-                    ctx?.drawImage(img, 0, 0, img.width, img.height);
+                    ctx?.drawImage(img, 0, 0, elem.width, elem.height);
                     ctx?.canvas.toBlob((blob) => {
                         const compressedFile = new File([blob as Blob], file.name, {
                             type: 'image/jpeg',

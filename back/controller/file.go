@@ -63,6 +63,7 @@ func postFile(w http.ResponseWriter, r *http.Request, user database.User) {
 		return
 	}
 
+	log.Infof("Content length %vB (%vKB) (%vMB)", contentLength, contentLength/1024, contentLength/1024/1024)
 	if contentLength > contentLengthLimit {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(utils.NewResErr("Content length too big").ToJson())
