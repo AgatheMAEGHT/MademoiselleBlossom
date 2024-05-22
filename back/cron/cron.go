@@ -29,4 +29,5 @@ func StartCron() {
 
 func InitCron() {
 	// AddCronTask(60*60*24, CleanTempCartTick)
+	AddCronTask(60*60*24, RemoveUnusedFilesTick)
 }
