@@ -7,7 +7,7 @@ import Alert, { displayAlert } from '../../components/alert/alert';
 import '../../components/catalogs.css';
 import MetaData from '../../components/metaData';
 
-function Catalog(props: { articleType: string }) {
+function Catalog(props: { articleType: string; }) {
     const [driedFlowers, setDriedFlowers] = React.useState<catalog>([]);
     const [favorites, setFavorites] = React.useState<favoriteDB[]>([]);
 
@@ -32,7 +32,7 @@ function Catalog(props: { articleType: string }) {
                 }
                 setFavorites(res[1] ?? []);
             }
-        })
+        });
         // eslint-disable-next-line
     }, []);
 
@@ -136,15 +136,19 @@ function Catalog(props: { articleType: string }) {
         return driedFlowersList;
     }
 
+    // Replace special characters in the title
+    // Noël, Saint-Valentin, Pâques, Toussaint, Fête des mères, Fête des grand-mères, Fête des pères
+    let pageTitle = window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ").replaceAll("%C3%A0", "à").replaceAll("%C3%B9", "ù").replaceAll("%C3%A9", "é").replaceAll("%C3%B4", "ô").replaceAll("%C3%A7", "ç").replaceAll("%C3%A2", "â").replaceAll("%C3%AB", "ë").replaceAll("%C3%AF", "ï").replaceAll("%C3%BB", "û").replaceAll("%C3%AE", "î").replaceAll("%C3%B6", "ö").replaceAll("%C3%B1", "ñ").replaceAll("%C3%BC", "ü").replaceAll("%C3%BF", "ÿ");
+
     return (
         <div className='page catalog'>
             <MetaData title="Fleurs Séchées" url="/fleurs-sechees" />
-            <h2 className="page-title">{window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")}</h2>
+            <h2 className="page-title">{pageTitle}</h2>
             {driedFlowers.length > 0 ?
                 <div id="dried-flowers-catalog">
                     {displayTiles()}
                 </div> :
-                <div><i>Malheureusement, il n'y a pas de fleurs de {window.location.pathname.split("/")[window.location.pathname.split("/").length - 1].replace("fleurs-sechees", "Fleurs Séchées").replaceAll("%C3%AA", "ê").replaceAll("%C3%A8", "è").replaceAll("_", " ")} pour le moment</i></div>
+                <div><i>Malheureusement, il n'y a pas de fleurs de {pageTitle} pour le moment</i></div>
             }
             <Alert message="Pour ajouter un article en favoris, connectez-vous" id="need-login" status={alertStatus.info} />
         </div>
