@@ -7,8 +7,10 @@ import HeaderButtons from './components/header/headerButtons';
 import Footer from './components/footer/footer';
 import Homepage from './pages/homepage/homepage';
 import Catalog from './pages/catalog/catalog';
-import CatalogItempage from './pages/catalog-itempage/catalogItempage';
+import CatalogDriedItempage from './pages/catalog-itempage/catalogDriedItempage';
 import CouronnePersonnalisable from './pages/catalog-itempage/couronnePersonnalisable';
+import CatalogCustom from './pages/catalog-custom/catalogCustom';
+import CatalogFreshItempage from './pages/catalog-itempage/catalogFreshItempage';
 import Week from './pages/week/week';
 import Inspirations from './pages/inspirations/inspirations';
 import Mariage from './pages/inspirations/mariage/mariage';
@@ -97,22 +99,25 @@ function App() {
 
                 <Route path='/fleurs-sechees' element={<Catalog articleType={articleType.dried} />} />
                 <Route path='/fleurs-sechees/couronne-personnalisable' element={<CouronnePersonnalisable />} />
-                <Route path='/fleurs-sechees/:itemName' element={<CatalogItempage />} />
+                <Route path='/fleurs-sechees/:itemName' element={<CatalogDriedItempage />} />
+
+                <Route path='/sur-mesure' element={<CatalogCustom articleType={articleType.weekCompo} />} />
+                <Route path='/sur-mesure/:itemName' element={<CatalogFreshItempage />} />
 
                 <Route path='/Noël' element={<Catalog articleType={articleType.christmas} />} />
-                <Route path='/Noël/:itemName' element={<CatalogItempage />} />
+                <Route path='/Noël/:itemName' element={<CatalogDriedItempage />} />
                 <Route path='/Saint-Valentin' element={<Catalog articleType={articleType.valentine} />} />
-                <Route path='/Saint-Valentin/:itemName' element={<CatalogItempage />} />
+                <Route path='/Saint-Valentin/:itemName' element={<CatalogDriedItempage />} />
                 <Route path='/Pâques' element={<Catalog articleType={articleType.paschal} />} />
-                <Route path='/Pâques/:itemName' element={<CatalogItempage />} />
+                <Route path='/Pâques/:itemName' element={<CatalogDriedItempage />} />
                 <Route path='/Toussaint' element={<Catalog articleType={articleType.toussaint} />} />
-                <Route path='/Toussaint/:itemName' element={<CatalogItempage />} />
+                <Route path='/Toussaint/:itemName' element={<CatalogDriedItempage />} />
                 <Route path='/Fête_des_mères' element={<Catalog articleType={articleType.mother} />} />
-                <Route path='/Fête_des_mères/:itemName' element={<CatalogItempage />} />
+                <Route path='/Fête_des_mères/:itemName' element={<CatalogDriedItempage />} />
                 <Route path='/Fête_des_grand-mères' element={<Catalog articleType={articleType.grandMother} />} />
-                <Route path='/Fête_des_grand-mères/:itemName' element={<CatalogItempage />} />
+                <Route path='/Fête_des_grand-mères/:itemName' element={<CatalogDriedItempage />} />
                 <Route path='/Fête_des_pères' element={<Catalog articleType={articleType.father} />} />
-                <Route path='/Fête_des_pères/:itemName' element={<CatalogItempage />} />
+                <Route path='/Fête_des_pères/:itemName' element={<CatalogDriedItempage />} />
             </Routes>
             <Footer />
         </div>

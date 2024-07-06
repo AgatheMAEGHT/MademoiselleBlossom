@@ -53,13 +53,28 @@ function Week() {
 
         return (
             <div className="dried-tile" key={article._id}>
-                <a href={"/fleurs-sechees/" + article.name}>
+                <a href={"/sur-mesure/" + article.name}>
                     <img
                         className="dried-tile-img"
                         src={imageUrl}
                         alt={"couronne de fleurs séchées " + article.name}
                     />
                 </a>
+                <div className="dried-tile-name">{article.name}</div>
+            </div>
+        );
+    }
+
+    function freshCatalogTile(article: articleDB) {
+        let imageUrl: string = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + article.files[0];
+
+        return (
+            <div className="dried-tile" key={article._id} style={{ cursor: "default" }}>
+                <img
+                    className="dried-tile-img"
+                    src={imageUrl}
+                    alt={"couronne de fleurs séchées " + article.name}
+                />
                 <div className="dried-tile-name">{article.name}</div>
             </div>
         );
@@ -80,6 +95,21 @@ function Week() {
         return driedFlowersList;
     }
 
+    function freshDisplayTiles(flowers: catalog) {
+        let driedFlowersList: JSX.Element[] = [];
+        for (let i = 0; i < flowers?.length; i += 3) {
+            let row: JSX.Element[] = [];
+            for (let j = 0; j < 3; j++) {
+                if (flowers[i + j]) {
+                    row.push(freshCatalogTile(flowers[i + j]));
+                }
+            }
+            driedFlowersList.push(<div key={i} className="dried-flowers-row">{row}</div>);
+        }
+
+        return driedFlowersList;
+    }
+
     return (
         <div className="page catalog">
             <MetaData title="Fleurs de la semaine" url="/fleurs-de-la-semaine" />
@@ -87,7 +117,7 @@ function Week() {
             {colors.length > 0 && <div id="week-gradient" style={{ background: createGradient() }}></div>}
             {freshFlowers.length > 0 ?
                 <div id="dried-flowers-catalog">
-                    {displayTiles(freshFlowers)}
+                    {freshDisplayTiles(freshFlowers)}
                 </div> :
                 <div className='paragraph-center'><i>Malheureusement, il n'y a pas de fleurs fraiches pour le moment</i></div>
             }

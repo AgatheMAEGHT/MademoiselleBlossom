@@ -9,7 +9,7 @@ import Alert, { displayAlert } from '../../components/alert/alert';
 
 import './catalogItempage.css';
 
-function CatalogItempage() {
+function CatalogFreshItempage() {
     let params = useParams();
 
     const [tr, setTr] = React.useState<number>(0);
@@ -20,7 +20,7 @@ function CatalogItempage() {
         type: "",
         name: "",
         description: "",
-        price: 30,
+        price: 0,
         stock: 1,
         size: 0,
         shape: {
@@ -181,7 +181,6 @@ function CatalogItempage() {
                 <div id="item-page-infos">
                     <h1 id="item-page-info-name">{item?.name}</h1>
                     <div id="item-page-info-price">{item?.price}€</div>
-                    <div id="item-page-info-stock">{item?.size} cm</div>
                     <div id="item-page-info-favorite" onClick={() => editIsFavorite(item?._id, favId)}>
                         <img
                             id="item-page-info-favorite-icon"
@@ -223,4 +222,4 @@ function CatalogItempage() {
     );
 }
 
-export default CatalogItempage;
+export default CatalogFreshItempage;

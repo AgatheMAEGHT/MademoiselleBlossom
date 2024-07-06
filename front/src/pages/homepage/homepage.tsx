@@ -31,7 +31,7 @@ function Homepage() {
                 <div id="home-top-buttons-area">
                     <a className='home-top-buttons' href="/fleurs-sechees">Fleurs séchées</a>
                     <a className='home-top-buttons' href="/fleurs-de-la-semaine">Fleurs de la semaine</a>
-                    <a className='home-top-buttons' href="/fleurs-sechees/couronne-personnalisable">Commande sur mesure</a>
+                    <a className='home-top-buttons' href="/sur-mesure">Commande sur mesure</a>
                 </div>
             </div>
 
