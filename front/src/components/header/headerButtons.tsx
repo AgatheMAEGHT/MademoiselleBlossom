@@ -26,6 +26,7 @@ function HeaderButtons() {
                 <div id="header-buttons">
                     <a className='header-item link' href="/fleurs-de-la-semaine">Fleurs de la semaine</a>
                     <a className='header-item link' href="/fleurs-sechees">Fleurs séchées</a>
+                    <a className='header-item link' href="/plantes">Plantes</a>
 
                     <div className='header-item' id="inspi">
                         <a className='header-item link' href="/inspirations">Inspirations</a>
@@ -48,9 +49,11 @@ function HeaderButtons() {
                 <div id="header-buttons-mobile-area">
                     <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/"); }}>Accueil</p>
                     <hr className='header-lines' />
+                    <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/fleurs-de-la-semaine"); }}>Fleurs de la semaine</p>
+                    <hr className='header-lines' />
                     <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/fleurs-sechees"); }}>Fleurs séchées</p>
                     <hr className='header-lines' />
-                    <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/fleurs-de-la-semaine"); }}>Fleurs de la semaine</p>
+                    <p className='header-item-small' onClick={() => { burgerHeader(); navigate("/plantes"); }}>Plantes</p>
                     {(evntName !== '') && <hr className='header-lines' />}
                     {(evntName !== '') && <div className='header-item-small' id="header-item-event-small" onClick={() => { burgerHeader(); navigate("/" + evntName.replaceAll(" ", "_")); }}>
                         <p className='header-item-small'>{evntName}</p>

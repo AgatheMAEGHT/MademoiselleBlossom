@@ -31,6 +31,7 @@ function HeaderAdmin() {
 
                 <a href="/admin/fleurs-de-la-semaine" className='admin-header-item link'>Fleurs de la semaine</a>
                 <a href="/admin/fleurs-sechees" className='admin-header-item link'>Fleurs séchées</a>
+                <a href="/admin/plantes" className='admin-header-item link'>Plantes</a>
 
                 <a href="/admin/evenements" className='admin-header-item link'>Évènements</a>
 

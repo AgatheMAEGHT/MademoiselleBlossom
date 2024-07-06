@@ -49,10 +49,15 @@
     cursor: pointer;
 }
 
+#header-top-button-burger-area {
+    height: 30px;
+}
+
 #header-top-button-burger {
     display: none;
     cursor: pointer;
-    position: relative;
+    position: fixed;
+    top: 0px;
     z-index: 80;
     background-color: var(--color-1);
     padding: 5px;
