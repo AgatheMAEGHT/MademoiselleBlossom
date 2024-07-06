@@ -30,9 +30,9 @@ import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
 import WeekAdmin from './pages/admin/week/week';
 import WeekNewAdmin from './pages/admin/week/week-new/weekNew';
 import WeekEditAdmin from './pages/admin/week/week-edit/weekEdit';
-import PlantAdmin from './pages/admin/week copy/plant';
-import PlantNewAdmin from './pages/admin/week copy/plant-new/plantNew';
-import PlantEditAdmin from './pages/admin/week copy/plant-edit/plantEdit';
+import PlantAdmin from './pages/admin/plants/plant';
+import PlantNewAdmin from './pages/admin/plants/plant-new/plantNew';
+import PlantEditAdmin from './pages/admin/plants/plant-edit/plantEdit';
 import EventsAdmin from './pages/admin/events/eventsAdmin';
 import EditComponentsAdmin from './pages/admin/edit-components/edit-components';
 
