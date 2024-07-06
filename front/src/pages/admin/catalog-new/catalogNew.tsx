@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import { requester, requesterFile } from '../../../components/requester';
 import Alert, { displayAlert } from '../../../components/alert/alert';
-import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus } from '../../../components/types';
+import { article, newArticleDB, colorDB, shapeDB, toneDB, select, newArticleOptions, newColorDB, newToneDB, speciesDB, newSpeciesDB, selectColor, alertStatus, articleType } from '../../../components/types';
 
 import '../catalog-edit/catalogEdit.css';
 
@@ -53,16 +53,17 @@ function NewCatalogAdmin(props: { articleType: string }) {
     });
 
     const typeOptions: select[] = [
-        { value: "dried", label: "Fleurs séchées" },
-        { value: "fresh", label: "Fleurs fraîches" },
-        { value: "freshCompo", label: "Fleurs fraîches (Compositions)" },
-        { value: "christmas", label: "Fleurs de Noël" },
-        { value: "valentine", label: "Fleurs de la Saint-Valentin" },
-        { value: "pascal", label: "Fleurs de Pâques" },
-        { value: "toussaint", label: "Fleurs de la Toussaint" },
-        { value: "mother", label: "Fleurs de la fête des mères" },
-        { value: "grandmother", label: "Fleurs de la fête des grands-mères" },
-        { value: "father", label: "Fleurs de la fête des pères" },
+        { value: articleType.dried, label: "Fleurs séchées" },
+        { value: articleType.fresh, label: "Fleurs fraîches" },
+        { value: articleType.freshCompo, label: "Fleurs fraîches (Compositions)" },
+        { value: articleType.plant, label: "Plantes" },
+        { value: articleType.christmas, label: "Fleurs de Noël" },
+        { value: articleType.valentine, label: "Fleurs de la Saint-Valentin" },
+        { value: articleType.easter, label: "Fleurs de Pâques" },
+        { value: articleType.toussaint, label: "Fleurs de la Toussaint" },
+        { value: articleType.mother, label: "Fleurs de la fête des mères" },
+        { value: articleType.grandMother, label: "Fleurs de la fête des grands-mères" },
+        { value: articleType.father, label: "Fleurs de la fête des pères" },
     ];
 
     React.useEffect(() => {

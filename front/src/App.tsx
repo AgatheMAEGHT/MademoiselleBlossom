@@ -9,6 +9,7 @@ import Homepage from './pages/homepage/homepage';
 import Catalog from './pages/catalog/catalog';
 import CatalogDriedItempage from './pages/catalog-itempage/catalogDriedItempage';
 import CouronnePersonnalisable from './pages/catalog-itempage/couronnePersonnalisable';
+import CatalogPlants from './pages/catalog-plants/catalogPlants';
 import CatalogCustom from './pages/catalog-custom/catalogCustom';
 import CatalogFreshItempage from './pages/catalog-itempage/catalogFreshItempage';
 import Week from './pages/week/week';
@@ -29,6 +30,9 @@ import HomepageAdmin from './pages/admin/homepage/homepageAdmin';
 import WeekAdmin from './pages/admin/week/week';
 import WeekNewAdmin from './pages/admin/week/week-new/weekNew';
 import WeekEditAdmin from './pages/admin/week/week-edit/weekEdit';
+import PlantAdmin from './pages/admin/week copy/plant';
+import PlantNewAdmin from './pages/admin/week copy/plant-new/plantNew';
+import PlantEditAdmin from './pages/admin/week copy/plant-edit/plantEdit';
 import EventsAdmin from './pages/admin/events/eventsAdmin';
 import EditComponentsAdmin from './pages/admin/edit-components/edit-components';
 
@@ -53,13 +57,16 @@ function App() {
                     <Route path='/admin/fleurs-de-la-semaine' element={<WeekAdmin />} />
                     <Route path='/admin/fleurs-de-la-semaine/nouveau' element={<WeekNewAdmin />} />
                     <Route path='/admin/fleurs-de-la-semaine/:itemName' element={<WeekEditAdmin />} />
+                    <Route path='/admin/plantes' element={<PlantAdmin />} />
+                    <Route path='/admin/plantes/nouveau' element={<PlantNewAdmin />} />
+                    <Route path='/admin/plantes/:itemName' element={<PlantEditAdmin />} />
                     <Route path='/admin/evenements' element={<EventsAdmin />} />
                     <Route path='/admin/evenements/Noël' element={<CatalogAdmin articleType={articleType.christmas} event={true} />} />
                     <Route path='/admin/evenements/Noël/nouveau' element={<NewCatalogAdmin articleType={articleType.christmas} />} />
                     <Route path='/admin/evenements/Noël/:itemName' element={<EditCatalogAdmin articleType={articleType.christmas} />} />
-                    <Route path='/admin/evenements/Pâques' element={<CatalogAdmin articleType={articleType.paschal} event={true} />} />
-                    <Route path='/admin/evenements/Pâques/nouveau' element={<NewCatalogAdmin articleType={articleType.paschal} />} />
-                    <Route path='/admin/evenements/Pâques/:itemName' element={<EditCatalogAdmin articleType={articleType.paschal} />} />
+                    <Route path='/admin/evenements/Pâques' element={<CatalogAdmin articleType={articleType.easter} event={true} />} />
+                    <Route path='/admin/evenements/Pâques/nouveau' element={<NewCatalogAdmin articleType={articleType.easter} />} />
+                    <Route path='/admin/evenements/Pâques/:itemName' element={<EditCatalogAdmin articleType={articleType.easter} />} />
                     <Route path='/admin/evenements/Saint-Valentin' element={<CatalogAdmin articleType={articleType.valentine} event={true} />} />
                     <Route path='/admin/evenements/Saint-Valentin/nouveau' element={<NewCatalogAdmin articleType={articleType.valentine} />} />
                     <Route path='/admin/evenements/Saint-Valentin/:itemName' element={<EditCatalogAdmin articleType={articleType.valentine} />} />
@@ -104,11 +111,14 @@ function App() {
                 <Route path='/sur-mesure' element={<CatalogCustom articleType={articleType.weekCompo} />} />
                 <Route path='/sur-mesure/:itemName' element={<CatalogFreshItempage />} />
 
+                <Route path='/plantes' element={<CatalogPlants articleType={articleType.plant} />} />
+                <Route path='/plantes/:itemName' element={<CatalogFreshItempage />} />
+
                 <Route path='/Noël' element={<Catalog articleType={articleType.christmas} />} />
                 <Route path='/Noël/:itemName' element={<CatalogDriedItempage />} />
                 <Route path='/Saint-Valentin' element={<Catalog articleType={articleType.valentine} />} />
                 <Route path='/Saint-Valentin/:itemName' element={<CatalogDriedItempage />} />
-                <Route path='/Pâques' element={<Catalog articleType={articleType.paschal} />} />
+                <Route path='/Pâques' element={<Catalog articleType={articleType.easter} />} />
                 <Route path='/Pâques/:itemName' element={<CatalogDriedItempage />} />
                 <Route path='/Toussaint' element={<Catalog articleType={articleType.toussaint} />} />
                 <Route path='/Toussaint/:itemName' element={<CatalogDriedItempage />} />
