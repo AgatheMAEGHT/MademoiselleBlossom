@@ -23,9 +23,10 @@ export function AdminFreshCatalogTile(props: freshFlowerTile) {
     let imageUrl = (process.env.REACT_APP_API_URL ?? "") + (process.env.REACT_APP_DOWNLOAD_URL ?? "") + props.images[0];
 
     function addToWeek() {
+        let newType = props.article.type === "fresh" ? "week" : "weekCompo";
         let tmpArticle: newArticleDB = {
             _id: props.article._id,
-            type: "week",
+            type: newType,
             name: props.article.name,
             description: props.article.description ?? "",
             price: parseFloat(props.article.price.toString().replace(",", ".")) ?? 0,
@@ -50,9 +51,10 @@ export function AdminFreshCatalogTile(props: freshFlowerTile) {
     }
 
     function removeFromWeek() {
+        let newType = props.article.type === "week" ? "fresh" : "freshCompo";
         let tmpArticle: newArticleDB = {
             _id: props.article._id,
-            type: "fresh",
+            type: newType,
             name: props.article.name,
             description: props.article.description ?? "",
             price: parseFloat(props.article.price.toString().replace(",", ".")) ?? 0,
@@ -82,7 +84,7 @@ export function AdminFreshCatalogTile(props: freshFlowerTile) {
                 <img className="dried-tile-img" src={imageUrl} alt={props.name + "fraiche"} />
             </a>
             <div className="dried-tile-name admin-fresh-name">{props.name}</div>
-            {props.article.type === "fresh" ?
+            {props.article.type === "fresh" || props.article.type === "freshCompo" ?
                 <div className='admin-fresh-tile-button' onClick={() => addToWeek()}>Ajouter à la semaine</div> :
                 <div className='admin-fresh-tile-button' onClick={() => removeFromWeek()}>Retirer de la semaine</div>
             }

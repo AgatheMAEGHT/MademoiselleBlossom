@@ -50,6 +50,19 @@ function WeekEditAdmin() {
         species: [],
     });
 
+    const typeOptions: select[] = [
+        { value: "dried", label: "Fleurs séchées" },
+        { value: "fresh", label: "Fleurs fraîches" },
+        { value: "freshCompo", label: "Fleurs fraîches (Compositions)" },
+        { value: "christmas", label: "Fleurs de Noël" },
+        { value: "valentine", label: "Fleurs de la Saint-Valentin" },
+        { value: "pascal", label: "Fleurs de Pâques" },
+        { value: "toussaint", label: "Fleurs de la Toussaint" },
+        { value: "mother", label: "Fleurs de la fête des mères" },
+        { value: "grandmother", label: "Fleurs de la fête des grands-mères" },
+        { value: "father", label: "Fleurs de la fête des pères" },
+    ];
+
     React.useEffect(() => {
         let newOptions = {
             colors: [],
@@ -186,7 +199,7 @@ function WeekEditAdmin() {
             type: article.type,
             name: article.name ?? (article.species[0]?.name + " " + article.colors.map((elt: colorDB) => elt.name).join(" ")),
             description: article.description ?? "",
-            price: 0,
+            price: parseFloat(article.price.toString().replace(",", ".")) ?? 0,
             stock: article.stock,
             size: 0,
             shape: "",
@@ -370,10 +383,21 @@ function WeekEditAdmin() {
                         />
                     </div>
                 </div>
-                <p className="admin-form-input-info">Si te ne donnes pas de nom à une fleur fraiche, par défaut ce sera ne nom de l'espèce (la première s'il y en a plusieurs) suivi de toutes les couleurs.</p>
+                <p className="admin-form-input-info">Si te ne donnes pas de nom à une fleur fraiche, par défaut ce sera le nom de l'espèce (la première s'il y en a plusieurs) suivi de toutes les couleurs.</p>
                 {nameAlreadyTaken && <div id="admin-form-element-alreadytaken">Cette fleur existe déjà</div>}
+                <div className='admin-form-element'> {/* Price */}
+                    <label htmlFor='admin-form-input-price' className='admin-form-label'>Prix (en €)<p className='form-mandatory'>*</p></label>
+                    <input
+                        value={article.price}
+                        onChange={e => setArticle({ ...article, price: e.target.value })}
+                        className='admin-form-input'
+                        id='admin-form-input-price'
+                        type="text"
+                        name="price"
+                    />
+                </div>
                 <div className='admin-form-element'> {/* Species */}
-                    <label htmlFor='admin-form-input-species' className='admin-form-label'>Espèce<p className='form-mandatory'>*</p></label>
+                    <label htmlFor='admin-form-input-species' className='admin-form-label'>Espèce(s)<p className='form-mandatory'>*</p></label>
                     <div className='admin-form-input-select'>
                         <Select
                             name="species"
@@ -394,7 +418,7 @@ function WeekEditAdmin() {
                     </div>
                 </div>
                 <div className='admin-form-element'> {/* Color */}
-                    <label htmlFor='admin-form-input-colors' className='admin-form-label'>Couleur<p className='form-mandatory'>*</p></label>
+                    <label htmlFor='admin-form-input-colors' className='admin-form-label'>Couleur(s)<p className='form-mandatory'>*</p></label>
                     <div className='admin-form-input-select'>
                         <Select
                             name="colors"
@@ -488,6 +512,27 @@ function WeekEditAdmin() {
                         </div>}
                     </div>
                 </div>
+                <div className='admin-form-element'> {/* Occasion */}
+                    <label htmlFor='admin-form-input-tones' className='admin-form-label'>Occasion<p className='form-mandatory'>*</p></label>
+                    <div className='admin-form-input-select'>
+                        <Select
+                            name="tones"
+                            styles={{
+                                control: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    borderColor: 'var(--color-2-darker)',
+                                }),
+                            }}
+                            isSearchable
+                            isClearable
+                            options={typeOptions}
+                            defaultValue={typeOptions[typeOptions.findIndex((elt: select) => elt.value === "fresh") ?? 0]}
+                            onChange={(e) => setArticle({ ...article, type: e?.value ?? "" })}
+                            id='admin-form-input-tones'
+                        />
+                    </div>
+                </div>
+                <p className="admin-form-input-info">Tu peux utiliser le type "Fleurs fraîches (Compositions)" pour les idées de compositions florales</p>
                 <button className='admin-button' onClick={() => postFile()}>Modifier l'article</button>
                 <div id="form-mandatory-info">
                     <p className='form-mandatory'>*</p>

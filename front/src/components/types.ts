@@ -166,6 +166,9 @@ export type selectColor = {
 
 export enum articleType {
     fresh = "fresh",
+    freshCompo = "freshCompo",
+    week = "week",
+    weekCompo = "weekCompo",
     dried = "dried",
     christmas = "christmas",
     valentine = "valentine",

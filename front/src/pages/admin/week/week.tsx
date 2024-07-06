@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { alertStatus, catalog } from '../../../components/types';
+import { alertStatus, articleType, catalog } from '../../../components/types';
 import { requester } from '../../../components/requester';
 import Alert, { displayAlert } from '../../../components/alert/alert';
 import { AdminFreshCatalogTile } from '../_components/catalog-tile-admin/catalogTile';
@@ -76,19 +76,25 @@ function WeekAdmin() {
 
     // Flowers
     const [flowers, setFlowers] = React.useState<catalog>([]);
+    const [compositions, setCompositions] = React.useState<catalog>([]);
     const [weekFlowers, setWeekFlowers] = React.useState<catalog>([]);
+    const [weekCompositions, setWeekCompositions] = React.useState<catalog>([]);
 
     React.useEffect(() => {
         let promises: Promise<any>[] = [];
 
-        promises.push(requester('/article?populate=true&types=fresh', 'GET'));
-        promises.push(requester('/article?populate=true&types=week', 'GET'));
+        promises.push(requester('/article?populate=true&types=' + articleType.fresh, 'GET'));
+        promises.push(requester('/article?populate=true&types=' + articleType.freshCompo, 'GET'));
+        promises.push(requester('/article?populate=true&types=' + articleType.week, 'GET'));
+        promises.push(requester('/article?populate=true&types=' + articleType.weekCompo, 'GET'));
         promises.push(requester('/colors-of-the-week', 'GET'));
 
         Promise.all(promises).then((res) => {
             setFlowers(res[0].sort((a: any, b: any) => a.name.localeCompare(b.name)));
-            setWeekFlowers(res[1].sort((a: any, b: any) => a.name.localeCompare(b.name)));
-            setColors(res[2] ? res[2][0]?.hexas?.map((elt: any, i: number) => { return { name: "#" + elt, id: i }; }) : []);
+            setCompositions(res[1].sort((a: any, b: any) => a.name.localeCompare(b.name)));
+            setWeekFlowers(res[2].sort((a: any, b: any) => a.name.localeCompare(b.name)));
+            setWeekCompositions(res[3].sort((a: any, b: any) => a.name.localeCompare(b.name)));
+            setColors(res[4] ? res[4][0]?.hexas?.map((elt: any, i: number) => { return { name: "#" + elt, id: i }; }) : []);
         });
     }, []);
 
@@ -128,10 +134,22 @@ function WeekAdmin() {
             <div className="admin-fresh-catalog">
                 {displayFreshFlowers(weekFlowers)}
             </div>
-            <h3>Toutes les fleurs fraiches</h3>
+            <h3>Compositions de la semaine</h3>
+            <div className="admin-fresh-catalog">
+                {displayFreshFlowers(weekCompositions)}
+            </div>
+            <hr className='horizontal-bar'/>
+
+            <h3>Toutes les Fleurs Fraiches</h3>
             <a className='admin-button' href='/admin/fleurs-de-la-semaine/nouveau'>Ajouter une fleur</a>
             <div className="admin-fresh-catalog">
                 {displayFreshFlowers(flowers)}
+            </div>
+            <h3>Toutes les Compositions de Fleurs Fraiches</h3>
+            <p className="admin-form-input-info">Tu dois ajouter les Compositions Florales aux fleurs de la semaine pour qu'elles apparaissent côté client.<br /><br /></p>
+            <a className='admin-button' href='/admin/fleurs-de-la-semaine/nouveau?type=compo'>Ajouter une fleur</a>
+            <div className="admin-fresh-catalog">
+                {displayFreshFlowers(compositions)}
             </div>
         </div>
     );

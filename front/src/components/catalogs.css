@@ -24,6 +24,14 @@
     gap: 6vw;
 }
 
+.horizontal-bar {
+    width: 50%;
+    height: 2px;
+    background-color: var(--color-2);
+    border: none;
+    margin-top: 3vw;
+}
+
 @media (width <=768px) {
     .dried-flowers-row {
         flex-direction: column;

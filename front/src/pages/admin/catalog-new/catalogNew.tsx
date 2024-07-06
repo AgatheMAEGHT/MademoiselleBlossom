@@ -55,6 +55,7 @@ function NewCatalogAdmin(props: { articleType: string }) {
     const typeOptions: select[] = [
         { value: "dried", label: "Fleurs séchées" },
         { value: "fresh", label: "Fleurs fraîches" },
+        { value: "freshCompo", label: "Fleurs fraîches (Compositions)" },
         { value: "christmas", label: "Fleurs de Noël" },
         { value: "valentine", label: "Fleurs de la Saint-Valentin" },
         { value: "pascal", label: "Fleurs de Pâques" },
@@ -170,7 +171,7 @@ function NewCatalogAdmin(props: { articleType: string }) {
         // Create new article object to send to the server
         let tmpArticle: newArticleDB = {
             _id: "",
-            type: article.type ?? "",
+            type: article.type ?? "fresh",
             name: article.name ?? "",
             description: article.description ?? "",
             price: parseFloat(article.price.toString().replace(",", ".")) ?? 0,
