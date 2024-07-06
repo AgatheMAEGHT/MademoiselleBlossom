@@ -89,17 +89,17 @@ function Week() {
                 <div id="dried-flowers-catalog">
                     {displayTiles(freshFlowers)}
                 </div> :
-                <div><i>Malheureusement, il n'y a pas de fleurs fraiches pour le moment</i></div>
+                <div className='paragraph-center'><i>Malheureusement, il n'y a pas de fleurs fraiches pour le moment</i></div>
             }
 
             <hr className='horizontal-bar' />
 
             <h2 className="page-title">Idées de Compositions Florales</h2>
-            {freshFlowers.length > 0 ?
+            {compositions.length > 0 ?
                 <div id="dried-flowers-catalog">
                     {displayTiles(compositions)}
                 </div> :
-                <div><i>Malheureusement, il n'y a pas de fleurs fraiches pour le moment</i></div>
+                <div className='paragraph-center'><i>Malheureusement, il n'y a pas de fleurs fraiches pour le moment</i></div>
             }
         </div>
     );
